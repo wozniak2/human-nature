@@ -294,4 +294,41 @@ fig6 <- function() {
 }
 save_fig("fig6_gap_by_language", fig6, 8.6, 5.4)
 
+
+# --- Fig 7: what the loglinear models estimate --------------------------
+# Two parameters from 11_square_table_models.R, on a common log scale:
+# how far each role is preferred over Master once the symmetric
+# association is accounted for, and how strongly each role retains its
+# own. Master is the reference for the first panel and sits at zero.
+sq <- readRDS("hnr_square_table_models.rds")
+sh <- rbind(sq$shift[, c("role", "log_shift", "se")],
+            data.frame(role = "Master", log_shift = 0, se = NA))
+names(sh) <- c("role", "est", "se")
+sh$panel <- "Preferred over Master (quasi-symmetry margins)"
+st <- sq$stay[, c("role", "log_odds_of_staying", "se")]
+names(st) <- c("role", "est", "se")
+st$panel <- "Tendency to keep the same role (quasi-independence)"
+d7 <- rbind(sh, st)
+d7$lo <- d7$est - 1.96 * d7$se
+d7$hi <- d7$est + 1.96 * d7$se
+d7$role <- factor(d7$role, levels = rev(c("Guardian", "Partner", "User",
+                                          "Manager", "Object", "Master")))
+d7$panel <- factor(d7$panel, levels = unique(d7$panel))
+
+fig7 <- function() {
+  ggplot(d7, aes(est, role, colour = role)) +
+    geom_vline(xintercept = 0, linetype = 2, colour = MUTE, linewidth = .4) +
+    geom_linerange(aes(xmin = lo, xmax = hi), linewidth = .9, na.rm = TRUE) +
+    geom_point(aes(shape = is.na(se)), size = 2.6, fill = BG, na.rm = TRUE) +
+    facet_wrap(~panel, nrow = 1, scales = "free_x") +
+    scale_colour_manual(values = pal, guide = "none") +
+    scale_shape_manual(values = c("FALSE" = 19, "TRUE" = 21), guide = "none") +
+    labs(x = "Log scale, with 95% confidence intervals", y = NULL,
+         title = "What the transition table looks like as a model",
+         subtitle = "Every role is preferred over Master; the middle roles are the ones people most readily leave",
+         caption = "Quasi-symmetry fits (G2 = 22.0, df = 10) where symmetry does not (G2 = 192.4, df = 15). Hollow point marks the reference. Source: 11_square_table_models.R") +
+    hnr_theme()
+}
+save_fig("fig7_loglinear_parameters", fig7, 10, 4.2)
+
 cat("Figures written to the figures/ folder", fill = TRUE)

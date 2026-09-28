@@ -110,6 +110,6 @@ cat("(QS_p large = quasi-symmetry is an adequate description in that country;\n"
 cat(" MH_p small = its two margins differ, i.e. a real shift. Canada is the\n")
 cat(" country where no shift was detected in 08.)\n")
 
-saveRDS(list(models = fit, gof = gof, shift = shift, per_country = per_country),
+saveRDS(list(models = fit, gof = gof, shift = shift, stay = stay, per_country = per_country),
         "hnr_square_table_models.rds")
 cat("\nSaved: hnr_square_table_models.rds\n")
