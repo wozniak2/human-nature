@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-28 16:53:18.808996 
-Time difference of 0.01736689 secs
-Computation Time: 0.01736689 
+Date of Analysis: 2026-09-28 17:00:34.173468 
+Time difference of 0.02334118 secs
+Computation Time: 0.02334118 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 

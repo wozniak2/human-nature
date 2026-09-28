@@ -27,8 +27,8 @@ ctry <- levels(dat$country)
 # Publication figures: white ground, quiet grid, colour used sparingly.
 # Master and Guardian carry the argument and keep the two strong hues;
 # the other four roles are deliberately muted. Okabe-Ito, colour-blind safe.
-pal <- c(Master = "#D55E00", Manager = "#0072B2", User = "#8C8C8C",
-         Guardian = "#009E73", Partner = "#CC79A7", Object = "#5A5A5A")
+pal <- c(Master = "#D55E00", Manager = "#0072B2", User = "#E69F00",
+         Guardian = "#009E73", Partner = "#CC79A7", Object = "#56B4E9")
 INK <- "#1A1A1A"; MUTE <- "#5E5E5E"; GRID <- "#EAEAEA"; BG <- "#FFFFFF"
 ACCENT <- "#D55E00"; BLUE <- "#0072B2"; GREEN <- "#009E73"
 
@@ -211,18 +211,19 @@ d5$hl <- ifelse(as.character(d5$now) %in% c("Master", "Guardian"),
 
 fig5 <- function() {
   ggplot(d5, aes(y = n, axis1 = now, axis2 = should)) +
-    geom_alluvium(aes(fill = hl), width = .12, alpha = .68, knot.pos = .32,
+    geom_alluvium(aes(fill = now, alpha = hl), width = .12, knot.pos = .32,
                   curve_type = "sigmoid") +
     geom_stratum(width = .12, fill = "grey97", colour = "grey55", linewidth = .4) +
     geom_text(stat = "stratum", size = 3.1, colour = INK,
               aes(label = paste0(after_stat(stratum), "  ", after_stat(count)))) +
-    scale_fill_manual(values = c(Master = ACCENT, Guardian = GREEN,
-                                 other = "#CFCFCF"), guide = "none") +
+    scale_fill_manual(values = pal, guide = "none") +
+    scale_alpha_manual(values = c(Master = .92, Guardian = .92, other = .68),
+                       guide = "none") +
     scale_x_discrete(limits = c("Role they see now", "Role they think there should be"),
                      expand = expansion(mult = c(.16, .16))) +
     labs(x = NULL, y = "Respondents",
          title = "Where people move between the role they see and the role they want",
-         subtitle = "Ribbons leaving Master (orange) and Guardian (green); every other origin in grey",
+         subtitle = "Each ribbon is coloured by the role people see now; Master and Guardian are emphasised",
          caption = "Master shrinks from 776 to 496 and Guardian grows from 171 to 339: 480 respondents leave Master, 200 arrive (Bowker chi-squared = 184.5, p < .001).") +
     hnr_theme() +
     theme(panel.grid = element_blank(), axis.text.y = element_blank(),
