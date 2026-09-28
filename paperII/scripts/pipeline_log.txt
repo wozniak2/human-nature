@@ -1,0 +1,1265 @@
+
+
+############################################################
+##  01_load_and_prepare.R 
+############################################################
+New names:
+• `` -> `...11`
+• `` -> `...12`
+• `` -> `...13`
+• `` -> `...14`
+• `` -> `...15`
+• `` -> `...17`
+• `` -> `...18`
+• `` -> `...19`
+• `` -> `...20`
+• `` -> `...21`
+• `` -> `...22`
+• `` -> `...23`
+• `` -> `...24`
+• `` -> `...25`
+• `` -> `...26`
+• `` -> `...27`
+• `` -> `...28`
+• `` -> `...30`
+• `` -> `...31`
+• `` -> `...32`
+• `` -> `...33`
+• `` -> `...34`
+• `` -> `...35`
+• `` -> `...36`
+• `` -> `...37`
+• `` -> `...38`
+• `` -> `...39`
+• `` -> `...40`
+• `` -> `...41`
+• `` -> `...43`
+• `` -> `...44`
+• `` -> `...45`
+• `` -> `...46`
+• `` -> `...47`
+• `` -> `...48`
+• `` -> `...49`
+• `` -> `...50`
+• `` -> `...51`
+• `` -> `...52`
+• `` -> `...53`
+• `Imagine a specific (perhaps your favorite) place in a natural environment… a
+  spot by a river or lake, a favorite part of a forest, a place in the
+  mountains, or a seaside beach. Keeping this in mind, select the statement
+  below that resonates with you the most.` -> `Imagine a specific (perhaps your
+  favorite) place in a natural environment… a spot by a river or lake, a
+  favorite part of a forest, a place in the mountains, or a seaside beach.
+  Keeping this in mind, select the statement below that resonates with you the
+  most....56`
+• `Imagine a specific (perhaps your favorite) place in a natural environment… a
+  spot by a river or lake, a favorite part of a forest, a place in the
+  mountains, or a seaside beach. Keeping this in mind, select the statement
+  below that resonates with you the most.` -> `Imagine a specific (perhaps your
+  favorite) place in a natural environment… a spot by a river or lake, a
+  favorite part of a forest, a place in the mountains, or a seaside beach.
+  Keeping this in mind, select the statement below that resonates with you the
+  most....57`
+• `Imagine a specific (perhaps your favorite) place in a natural environment… a
+  spot by a river or lake, a favorite part of a forest, a place in the
+  mountains, or a seaside beach. Keeping this in mind, select the statement
+  below that resonates with you the most.` -> `Imagine a specific (perhaps your
+  favorite) place in a natural environment… a spot by a river or lake, a
+  favorite part of a forest, a place in the mountains, or a seaside beach.
+  Keeping this in mind, select the statement below that resonates with you the
+  most....58`
+• `Imagine a specific (perhaps your favorite) place in a natural environment… a
+  spot by a river or lake, a favorite part of a forest, a place in the
+  mountains, or a seaside beach. Keeping this in mind, select the statement
+  below that resonates with you the most.` -> `Imagine a specific (perhaps your
+  favorite) place in a natural environment… a spot by a river or lake, a
+  favorite part of a forest, a place in the mountains, or a seaside beach.
+  Keeping this in mind, select the statement below that resonates with you the
+  most....59`
+• `` -> `...61`
+• `` -> `...62`
+• `` -> `...63`
+• `` -> `...64`
+• `` -> `...67`
+• `` -> `...68`
+• `` -> `...69`
+• `` -> `...70`
+• `` -> `...71`
+• `` -> `...72`
+• `` -> `...73`
+• `` -> `...74`
+• `` -> `...75`
+• `` -> `...76`
+• `` -> `...77`
+• `` -> `...78`
+• `` -> `...79`
+• `` -> `...82`
+• `` -> `...83`
+• `` -> `...84`
+• `` -> `...86`
+• `` -> `...87`
+• `` -> `...88`
+• `` -> `...89`
+• `` -> `...90`
+New names:
+• `` -> `...11`
+• `` -> `...12`
+• `` -> `...13`
+• `` -> `...14`
+• `` -> `...15`
+• `` -> `...17`
+• `` -> `...18`
+• `` -> `...19`
+• `` -> `...20`
+• `` -> `...21`
+• `` -> `...22`
+• `` -> `...23`
+• `` -> `...24`
+• `` -> `...25`
+• `` -> `...26`
+• `` -> `...27`
+• `` -> `...28`
+• `` -> `...30`
+• `` -> `...31`
+• `` -> `...32`
+• `` -> `...33`
+• `` -> `...34`
+• `` -> `...35`
+• `` -> `...36`
+• `` -> `...37`
+• `` -> `...38`
+• `` -> `...39`
+• `` -> `...40`
+• `` -> `...41`
+• `` -> `...43`
+• `` -> `...44`
+• `` -> `...45`
+• `` -> `...46`
+• `` -> `...47`
+• `` -> `...48`
+• `` -> `...49`
+• `` -> `...50`
+• `` -> `...51`
+• `` -> `...52`
+• `` -> `...53`
+• `Imagine un lugar concreto (quizás su favorito) del entorno natural: un lugar
+  junto a un río o lago, su parte favorita de la selva, un lugar en las
+  montañas o una playa junto al mar... Teniendo esto en cuenta, elige la
+  descripción que más le convenga.` -> `Imagine un lugar concreto (quizás su
+  favorito) del entorno natural: un lugar junto a un río o lago, su parte
+  favorita de la selva, un lugar en las montañas o una playa junto al mar...
+  Teniendo esto en cuenta, elige la descripción que más le convenga....56`
+• `Imagine un lugar concreto (quizás su favorito) del entorno natural: un lugar
+  junto a un río o lago, su parte favorita de la selva, un lugar en las
+  montañas o una playa junto al mar... Teniendo esto en cuenta, elige la
+  descripción que más le convenga.` -> `Imagine un lugar concreto (quizás su
+  favorito) del entorno natural: un lugar junto a un río o lago, su parte
+  favorita de la selva, un lugar en las montañas o una playa junto al mar...
+  Teniendo esto en cuenta, elige la descripción que más le convenga....57`
+• `Imagine un lugar concreto (quizás su favorito) del entorno natural: un lugar
+  junto a un río o lago, su parte favorita de la selva, un lugar en las
+  montañas o una playa junto al mar... Teniendo esto en cuenta, elige la
+  descripción que más le convenga.` -> `Imagine un lugar concreto (quizás su
+  favorito) del entorno natural: un lugar junto a un río o lago, su parte
+  favorita de la selva, un lugar en las montañas o una playa junto al mar...
+  Teniendo esto en cuenta, elige la descripción que más le convenga....58`
+• `Imagine un lugar concreto (quizás su favorito) del entorno natural: un lugar
+  junto a un río o lago, su parte favorita de la selva, un lugar en las
+  montañas o una playa junto al mar... Teniendo esto en cuenta, elige la
+  descripción que más le convenga.` -> `Imagine un lugar concreto (quizás su
+  favorito) del entorno natural: un lugar junto a un río o lago, su parte
+  favorita de la selva, un lugar en las montañas o una playa junto al mar...
+  Teniendo esto en cuenta, elige la descripción que más le convenga....59`
+• `` -> `...61`
+• `` -> `...62`
+• `` -> `...63`
+• `` -> `...64`
+• `` -> `...67`
+• `` -> `...68`
+• `` -> `...69`
+• `` -> `...70`
+• `` -> `...71`
+• `` -> `...72`
+• `` -> `...73`
+• `` -> `...74`
+• `` -> `...75`
+• `` -> `...76`
+• `` -> `...77`
+• `` -> `...78`
+• `` -> `...79`
+• `` -> `...82`
+• `` -> `...83`
+• `` -> `...84`
+• `` -> `...86`
+• `` -> `...87`
+• `` -> `...88`
+• `` -> `...89`
+• `` -> `...90`
+New names:
+• `` -> `...11`
+• `` -> `...12`
+• `` -> `...13`
+• `` -> `...14`
+• `` -> `...15`
+• `` -> `...17`
+• `` -> `...18`
+• `` -> `...19`
+• `` -> `...20`
+• `` -> `...21`
+• `` -> `...22`
+• `` -> `...23`
+• `` -> `...24`
+• `` -> `...25`
+• `` -> `...26`
+• `` -> `...27`
+• `` -> `...28`
+• `` -> `...30`
+• `` -> `...31`
+• `` -> `...32`
+• `` -> `...33`
+• `` -> `...34`
+• `` -> `...35`
+• `` -> `...36`
+• `` -> `...37`
+• `` -> `...38`
+• `` -> `...39`
+• `` -> `...40`
+• `` -> `...41`
+• `` -> `...43`
+• `` -> `...44`
+• `` -> `...45`
+• `` -> `...46`
+• `` -> `...47`
+• `` -> `...48`
+• `` -> `...49`
+• `` -> `...50`
+• `` -> `...51`
+• `` -> `...52`
+• `` -> `...53`
+• `` -> `...61`
+• `` -> `...62`
+• `` -> `...63`
+• `` -> `...64`
+• `` -> `...67`
+• `` -> `...68`
+• `` -> `...69`
+• `` -> `...70`
+• `` -> `...71`
+• `` -> `...72`
+• `` -> `...73`
+• `` -> `...74`
+• `` -> `...75`
+• `` -> `...76`
+• `` -> `...77`
+• `` -> `...78`
+• `` -> `...79`
+• `` -> `...82`
+• `` -> `...83`
+• `` -> `...84`
+• `` -> `...86`
+• `` -> `...87`
+• `` -> `...88`
+• `` -> `...89`
+• `` -> `...90`
+New names:
+• `` -> `...11`
+• `` -> `...12`
+• `` -> `...13`
+• `` -> `...14`
+• `` -> `...15`
+• `` -> `...17`
+• `` -> `...18`
+• `` -> `...19`
+• `` -> `...20`
+• `` -> `...21`
+• `` -> `...22`
+• `` -> `...23`
+• `` -> `...24`
+• `` -> `...25`
+• `` -> `...26`
+• `` -> `...27`
+• `` -> `...28`
+• `` -> `...30`
+• `` -> `...31`
+• `` -> `...32`
+• `` -> `...33`
+• `` -> `...34`
+• `` -> `...35`
+• `` -> `...36`
+• `` -> `...37`
+• `` -> `...38`
+• `` -> `...39`
+• `` -> `...40`
+• `` -> `...41`
+• `` -> `...43`
+• `` -> `...44`
+• `` -> `...45`
+• `` -> `...46`
+• `` -> `...47`
+• `` -> `...48`
+• `` -> `...49`
+• `` -> `...50`
+• `` -> `...51`
+• `` -> `...52`
+• `` -> `...53`
+• `` -> `...61`
+• `` -> `...62`
+• `` -> `...63`
+• `` -> `...64`
+• `` -> `...67`
+• `` -> `...68`
+• `` -> `...69`
+• `` -> `...70`
+• `` -> `...71`
+• `` -> `...72`
+• `` -> `...73`
+• `` -> `...74`
+• `` -> `...75`
+• `` -> `...76`
+• `` -> `...77`
+• `` -> `...78`
+• `` -> `...79`
+• `` -> `...82`
+• `` -> `...83`
+• `` -> `...84`
+• `` -> `...86`
+• `` -> `...87`
+• `` -> `...88`
+• `` -> `...89`
+• `` -> `...90`
+New names:
+• `` -> `...11`
+• `` -> `...12`
+• `` -> `...13`
+• `` -> `...14`
+• `` -> `...15`
+• `` -> `...17`
+• `` -> `...18`
+• `` -> `...19`
+• `` -> `...20`
+• `` -> `...21`
+• `` -> `...22`
+• `` -> `...23`
+• `` -> `...24`
+• `` -> `...25`
+• `` -> `...26`
+• `` -> `...27`
+• `` -> `...28`
+• `` -> `...30`
+• `` -> `...31`
+• `` -> `...32`
+• `` -> `...33`
+• `` -> `...34`
+• `` -> `...35`
+• `` -> `...36`
+• `` -> `...37`
+• `` -> `...38`
+• `` -> `...39`
+• `` -> `...40`
+• `` -> `...41`
+• `` -> `...43`
+• `` -> `...44`
+• `` -> `...45`
+• `` -> `...46`
+• `` -> `...47`
+• `` -> `...48`
+• `` -> `...49`
+• `` -> `...50`
+• `` -> `...51`
+• `` -> `...52`
+• `` -> `...53`
+• `Otra vez imagine un lugar concreto (quizás su favorito) del entorno natural:
+  un lugar junto a un río o lago, su parte favorita de la selva, un lugar en
+  las montañas o una playa junto al mar... Teniendo esto en cuenta, elige la
+  descripción que más le convenga.` -> `Otra vez imagine un lugar concreto
+  (quizás su favorito) del entorno natural: un lugar junto a un río o lago, su
+  parte favorita de la selva, un lugar en las montañas o una playa junto al
+  mar... Teniendo esto en cuenta, elige la descripción que más le
+  convenga....57`
+• `Otra vez imagine un lugar concreto (quizás su favorito) del entorno natural:
+  un lugar junto a un río o lago, su parte favorita de la selva, un lugar en
+  las montañas o una playa junto al mar... Teniendo esto en cuenta, elige la
+  descripción que más le convenga.` -> `Otra vez imagine un lugar concreto
+  (quizás su favorito) del entorno natural: un lugar junto a un río o lago, su
+  parte favorita de la selva, un lugar en las montañas o una playa junto al
+  mar... Teniendo esto en cuenta, elige la descripción que más le
+  convenga....59`
+• `` -> `...61`
+• `` -> `...62`
+• `` -> `...63`
+• `` -> `...64`
+• `` -> `...67`
+• `` -> `...68`
+• `` -> `...69`
+• `` -> `...70`
+• `` -> `...71`
+• `` -> `...72`
+• `` -> `...73`
+• `` -> `...74`
+• `` -> `...75`
+• `` -> `...76`
+• `` -> `...77`
+• `` -> `...78`
+• `` -> `...79`
+• `` -> `...82`
+• `` -> `...83`
+• `` -> `...84`
+• `` -> `...86`
+• `` -> `...87`
+• `` -> `...88`
+• `` -> `...89`
+• `` -> `...90`
+New names:
+• `` -> `...11`
+• `` -> `...12`
+• `` -> `...13`
+• `` -> `...14`
+• `` -> `...15`
+• `` -> `...17`
+• `` -> `...18`
+• `` -> `...19`
+• `` -> `...20`
+• `` -> `...21`
+• `` -> `...22`
+• `` -> `...23`
+• `` -> `...24`
+• `` -> `...25`
+• `` -> `...26`
+• `` -> `...27`
+• `` -> `...28`
+• `` -> `...30`
+• `` -> `...31`
+• `` -> `...32`
+• `` -> `...33`
+• `` -> `...34`
+• `` -> `...35`
+• `` -> `...36`
+• `` -> `...37`
+• `` -> `...38`
+• `` -> `...39`
+• `` -> `...40`
+• `` -> `...41`
+• `` -> `...43`
+• `` -> `...44`
+• `` -> `...45`
+• `` -> `...46`
+• `` -> `...47`
+• `` -> `...48`
+• `` -> `...49`
+• `` -> `...50`
+• `` -> `...51`
+• `` -> `...52`
+• `` -> `...53`
+• `` -> `...61`
+• `` -> `...62`
+• `` -> `...63`
+• `` -> `...64`
+• `` -> `...67`
+• `` -> `...68`
+• `` -> `...69`
+• `` -> `...70`
+• `` -> `...71`
+• `` -> `...72`
+• `` -> `...73`
+• `` -> `...74`
+• `` -> `...75`
+• `` -> `...76`
+• `` -> `...77`
+• `` -> `...78`
+• `` -> `...79`
+• `` -> `...82`
+• `` -> `...83`
+• `` -> `...84`
+• `` -> `...86`
+• `` -> `...87`
+• `` -> `...88`
+• `` -> `...89`
+• `` -> `...90`
+Loaded 2513 respondents across 6 countries:
+
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+        411         416         424         425         425         412 
+
+--- Fielding windows per country (NOT simultaneous -- see caveats above) ---
+     country               start                 end
+      Canada 2025-03-10 16:03:39 2025-03-17 01:16:41
+      Panama 2025-03-10 15:51:09 2025-03-17 16:37:05
+      Poland 2025-08-04 16:16:14 2025-08-06 08:07:50
+ Netherlands 2025-09-08 16:04:45 2025-09-11 14:07:58
+       Spain 2025-08-19 12:35:05 2025-08-21 11:56:07
+      Sweden 2025-10-27 08:45:07 2025-10-29 18:51:00
+
+--- Response-quality screen (speeding < 120s OR straight-lining on Q3/Q12) ---
+             flagged
+country       FALSE TRUE
+  Canada        359   52
+  Panama        382   34
+  Poland        345   79
+  Netherlands   352   73
+  Spain         363   62
+  Sweden        339   73
+Total flagged: 373 of 2513 
+Flagged respondents are kept in hnr_data.rds (flag_lowqual column) rather than
+dropped -- filter them out per-analysis (e.g. subset(dat, !flag_lowqual)) if you
+want the excluded-flagged version; the Canada-only check earlier in the project
+found results unchanged either way, but that hasn't been re-confirmed for the
+other 5 countries yet.
+
+Saved: hnr_data.rds, hnr_fielding_dates.rds
+
+
+############################################################
+##  02_cfa_invariance.R 
+############################################################
+========== Configural invariance (no cross-group constraints) ==========
+  chisq      df     cfi     tli   rmsea    srmr 
+261.998  54.000   0.966   0.943   0.096   0.031 
+
+========== Metric invariance (+ equal loadings) ==========
+  chisq      df     cfi     tli   rmsea    srmr 
+285.381  79.000   0.966   0.961   0.079   0.040 
+
+========== Scalar invariance (+ equal intercepts) ==========
+  chisq      df     cfi     tli   rmsea    srmr 
+407.007 104.000   0.950   0.957   0.083   0.050 
+
+--- Model comparison ---
+              chisq  df    cfi    tli  rmsea   srmr
+configural 261.9978  54 0.9657 0.9429 0.0959 0.0308
+metric     285.3808  79 0.9660 0.9612 0.0790 0.0398
+scalar     407.0073 104 0.9501 0.9568 0.0834 0.0504
+Delta CFI (metric-configural): 3e-04 
+Delta CFI (scalar-metric):     -0.0159 
+(Chen 2007 rule of thumb: Delta CFI <= -.010, backed by Delta RMSEA >= .015,
+ flags meaningful non-invariance -- more trustworthy than the chi-square
+ difference test alone once n is in the thousands.)
+
+--- Chi-square difference tests ---
+
+Chi-Squared Difference Test
+
+            Df   AIC   BIC  Chisq Chisq diff    RMSEA Df diff Pr(>Chisq)    
+fit_config  54 37096 37725 262.00                                           
+fit_metric  79 37069 37553 285.38     23.383 0.000000      25     0.5552    
+fit_scalar 104 37141 37479 407.01    121.626 0.096063      25  1.143e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+--- Score test for non-invariant intercepts (top 10), if scalar looks strained ---
+
+univariate score tests:
+
+     lhs op    rhs     X2 df p.value
+47 .p18. ==  .p58. 29.749  1   0.000
+46 .p18. ==  .p38. 28.888  1   0.000
+53 .p19. ==  .p79. 12.316  1   0.000
+38 .p16. ==  .p76. 11.173  1   0.001
+28 .p14. ==  .p74.  9.999  1   0.002
+39 .p16. ==  .p96.  8.957  1   0.003
+35 .p15. == .p115.  7.784  1   0.005
+51 .p19. ==  .p39.  7.085  1   0.008
+33 .p15. ==  .p75.  6.534  1   0.011
+50 .p18. == .p118.  6.062  1   0.014
+
+This pipeline was validated (2026-08) with 2 of 6 intercepts non-invariant:
+  person_changes_place, place_influences_person
+If your data changes (more responses, more countries), re-derive which items
+to free from the score test above rather than assuming these same 2 still apply.
+
+========== Partial scalar invariance (free the non-invariant intercepts) ==========
+  chisq      df     cfi     tli   rmsea    srmr 
+327.028  94.000   0.962   0.963   0.077   0.044 
+Delta CFI (partial-metric): -0.0044 -- should be > -.010 for partial invariance to be judged acceptable
+
+Chi-Squared Difference Test
+
+            Df   AIC   BIC  Chisq Chisq diff    RMSEA Df diff Pr(>Chisq)    
+fit_metric  79 37069 37553 285.38                                           
+fit_partial 94 37081 37477 327.03     41.647 0.065126      15  0.0002547 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+========== Latent means by country (Canada fixed at 0, reference) ==========
+        country    est    se      z pvalue
+20       Canada  0.000 0.000     NA     NA
+40       Panama -0.095 0.057 -1.680  0.093
+60       Poland -0.078 0.052 -1.505  0.132
+80  Netherlands -0.364 0.052 -6.939  0.000
+100       Spain -0.024 0.048 -0.495  0.620
+120      Sweden -0.364 0.052 -6.939  0.000
+
+Saved: hnr_data.rds (updated with q1_factor column), hnr_cfa_fits.rds
+
+
+############################################################
+##  04_mimic_model.R 
+############################################################
+Respondents: 2513 | complete cases for MIMIC model: 2489 ( 24 dropped, mostly non-binary/trans/prefer-not-say gender and prefer-not-say age)
+
+========== MIMIC model fit ==========
+  chisq      df     cfi     tli   rmsea    srmr 
+206.096  34.000   0.973   0.955   0.045   0.018 
+
+========== Structural paths: what predicts the relational latent factor ==========
+                   rhs    est    se      z pvalue std.all
+7       country_Panama -0.064 0.054 -1.195  0.232  -0.033
+8       country_Poland -0.095 0.053 -1.780  0.075  -0.050
+9  country_Netherlands -0.401 0.054 -7.378  0.000  -0.211
+10       country_Spain -0.051 0.054 -0.952  0.341  -0.027
+11      country_Sweden -0.393 0.055 -7.194  0.000  -0.204
+12             age_num  0.054 0.010  5.467  0.000   0.120
+13          gender_bin -0.134 0.030 -4.448  0.000  -0.094
+
+========== DIF direct effects (person_changes_place, place_influences_person) ==========
+                       lhs                 rhs    est    se      z pvalue
+14    person_changes_place      country_Panama -0.240 0.057 -4.236  0.000
+15    person_changes_place      country_Poland  0.182 0.056  3.229  0.001
+16    person_changes_place country_Netherlands  0.102 0.057  1.794  0.073
+17    person_changes_place       country_Spain -0.013 0.056 -0.230  0.818
+18    person_changes_place      country_Sweden -0.053 0.057 -0.930  0.352
+19 place_influences_person      country_Panama  0.054 0.053  1.027  0.304
+20 place_influences_person      country_Poland  0.054 0.052  1.033  0.302
+21 place_influences_person country_Netherlands  0.172 0.053  3.268  0.001
+22 place_influences_person       country_Spain -0.006 0.052 -0.109  0.914
+23 place_influences_person      country_Sweden  0.140 0.053  2.634  0.008
+
+========== Compare: MIMIC country coefficients vs. the earlier two-step latent means ==========
+(two-step means are from the multi-group partial-scalar model in 02_cfa_invariance.R,
+ Canada fixed at 0; MIMIC coefficients below are the direct effect of each country
+ dummy on the latent factor, net of age and gender -- not identical quantities, but
+ a similar magnitude/pattern here means the country effect is NOT just age/gender
+ composition in disguise.)
+
+      country twostep_latent_mean mimic_est_net_of_age_gender mimic_pvalue
+1 Netherlands              -0.364                 -0.40071336 1.605382e-13
+5      Sweden              -0.364                 -0.39340037 6.299405e-13
+2      Panama              -0.095                 -0.06447129 2.320660e-01
+3      Poland              -0.078                 -0.09513933 7.513738e-02
+4       Spain              -0.024                 -0.05113702 3.410892e-01
+
+========== Age and gender effects on their own ==========
+          rhs    est   se      z pvalue std.all
+12    age_num  0.054 0.01  5.467      0   0.120
+13 gender_bin -0.134 0.03 -4.448      0  -0.094
+gender_bin: 0 = Woman, 1 = Man (positive estimate = higher relational score for men)
+age_num: linear per age-band (1 = 18-24 ... 6 = 65+)
+
+Saved: hnr_mimic_fit.rds, hnr_data.rds (updated with MIMIC-ready columns)
+
+
+############################################################
+##  05_mimic_interactions.R 
+############################################################
+========== Interaction model fit ==========
+  chisq      df     cfi     tli   rmsea    srmr 
+274.557  84.000   0.970   0.958   0.030   0.014 
+
+========== Omnibus test: do the 10 interaction terms improve fit at all? ==========
+
+Chi-Squared Difference Test
+
+             Df   AIC   BIC  Chisq Chisq diff    RMSEA Df diff Pr(>Chisq)
+fit_interact 84 36813 37040 274.56                                       
+fit_main     94 36806 36975 288.01     13.455 0.011782      10     0.1993
+(fit_main = same model with the 10 interaction paths fixed to 0; fit_interact frees all 10
+ country x age / country x gender terms at once -- a non-significant result
+ here means none of the individual interactions below should be over-interpreted,
+ even if one or two happen to clear p<.05 on their own.)
+
+========== Country x Age interaction coefficients ==========
+       country    est    se      z pvalue std.all
+14      Panama  0.066 0.038  1.739  0.082   0.106
+15      Poland  0.012 0.035  0.331  0.740   0.024
+16 Netherlands  0.025 0.035  0.720  0.471   0.057
+17       Spain -0.039 0.035 -1.105  0.269  -0.086
+18      Sweden  0.004 0.034  0.105  0.917   0.008
+(positive = the age effect is STRONGER in that country than in Canada; negative = weaker)
+
+========== Country x Gender interaction coefficients ==========
+       country    est    se      z pvalue std.all
+19      Panama -0.125 0.104 -1.198  0.231  -0.048
+20      Poland -0.106 0.103 -1.028  0.304  -0.040
+21 Netherlands -0.019 0.104 -0.178  0.859  -0.007
+22       Spain  0.075 0.103  0.726  0.468   0.029
+23      Sweden -0.071 0.104 -0.684  0.494  -0.026
+(positive = the male-vs-female gap is LARGER in that country than in Canada;
+ negative = smaller, i.e. closer to no gap or reversed)
+
+========== Main effects, re-estimated alongside the interactions ==========
+                   rhs    est    se      z pvalue std.all
+7       country_Panama -0.186 0.134 -1.390  0.165  -0.097
+8       country_Poland -0.083 0.139 -0.600  0.549  -0.044
+9  country_Netherlands -0.484 0.140 -3.451  0.001  -0.255
+10       country_Spain  0.066 0.142  0.468  0.640   0.035
+11      country_Sweden -0.367 0.140 -2.633  0.008  -0.191
+12             age_num  0.044 0.026  1.693  0.090   0.098
+13          gender_bin -0.094 0.073 -1.282  0.200  -0.066
+(these are now the country/age/gender effects specifically for/at Canada's
+ reference level once interactions are in the model -- compare with caution
+ to 04's main-effects-only numbers, which averaged over all countries.)
+
+Saved: hnr_mimic_interact_fit.rds
+
+
+############################################################
+##  06_qc_robustness.R 
+############################################################
+Excluding 373 of 2513 flagged respondents
+Remaining n: 2140 
+
+========== Partial-scalar invariance, excluding flagged respondents ==========
+  chisq      df     cfi     tli   rmsea    srmr 
+290.426  94.000   0.954   0.956   0.076   0.048 
+Delta CFI (partial-metric), excl. flagged: -0.0058 
+(full sample: -0.0044 )
+
+--- Latent means by country, excluding flagged (Canada = 0 reference) ---
+        country    est    se pvalue full_sample_est
+20       Canada  0.000 0.000     NA           0.000
+40       Panama -0.106 0.058  0.067          -0.095
+60       Poland -0.087 0.056  0.118          -0.078
+80  Netherlands -0.315 0.053  0.000          -0.364
+100       Spain -0.041 0.051  0.416          -0.024
+120      Sweden -0.326 0.056  0.000          -0.364
+
+========== MIMIC model, excluding flagged respondents ==========
+                   rhs    est    se pvalue std.all full_sample_est
+7       country_Panama -0.077 0.054  0.158  -0.044          -0.064
+8       country_Poland -0.122 0.056  0.029  -0.067          -0.095
+9  country_Netherlands -0.360 0.056  0.000  -0.200          -0.401
+10       country_Spain -0.077 0.055  0.165  -0.043          -0.051
+11      country_Sweden -0.363 0.057  0.000  -0.199          -0.393
+12             age_num  0.065 0.010  0.000   0.155           0.054
+13          gender_bin -0.163 0.031  0.000  -0.122          -0.134
+
+Saved: hnr_qc_robustness_fits.rds
+
+
+############################################################
+##  07_alignment_check.R 
+############################################################
+Loadings by country (configural model):
+            presence_influences_place place_influences_person
+Canada                              1                   1.062
+Panama                              1                   1.057
+Poland                              1                   0.942
+Netherlands                         1                   1.084
+Spain                               1                   0.994
+Sweden                              1                   1.153
+            person_shares_stories_w_place place_tells_story_to_person
+Canada                              1.007                       1.074
+Panama                              0.995                       1.102
+Poland                              0.823                       0.952
+Netherlands                         0.897                       1.012
+Spain                               0.931                       1.142
+Sweden                              0.922                       1.104
+            person_changes_place place_leaves_traces_in_person
+Canada                     1.030                         1.091
+Panama                     0.919                         1.049
+Poland                     0.915                         0.930
+Netherlands                1.030                         0.961
+Spain                      0.972                         1.060
+Sweden                     1.092                         1.249
+
+Intercepts by country (configural model):
+            presence_influences_place place_influences_person
+Canada                          3.922                   4.141
+Panama                          3.868                   4.094
+Poland                          3.849                   4.113
+Netherlands                     3.722                   3.927
+Spain                           3.929                   4.111
+Sweden                          3.566                   3.913
+            person_shares_stories_w_place place_tells_story_to_person
+Canada                              3.951                       4.158
+Panama                              3.913                       3.950
+Poland                              3.870                       4.042
+Netherlands                         3.548                       3.732
+Spain                               4.024                       4.040
+Sweden                              3.653                       3.716
+            person_changes_place place_leaves_traces_in_person
+Canada                     4.105                         3.998
+Panama                     3.779                         3.957
+Poland                     4.212                         3.950
+Netherlands                3.842                         3.562
+Spain                      4.068                         3.991
+Sweden                     3.684                         3.643
+
+========== Alignment: approximate-invariance summary ==========
+-----------------------------------------------------------------
+sirt 4.2-133 (2025-09-27 12:57:51) 
+R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32 
+
+Call:
+sirt::invariance.alignment(lambda = lambda, nu = nu)
+
+Date of Analysis: 2026-09-28 09:46:33.212982 
+Time difference of 0.01213789 secs
+Computation Time: 0.01213789 
+
+-----------------------------------------------------------------
+Optimization Function Value = 2.734 
+Optimizer = optim 
+Fixed = TRUE 
+Converged = TRUE 
+Alignment Power Values = 0.5 0.5 
+Alignment Scale Values = 1 1 
+Epsilon Value = 0.001 
+Optimization method meth = 1 
+-----------------------------------------------------------------
+Number of items per group
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+          6           6           6           6           6           6 
+-----------------------------------------------------------------
+Effect Sizes of Approximate Invariance 
+       loadings intercepts
+R2        0.998      1.000
+sqrtU2    0.046      0.018
+rbar      0.468      0.601
+-----------------------------------------------------------------
+Group Means and Standard Deviations (center=FALSE)
+            alpha0  psi0
+Canada       0.000 1.000
+Panama      -0.062 0.994
+Poland      -0.045 0.888
+Netherlands -0.285 0.978
+Spain       -0.009 0.986
+Sweden      -0.316 1.046
+-----------------------------------------------------------------
+Summary Aligned Item Parameters Lambda 
+                              Med.lambda M.lambda SD.lambda Min.lambda
+presence_influences_place          1.010    1.021     0.057      0.956
+place_influences_person            1.063    1.068     0.036      1.008
+person_shares_stories_w_place      0.936    0.946     0.049      0.882
+place_tells_story_to_person        1.073    1.084     0.044      1.035
+person_changes_place               1.031    1.011     0.048      0.925
+place_leaves_traces_in_person      1.065    1.074     0.069      0.983
+                              Max.lambda
+presence_influences_place          1.126
+place_influences_person            1.109
+person_shares_stories_w_place      1.007
+place_tells_story_to_person        1.158
+person_changes_place               1.053
+place_leaves_traces_in_person      1.195
+-----------------------------------------------------------------
+Summary Aligned Item Parameters Nu 
+                              Med.nu  M.nu SD.nu Min.nu Max.nu
+presence_influences_place      3.926 3.929 0.049  3.868  4.014
+place_influences_person        4.160 4.181 0.057  4.120  4.261
+person_shares_stories_w_place  3.941 3.935 0.074  3.810  4.032
+place_tells_story_to_person    4.050 4.066 0.052  4.018  4.158
+person_changes_place           4.091 4.072 0.141  3.836  4.259
+place_leaves_traces_in_person  3.999 3.980 0.068  3.842  4.022
+-----------------------------------------------------------------
+Aligned Lambda Parameters 
+            presence_influences_place place_influences_person
+Canada                          1.000                   1.062
+Panama                          1.006                   1.064
+Poland                          1.126                   1.061
+Netherlands                     1.023                   1.109
+Spain                           1.014                   1.008
+Sweden                          0.956                   1.102
+            person_shares_stories_w_place place_tells_story_to_person
+Canada                              1.007                       1.074
+Panama                              1.001                       1.109
+Poland                              0.927                       1.072
+Netherlands                         0.918                       1.035
+Spain                               0.944                       1.158
+Sweden                              0.882                       1.056
+            person_changes_place place_leaves_traces_in_person
+Canada                     1.030                         1.091
+Panama                     0.925                         1.055
+Poland                     1.031                         1.047
+Netherlands                1.053                         0.983
+Spain                      0.985                         1.075
+Sweden                     1.044                         1.195
+-----------------------------------------------------------------
+Aligned Nu Parameters 
+            presence_influences_place place_influences_person
+Canada                          3.922                   4.141
+Panama                          3.930                   4.160
+Poland                          3.900                   4.161
+Netherlands                     4.014                   4.243
+Spain                           3.938                   4.120
+Sweden                          3.868                   4.261
+            person_shares_stories_w_place place_tells_story_to_person
+Canada                              3.951                       4.158
+Panama                              3.975                       4.018
+Poland                              3.912                       4.091
+Netherlands                         3.810                       4.027
+Spain                               4.032                       4.050
+Sweden                              3.931                       4.049
+            person_changes_place place_leaves_traces_in_person
+Canada                     4.105                         3.998
+Panama                     3.836                         4.022
+Poland                     4.259                         3.998
+Netherlands                4.142                         3.842
+Spain                      4.077                         4.000
+Sweden                     4.014                         4.020
+-----------------------------------------------------------------
+Summary Absolute Residuals Loadings Lambda 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.001   0.014   0.027   0.036   0.056   0.120 
+-----------------------------------------------------------------
+Summary Absolute Residuals Intercepts Nu 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.001   0.018   0.039   0.052   0.064   0.236 
+NULL
+
+========== Aligned factor means by country (approximate invariance) ==========
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+     0.0000     -0.0619     -0.0454     -0.2849     -0.0089     -0.3158 
+
+--- Re-centred on Canada (to match the partial-scalar model's reference) ---
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+     0.0000     -0.0619     -0.0454     -0.2849     -0.0089     -0.3158 
+
+Aligned vs partial-scalar multi-group latent means (Canada = 0):
+            aligned partial_scalar
+Canada        0.000          0.000
+Panama       -0.062         -0.095
+Poland       -0.045         -0.078
+Netherlands  -0.285         -0.364
+Spain        -0.009         -0.024
+Sweden       -0.316         -0.364
+
+========== Item-level residuals: which items are least invariant ==========
+Loading residuals (abs, by item, averaged across countries):
+    presence_influences_place       place_influences_person 
+                       0.0357                        0.0253 
+person_shares_stories_w_place   place_tells_story_to_person 
+                       0.0382                        0.0332 
+         person_changes_place place_leaves_traces_in_person 
+                       0.0376                        0.0458 
+
+Intercept residuals (abs, by item, averaged across countries):
+    presence_influences_place       place_influences_person 
+                       0.0321                        0.0473 
+person_shares_stories_w_place   place_tells_story_to_person 
+                       0.0509                        0.0393 
+         person_changes_place place_leaves_traces_in_person 
+                       0.0980                        0.0459 
+(compare against the 2 items freed in the classical partial-scalar model:
+ person_changes_place, place_influences_person -- do they also show the largest
+ residuals here? If so, both methods agree on which items are least invariant.)
+
+Saved: hnr_alignment_fit.rds
+
+
+############################################################
+##  08_mastery_paradox.R 
+############################################################
+========== 1. Perceived (now) vs ideal (should) role, % by country ==========
+-- now --
+             
+              Master Manager User Guardian Partner Object
+  Canada        23.4    25.8 26.5      7.5    10.0    6.8
+  Panama        34.4    22.6 26.2      6.5     5.5    4.8
+  Poland        29.7    23.3 25.7      6.8     8.0    6.4
+  Netherlands   24.9    28.7 22.8      7.8     9.9    5.9
+  Spain         45.9    20.0 18.4      4.9     4.2    6.6
+  Sweden        26.7    31.3 23.1      7.3     5.8    5.8
+-- should --
+             
+              Master Manager User Guardian Partner Object
+  Canada        21.9    26.5 22.6     12.7    10.2    6.1
+  Panama        18.5    32.0 24.0     14.2     9.1    2.2
+  Poland        17.7    30.2 24.1     14.4     8.5    5.2
+  Netherlands   15.5    25.6 24.5     16.5    10.4    7.5
+  Spain         25.4    30.1 21.4     13.6     5.2    4.2
+  Sweden        19.4    28.2 28.4      9.5     9.2    5.3
+
+========== 2. Master now vs should, per country (McNemar) ==========
+              n master_now master_should guard_partner_now guard_partner_should
+Canada      411       23.4          21.9              17.5                 22.9
+Panama      416       34.4          18.5              12.0                 23.3
+Poland      424       29.7          17.7              14.9                 22.9
+Netherlands 425       24.9          15.5              17.6                 26.8
+Spain       425       45.9          25.4               9.2                 18.8
+Sweden      412       26.7          19.4              13.1                 18.7
+            same_answer paradox_among_master_now mcnemar_p
+Canada             41.8                     52.1  6.06e-01
+Panama             33.9                     65.7  3.98e-09
+Poland             32.5                     67.5  4.57e-06
+Netherlands        34.6                     69.8  1.75e-04
+Spain              39.5                     58.5  4.40e-13
+Sweden             39.1                     57.3  3.08e-03
+Pooled McNemar chi2 = 114.5  p = 1.03e-26 
+Pooled: Master now 30.9 % | should 19.7 % | same answer 36.9 % | paradox among Master-now 61.9 %
+
+========== 3. Where do Master-now respondents move? (row % of 'now') ==========
+          should
+now        Master Manager User Guardian Partner Object
+  Master     38.1    28.0 15.7     10.1     5.5    2.6
+  Manager    15.6    42.0 26.5      9.6     3.8    2.5
+  User        6.4    26.3 35.5     18.9    10.7    2.2
+  Guardian    9.9    19.3 26.9     28.1    10.5    5.3
+  Partner    12.6    13.7 20.3     12.6    29.7   11.0
+  Object     15.1    15.8 14.5     10.5    11.2   32.9
+
+========== 4. Personal endorsement of mastery (Q5 = Master) ~ country + age + gender ==========
+                     OR   lo   hi        p
+countryPanama      0.74 0.52 1.05 9.15e-02
+countryPoland      0.82 0.58 1.16 2.56e-01
+countryNetherlands 0.74 0.52 1.05 9.43e-02
+countrySpain       1.36 0.98 1.89 6.56e-02
+countrySweden      0.96 0.68 1.35 8.12e-01
+age_num            0.85 0.80 0.91 2.27e-06
+gender_bin         1.59 1.30 1.95 6.14e-06
+
+-- for contrast: perceived mastery (Q4 = Master) ~ country + age + gender --
+                     OR   lo   hi        p
+countryPanama      1.68 1.23 2.28 9.77e-04
+countryPoland      1.44 1.05 1.96 2.25e-02
+countryNetherlands 1.13 0.82 1.56 4.46e-01
+countrySpain       2.90 2.15 3.92 4.69e-12
+countrySweden      1.26 0.92 1.74 1.54e-01
+age_num            0.94 0.88 0.99 2.41e-02
+gender_bin         1.27 1.07 1.51 6.38e-03
+
+========== 5. Who holds the paradox? (among Master-now respondents: should != Master) ==========
+n Master-now = 776 
+                     OR   lo   hi        p
+countryPanama      1.82 1.06 3.11 0.028600
+countryPoland      1.89 1.08 3.28 0.024600
+countryNetherlands 2.04 1.13 3.69 0.018300
+countrySpain       1.28 0.77 2.11 0.337000
+countrySweden      1.20 0.69 2.10 0.517000
+age_num            1.02 0.92 1.13 0.716000
+gender_bin         0.59 0.43 0.79 0.000462
+
+Relational-belief score by paradox status (Master-now respondents):
+    0     1 
+3.950 3.922 
+
+	Welch Two Sample t-test
+
+data:  relational by paradox
+t = 0.46357, df = 582.12, p-value = 0.6431
+alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+95 percent confidence interval:
+ -0.09361631  0.15146165
+sample estimates:
+mean in group 0 mean in group 1 
+       3.950450        3.921528 
+
+
+========== 6. Language of administration ==========
+-- master_now --
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+       23.4        34.4        29.7        24.9        45.9        26.7 
+within English (CA/NL/SE): p = 0.542 | within Spanish (PA/ES): p = 0.00086 
+share of country-model deviance reduction captured by language alone: 80.8 % | country beyond language: p = 0.00499 
+-- master_should --
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+       21.9        18.5        17.7        15.5        25.4        19.4 
+within English (CA/NL/SE): p = 0.0599 | within Spanish (PA/ES): p = 0.0197 
+share of country-model deviance reduction captured by language alone: 27.3 % | country beyond language: p = 0.00905 
+
+========== 7. Robustness: excluding low-quality respondents ==========
+              n master_now master_should paradox_among_master_now
+Canada      359       23.4          20.9                     56.0
+Panama      382       31.7          16.0                     71.9
+Poland      345       27.5          15.1                     75.8
+Netherlands 352       24.1          14.2                     75.3
+Spain       363       44.1          21.5                     65.0
+Sweden      339       26.3          17.7                     61.8
+Pooled McNemar (clean): 110.1 
+                     OR   lo   hi        p
+countryPanama      0.65 0.44 0.95 2.62e-02
+countryPoland      0.72 0.48 1.07 9.99e-02
+countryNetherlands 0.70 0.47 1.04 7.94e-02
+countrySpain       1.14 0.79 1.64 4.71e-01
+countrySweden      0.91 0.62 1.34 6.43e-01
+age_num            0.84 0.78 0.91 5.35e-06
+gender_bin         1.44 1.15 1.81 1.62e-03
+
+========== 8. Full six-by-six test: do perceived and ideal role distributions differ? ==========
+             chi2 df        p
+Canada        8.4  5 1.37e-01
+Panama       51.0  5 8.72e-10
+Poland       34.2  5 2.17e-06
+Netherlands  31.6  5 7.06e-06
+Spain        68.3  5 2.35e-13
+Sweden       18.3  5 2.59e-03
+Pooled      163.8  5 1.51e-33
+
+Net shift, ideal minus perceived (percentage points), by country:
+            Master Manager User Guardian Partner Object
+Canada        -1.5     0.7 -3.9      5.2     0.2   -0.7
+Panama       -15.9     9.4 -2.2      7.7     3.6   -2.6
+Poland       -12.0     6.9 -1.6      7.6     0.5   -1.2
+Netherlands   -9.4    -3.1  1.7      8.7     0.5    1.6
+Spain        -20.5    10.1  3.0      8.7     1.0   -2.4
+Sweden        -7.3    -3.1  5.3      2.2     3.4   -0.5
+Pooled       -11.2     3.5  0.4      6.7     1.6   -0.9
+
+Does the direction of change differ by country? (change category ~ country, among those who change)
+             
+              other toward Guardian/Partner toward Master
+  Canada       52.3                    29.3          18.4
+  Panama       60.0                    29.8          10.2
+  Poland       60.1                    28.0          11.9
+  Netherlands  54.7                    33.1          12.2
+  Spain        63.4                    26.1          10.5
+  Sweden       60.6                    26.3          13.1
+
+	Pearson's Chi-squared test
+
+data:  table(ch$country, ch$direction)
+X-squared = 15.69, df = 10, p-value = 0.1088
+
+
+========== 9. Belief scale vs perceived and ideal role (eta squared) ==========
+typ_now_f : F = 4.75  p = 0.000255  eta2 = 0.0094 
+  Master  Manager     User Guardian  Partner   Object 
+   3.933    3.794    3.989    3.859    3.982    3.848 
+typ_should_f : F = 5.38  p = 6.36e-05  eta2 = 0.0106 
+  Master  Manager     User Guardian  Partner   Object 
+   3.825    3.855    3.914    4.015    4.082    3.846 
+
+========== 10. Checks against over-interpretation ==========
+-- (a) Overall country effect on mastery as ideal (LR test, 5 df) --
+Analysis of Deviance Table
+
+Model 1: master_should ~ age_num + gender_bin
+Model 2: master_should ~ country + age_num + gender_bin
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
+1      2486     2431.0                        
+2      2481     2412.8  5   18.221 0.002682 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+-- (b) Predicted P(mastery as ideal): age, gender vs country ranges --
+  country age_num gender_bin     p
+1  Canada       1          0 0.235
+2  Canada       6          0 0.121
+3  Canada       1          1 0.329
+4  Canada       6          1 0.180
+      country age_num gender_bin     p
+1      Canada       3          0 0.182
+2      Panama       3          0 0.142
+3      Poland       3          0 0.154
+4 Netherlands       3          0 0.141
+5       Spain       3          0 0.233
+6      Sweden       3          0 0.176
+-- (c) Net change in mastery (now minus should), 95% CI, per country --
+             net   lo   hi changed_answer
+Canada       1.5 -3.2  6.1           58.2
+Panama      15.9 10.9 20.8           66.1
+Poland      12.0  7.1 16.9           67.5
+Netherlands  9.4  4.7 14.1           65.4
+Spain       20.5 15.3 25.6           60.5
+Sweden       7.3  2.7 11.9           60.9
+-- (d) Are changes directional or random? (random differentiation, e.g. from question order, gives symmetric changes) --
+
+	McNemar's Chi-squared test
+
+data:  t6
+McNemar's chi-squared = 184.51, df = 15, p-value < 2.2e-16
+
+changes away from Master: 480 | changes to Master: 200 
+-- (e) Does the size of the gap depend on questionnaire language? --
+English  Polish Spanish 
+    6.1    12.0    18.2 
+Analysis of Variance Table
+
+Model 1: gap_i ~ 1
+Model 2: gap_i ~ language
+  Res.Df   RSS Df Sum of Sq      F    Pr(>F)    
+1   2512 648.8                                  
+2   2510 641.4  2    7.3996 14.478 5.599e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+country beyond language:
+Analysis of Variance Table
+
+Model 1: gap_i ~ language
+Model 2: gap_i ~ country
+  Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+1   2510 641.40                              
+2   2507 639.55  3    1.8544 2.4231 0.06405 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Saved: hnr_mastery_paradox.rds
+
+
+############################################################
+##  09_response_style_validity.R 
+############################################################
+========== (a) Construct validity (Spearman rho with scale mean) ==========
+                                                   item rho_raw
+ Dialogue with natural entities possible (Q2, 12 items)   0.221
+             Favourite place communicates with me (Q12)   0.330
+                       Favourite place teaches me (Q12)   0.336
+                      Changes in place = dialogue (Q11)   0.234
+           Flood = message from autonomous nature (Q10)   0.314
+              Coexist/subject vs exploit (Q3, 12 items)   0.004
+                                    I relax there (Q12)   0.501
+              Dialogue with another human possible (Q2)   0.409
+                         Wants comfort/facilities (Q12)   0.015
+                                   Wants it cheap (Q12)   0.252
+ rho_style_partialled
+                0.155
+                0.227
+                0.235
+                0.186
+                0.172
+               -0.003
+                0.426
+                0.357
+               -0.075
+                0.172
+
+Response style by country:
+   ARS   MRS   ERS
+ 0.453 0.345 0.211
+ 0.540 0.208 0.311
+ 0.500 0.305 0.217
+ 0.423 0.382 0.172
+ 0.488 0.307 0.216
+ 0.395 0.424 0.162
+[1] "Canada"      "Panama"      "Poland"      "Netherlands" "Spain"      
+[6] "Sweden"     
+Correlation of scale with ARS / MRS / ERS: 0.338 -0.251 0.191 
+R2 relational ~ country: 0.033 | ~ country + style: 0.143 
+
+========== (b) MIMIC with response-style covariates ==========
+                 rhs est_no_style pvalue_no_style est_with_style
+             age_num        0.054           0.000          0.047
+                 ARS           NA              NA          1.000
+ country_Netherlands       -0.401           0.000         -0.362
+      country_Panama       -0.064           0.232         -0.166
+      country_Poland       -0.095           0.075         -0.135
+       country_Spain       -0.051           0.341         -0.077
+      country_Sweden       -0.393           0.000         -0.329
+                 ERS           NA              NA          0.300
+          gender_bin       -0.134           0.000         -0.132
+                 MRS           NA              NA          0.149
+ pvalue_with_style std.all
+             0.000   0.103
+             0.000   0.349
+             0.000  -0.190
+             0.001  -0.086
+             0.008  -0.071
+             0.130  -0.040
+             0.000  -0.170
+             0.000   0.104
+             0.000  -0.092
+             0.098   0.054
+  chisq      df     cfi     tli   rmsea    srmr 
+267.952  49.000   0.967   0.950   0.042   0.017 
+
+========== (c) One factor vs causal {1,2,5} / communicative {3,4,6} ==========
+             chisq df   cfi rmsea  srmr      bic
+one_factor 131.922  9 0.980 0.074 0.025 37457.21
+two_factor  81.271  8 0.988 0.060 0.019 37414.39
+factor correlation: 0.931 
+% agree (4-5) per item: 67.5 78 68.9 73.3 72.8 68.8 
+
+Saved: hnr_style_validity.rds
+Warning message:
+package 'sirt' was built under R version 4.4.3 
+
+
+================ PIPELINE COMPLETE ================
+Outputs: hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_qc_robustness_fits.rds, hnr_style_validity.rds 

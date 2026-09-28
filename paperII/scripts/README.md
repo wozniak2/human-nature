@@ -1,0 +1,37 @@
+# Paper II — replication scripts
+
+Analysis pipeline for *It's Complicated: Human–Nature Relationships Across Six Countries* (manuscript in preparation).
+
+## Requirements
+- R 4.4.1 (tested). Packages: readxl, lavaan, nnet, sirt — install with `source("00_setup.R")`.
+- Raw survey exports (SurveyMonkey xlsx, one per country) in `../data/` — **not included in this repository** (they contain IP addresses and exact timestamps; a de-identified release is planned):
+  Canada, Panama, Poland, Netherlands, Spain, Sweden (file names are set in `01_load_and_prepare.R`).
+
+## How to run
+From this folder:
+```
+Rscript 00_setup.R
+Rscript 00_run_pipeline.R
+```
+or open `00_run_pipeline.R` in RStudio and Source it. It deletes old `hnr_*.rds` outputs, runs every step, and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Runtime: about 1–2 minutes.
+
+Always run script files. On this Windows machine, `Rscript -e "..."` crashes when reading xlsx.
+
+## Steps
+| Script | What it does | Output |
+|---|---|---|
+| 01_load_and_prepare.R | Reads the 6 files by column position, stacks them, adds QC flags (speeding < 120 s, straight-lining), response-style indices (ARS/MRS/ERS), validity batteries, questionnaire language, fielding dates | hnr_data.rds, hnr_fielding_dates.rds |
+| 02_cfa_invariance.R | Belief scale (Q1, 6 items): multi-group CFA, configural → metric → scalar → partial scalar | hnr_cfa_fits.rds |
+| 04_mimic_model.R | Belief scale: MIMIC model with country, age, gender (+ direct effects for 2 non-invariant items) | hnr_mimic_fit.rds |
+| 05_mimic_interactions.R | Belief scale: country × age / country × gender (nested LRT) | hnr_mimic_interact_fit.rds |
+| 06_qc_robustness.R | Belief scale: steps 02/04 without flagged respondents | hnr_qc_robustness_fits.rds |
+| 07_alignment_check.R | Belief scale: alignment method (sirt) as a check on partial invariance | hnr_alignment_fit.rds |
+| 08_mastery_paradox.R | **Core analysis**: perceived (Q4 "now") vs ideal (Q5 "should") human role — McNemar, Stuart–Maxwell, logistic models, language checks, QC robustness | hnr_mastery_paradox.rds |
+| 09_response_style_validity.R | Belief scale: construct validity vs other batteries, response-style controls, 1- vs 2-factor check | hnr_style_validity.rds |
+
+`03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
+
+## Notes
+- Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).
+- Education is not comparable across countries (different scales) and is not used in the models.
+- Every number in the manuscript comes from `pipeline_log.txt` (included here as the reference output).
