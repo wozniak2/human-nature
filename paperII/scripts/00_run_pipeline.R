@@ -56,7 +56,6 @@ log_con <- tryCatch(file("pipeline_log.txt", open = "wt"), error = function(e)
        "  The file may be open in another program, or locked by a syncing folder\n",
        "  (OneDrive, Google Drive, Dropbox). Close it or pause syncing, then run again.", call. = FALSE))
 sink(log_con, split = TRUE)
-sink(log_con, type = "message")
 # without this, an error inside any step would leave the console silently
 # redirected into the log file and RStudio would look broken
 on.exit({
@@ -68,9 +67,6 @@ on.exit({
 # start from a clean slate so no result depends on an outdated file
 unlink(list.files(pattern = "^hnr_.*[.]rds$"))
 
-log_con <- file("pipeline_log.txt", open = "wt")
-sink(log_con, split = TRUE)
-sink(log_con, type = "message")
 
 steps <- c(
   "01_load_and_prepare.R",       # load 6 country files, QC flags, response-style indices
@@ -80,7 +76,8 @@ steps <- c(
   "06_qc_robustness.R",          # belief scale: re-estimate excluding flagged respondents
   "07_alignment_check.R",        # belief scale: alignment method (approximate invariance)
   "08_mastery_paradox.R",        # CORE: perceived (now) vs ideal (should) human role
-  "09_response_style_validity.R" # belief scale: construct validity + response-style controls
+  "09_response_style_validity.R", # belief scale: construct validity + response-style controls
+  "10_figures.R"                 # figures for the manuscript (writes figures/)
 )
 # 03_typology_dif.R is superseded (see its header) and is not run.
 
@@ -98,6 +95,7 @@ for (s in steps) {
 cat("\n\n================ PIPELINE COMPLETE ================\n")
 cat("Outputs:", paste(list.files(pattern = "^hnr_.*\\.rds$"), collapse = ", "), "\n")
 
-sink(type = "message"); sink()
-close(log_con)
 writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
+# The sinks and the log connection are closed by the on.exit handler set
+# above. Closing them again here would re-flush buffered output and write
+# part of the log twice.
