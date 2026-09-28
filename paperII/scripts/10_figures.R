@@ -195,4 +195,68 @@ fig4 <- function() {
 }
 save_fig("fig4_raw_vs_corrected", fig4, 8, 4.6)
 
+
+# --- Fig 5: transition matrix, where individuals actually move ----------
+# Fig 1 shows net shares; this shows the moves behind them. The diagonal is
+# outlined (same answer twice) and the two mastery margins are annotated,
+# because the asymmetry between them is the paper's central evidence.
+t6 <- table(now = factor(dat$typ_now, 1:6, typ), should = factor(dat$typ_should, 1:6, typ))
+d5 <- as.data.frame(t6, responseName = "n")
+d5$now    <- factor(d5$now, levels = rev(typ))
+d5$should <- factor(d5$should, levels = typ)
+d5$same   <- as.character(d5$now) == as.character(d5$should)
+d5$pct_of_row <- 100 * d5$n / ave(d5$n, d5$now, FUN = sum)
+
+fig5 <- function() {
+  ggplot(d5, aes(should, now)) +
+    geom_tile(aes(fill = pct_of_row), colour = BG, linewidth = .8) +
+    geom_tile(data = subset(d5, same), fill = NA, colour = INK, linewidth = .7) +
+    geom_text(aes(label = n, colour = pct_of_row > 32), size = 3.4) +
+    scale_fill_gradient(low = "#F5F5F5", high = ACCENT, name = "% of row") +
+    scale_colour_manual(values = c("TRUE" = "white", "FALSE" = INK), guide = "none") +
+    coord_fixed() +
+    labs(x = "Role they think there should be", y = "Role they see now",
+         title = "Where people move between the role they see and the role they want",
+         subtitle = "Cells are respondents; shading is the share of each row. Outlined cells gave the same answer twice",
+         caption = "480 respondents leave Master and 200 arrive at it (Bowker chi-squared = 184.5, p < .001). Source: 08_mastery_paradox.R") +
+    hnr_theme() +
+    theme(panel.grid.major = element_blank(), legend.position = "right",
+          legend.title = element_text(colour = MUTE, size = 9))
+}
+save_fig("fig5_transition_matrix", fig5, 8.6, 6.4)
+
+# --- Fig 6: the gap against questionnaire language ----------------------
+# The paper cannot separate country from language; this shows both at once:
+# the language ordering, and the spread between countries sharing a version.
+d6 <- d2
+d6$language <- dat$language[match(d6$country, dat$country)]
+d6 <- d6[order(d6$language, d6$est), ]
+# spread the countries within each language so their intervals do not overlap
+d6$lx <- as.numeric(factor(d6$language))
+d6$x  <- unlist(lapply(split(d6$lx, d6$language), function(v)
+           v + if (length(v) == 1) 0 else seq(-.2, .2, length.out = length(v))))
+lang_mean <- aggregate(est ~ language, d6, mean)
+lang_mean$lx <- as.numeric(factor(lang_mean$language))
+
+fig6 <- function() {
+  ggplot(d6, aes(x, est)) +
+    geom_hline(yintercept = 0, linetype = 2, colour = MUTE, linewidth = .4) +
+    geom_segment(data = lang_mean, aes(x = lx - .34, xend = lx + .34,
+                 y = est, yend = est), colour = MUTE, linewidth = .6) +
+    geom_linerange(aes(ymin = lo, ymax = hi, colour = language), linewidth = .8) +
+    geom_point(aes(colour = language), size = 3) +
+    geom_text(aes(label = country), vjust = -1.1, size = 3.2, colour = INK) +
+    scale_colour_manual(values = c(English = BLUE, Polish = ACCENT,
+                                   Spanish = GREEN), guide = "none") +
+    scale_x_continuous(breaks = 1:3, labels = levels(factor(d6$language)),
+                       limits = c(.5, 3.5)) +
+    labs(x = "Language version of the questionnaire",
+         y = "Gap: sees mastery minus wants mastery (pp)",
+         title = "Country or language? The design cannot tell them apart",
+         subtitle = "Rules mark the language mean; Polish was fielded in one country only",
+         caption = "Countries sharing a version still differ, so country is not only language. Source: 08_mastery_paradox.R") +
+    hnr_theme()
+}
+save_fig("fig6_gap_by_language", fig6, 8.6, 5.4)
+
 cat("Figures written to the figures/ folder", fill = TRUE)
