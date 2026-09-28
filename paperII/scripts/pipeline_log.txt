@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-28 17:00:34.173468 
-Time difference of 0.02334118 secs
-Computation Time: 0.02334118 
+Date of Analysis: 2026-09-28 17:08:59.967899 
+Time difference of 0.01779819 secs
+Computation Time: 0.01779819 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -810,6 +810,70 @@ Saved: hnr_style_validity.rds
 
 
 ############################################################
+##  11_square_table_models.R 
+############################################################
+========== 1. Fit of the nested family ==========
+                  G2 df         p   BIC
+independence   622.8 25 2.08e-115 864.5
+quasi_indep    145.7 19  1.44e-21 409.0
+symmetry       192.4 15  7.28e-33 470.0
+quasi_symmetry  22.0 10  1.53e-02 317.5
+(G2 is the likelihood-ratio statistic against the saturated table;
+ a LARGE p means the model is consistent with the data.)
+
+========== 2. Marginal homogeneity: quasi-symmetry vs symmetry ==========
+Analysis of Deviance Table
+
+Model 1: n ~ pair
+Model 2: n ~ now + should + pair
+  Resid. Df Resid. Dev Df Deviance  Pr(>Chi)    
+1        15    192.436                          
+2        10     21.963  5   170.47 < 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+A significant difference means the two margins differ: the roles people
+see and the roles they want are not the same distribution.
+
+========== 3. How far does each role shift? (quasi-symmetry margins) ==========
+     role log_shift    se    z
+ Guardian     1.500 0.323 4.64
+  Partner     0.950 0.277 3.43
+     User     0.809 0.273 2.96
+  Manager     0.795 0.258 3.08
+   Object     0.458 0.161 2.84
+(Master is the reference category, so its shift is 0 by construction;
+ values are relative to it. Compare with the net percentage-point
+ changes in section 8 of 08_mastery_paradox.R.)
+
+========== 4. Staying put: the diagonal (quasi-independence) ==========
+     role log_odds_of_staying    se        p
+   Object               2.438 0.208 1.12e-31
+  Partner               1.464 0.182 9.04e-16
+   Master               1.349 0.108 5.57e-36
+ Guardian               0.745 0.182 4.46e-05
+  Manager               0.483 0.100 1.43e-06
+     User               0.416 0.106 8.22e-05
+(Higher = respondents in that role are more likely to keep it than
+ chance association would predict. The small, distinctive categories
+ (Object, Partner) hold their own most strongly; Manager and User, in
+ the middle of the range, are the ones people most readily leave.)
+
+========== 5. Same family fitted per country ==========
+     country QS_G2 QS_df   QS_p MH_G2 MH_df     MH_p
+      Canada  17.4    10 0.0657   8.6     5 1.28e-01
+      Panama   8.5    10 0.5770  54.2     5 1.91e-10
+      Poland  17.8    10 0.0589  35.8     5 1.05e-06
+ Netherlands   4.2    10 0.9380  33.1     5 3.56e-06
+       Spain  16.9    10 0.0775  74.9     5 9.90e-15
+      Sweden   9.5    10 0.4840  18.8     5 2.12e-03
+(QS_p large = quasi-symmetry is an adequate description in that country;
+ MH_p small = its two margins differ, i.e. a real shift. Canada is the
+ country where no shift was detected in 08.)
+
+Saved: hnr_square_table_models.rds
+
+
+############################################################
 ##  10_figures.R 
 ############################################################
 wrote figures/fig1_now_should_slopes.png and .pdf
@@ -823,4 +887,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_qc_robustness_fits.rds, hnr_style_validity.rds 
+Outputs: hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_qc_robustness_fits.rds, hnr_square_table_models.rds, hnr_style_validity.rds 

@@ -77,6 +77,7 @@ steps <- c(
   "07_alignment_check.R",        # belief scale: alignment method (approximate invariance)
   "08_mastery_paradox.R",        # CORE: perceived (now) vs ideal (should) human role
   "09_response_style_validity.R", # belief scale: construct validity + response-style controls
+  "11_square_table_models.R", # loglinear models for the 6x6 table (symmetry, quasi-symmetry)
   "10_figures.R"                 # figures for the manuscript (writes figures/)
 )
 # 03_typology_dif.R is superseded (see its header) and is not run.

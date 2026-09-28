@@ -1,10 +1,10 @@
 # Paper II — replication scripts
 
-Analysis pipeline for *It's Complicated: Human–Nature Relationships Across Six Countries* (manuscript in preparation).
+Analysis pipeline for *It's Complicated: Human–Nature Relationships Across Six Countries* (outline: `../PaperII_Outline_v4.docx`).
 
 ## Requirements
 - R 4.4.1 (tested). Packages: readxl, lavaan, nnet, sirt — install with `source("00_setup.R")`.
-- Raw survey exports (SurveyMonkey xlsx, one per country) in `../data/` — **not included in this repository** (they contain IP addresses and exact timestamps; a de-identified release is planned):
+- Raw survey exports (SurveyMonkey xlsx, one per country) in `../data/`:
   Canada, Panama, Poland, Netherlands, Spain, Sweden (file names are set in `01_load_and_prepare.R`).
 
 ## How to run
@@ -28,10 +28,12 @@ Always run script files. On this Windows machine, `Rscript -e "..."` crashes whe
 | 07_alignment_check.R | Belief scale: alignment method (sirt) as a check on partial invariance | hnr_alignment_fit.rds |
 | 08_mastery_paradox.R | **Core analysis**: perceived (Q4 "now") vs ideal (Q5 "should") human role — McNemar, Stuart–Maxwell, logistic models, language checks, QC robustness | hnr_mastery_paradox.rds |
 | 09_response_style_validity.R | Belief scale: construct validity vs other batteries, response-style controls, 1- vs 2-factor check | hnr_style_validity.rds |
+| 11_square_table_models.R | Loglinear models for the 6x6 perceived-vs-ideal table: independence, quasi-independence, symmetry, quasi-symmetry; marginal homogeneity as the QS-vs-S contrast; fitted per country | hnr_square_table_models.rds |
+| 10_figures.R | Figures 1-6 for the manuscript, PNG and PDF | figures/ |
 
-`03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
+The pipeline runs 01, 02, 04-09, 11 and 10 in that order. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
 
 ## Notes
 - Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).
 - Education is not comparable across countries (different scales) and is not used in the models.
-- Every number in the manuscript comes from `pipeline_log.txt` (included here as the reference output).
+- Every number in the outline comes from `pipeline_log.txt`.
