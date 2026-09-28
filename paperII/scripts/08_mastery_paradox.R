@@ -148,6 +148,32 @@ print(round(100 * tapply(dat$gap_i, dat$language, mean), 1))
 print(anova(lm(gap_i ~ 1, dat), lm(gap_i ~ language, dat)))
 cat("country beyond language:\n"); print(anova(lm(gap_i ~ language, dat), lm(gap_i ~ country, dat)))
 
+
+cat("\n========== 11. Is Canada's gap actually DIFFERENT from the others, or just non-significant? ==========\n")
+# Reading six separate within-country tests as "significant in 5, absent in Canada"
+# confuses a difference in significance with a significant difference. These tests
+# compare the gap BETWEEN countries directly, on the per-respondent difference
+# gap_i = (now == Master) - (should == Master), which takes values -1, 0, 1.
+cat("-- (a) Does the gap differ across countries at all? --\n")
+print(anova(lm(gap_i ~ 1, dat), lm(gap_i ~ country, dat)))
+
+cat("-- (b) Canada vs each other country (Welch t on gap_i, and the difference in pp) --\n")
+ca_gap <- subset(dat, country == "Canada")$gap_i
+others <- setdiff(levels(dat$country), "Canada")
+cmp <- do.call(rbind, lapply(others, function(cn) {
+  x <- subset(dat, country == cn)$gap_i
+  tt <- t.test(x, ca_gap)
+  data.frame(country = cn,
+             gap_pp = round(100 * mean(x), 1), canada_pp = round(100 * mean(ca_gap), 1),
+             diff_pp = round(100 * (mean(x) - mean(ca_gap)), 1),
+             lo = round(100 * tt$conf.int[1], 1), hi = round(100 * tt$conf.int[2], 1),
+             p = signif(tt$p.value, 3))
+}))
+cmp$p_holm <- signif(p.adjust(cmp$p, "holm"), 3)
+print(cmp, row.names = FALSE)
+cat("(diff_pp > 0 means a LARGER gap than Canada; the CI is for that difference.\n")
+cat(" p_holm corrects for the five comparisons. Where the CI includes 0, Canada is\n")
+cat(" not distinguishable from that country and 'absent in Canada' is not supported.)\n")
 saveRDS(list(by_country = by_c, m_should = m_should, m_now = m_now, m_paradox = m_par, stuart_maxwell = sm),
         "hnr_mastery_paradox.rds")
 cat("\nSaved: hnr_mastery_paradox.rds\n")
