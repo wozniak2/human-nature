@@ -10,7 +10,7 @@
 # (e.g. remotes::install_version("lavaan", "0.7-2")).
 # ============================================================
 
-pkgs <- c("readxl", "lavaan", "nnet", "sirt", "ggplot2")
+pkgs <- c("readxl", "lavaan", "nnet", "sirt", "ggplot2", "ggalluvial")
 missing <- pkgs[!vapply(pkgs, requireNamespace, logical(1), quietly = TRUE)]
 if (length(missing)) install.packages(missing, repos = "https://cloud.r-project.org")
 

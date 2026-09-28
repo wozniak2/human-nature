@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-28 16:48:11.540225 
-Time difference of 0.01683307 secs
-Computation Time: 0.01683307 
+Date of Analysis: 2026-09-28 16:53:18.808996 
+Time difference of 0.01736689 secs
+Computation Time: 0.01736689 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -816,7 +816,8 @@ wrote figures/fig1_now_should_slopes.png and .pdf
 wrote figures/fig2_gap_ci.png and .pdf
 wrote figures/fig3_odds_ratios.png and .pdf
 wrote figures/fig4_raw_vs_corrected.png and .pdf
-wrote figures/fig5_transition_matrix.png and .pdf
+wrote figures/fig5_alluvial.png and .pdf
+wrote figures/fig5b_transition_matrix.png and .pdf
 wrote figures/fig6_gap_by_language.png and .pdf
 Figures written to the figures/ folder
 

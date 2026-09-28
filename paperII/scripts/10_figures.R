@@ -12,7 +12,7 @@
 # Requires: 01, 02 and 08 already run. Packages: ggplot2, lavaan.
 # ============================================================
 
-suppressMessages({ library(ggplot2); library(lavaan) })
+suppressMessages({ library(ggplot2); library(ggalluvial); library(lavaan) })
 
 dat  <- readRDS("hnr_data.rds")
 fits <- readRDS("hnr_cfa_fits.rds")
@@ -196,7 +196,41 @@ fig4 <- function() {
 save_fig("fig4_raw_vs_corrected", fig4, 8, 4.6)
 
 
-# --- Fig 5: transition matrix, where individuals actually move ----------
+# --- Fig 5: alluvial, where individuals actually move -------------------
+# Fig 1 shows net shares; this shows the moves behind them. Master and
+# Guardian ribbons are saturated and every other origin is grey, matching
+# the emphasis used in Fig 1. Strata are reversed so the largest group
+# (Master) sits at the bottom, where its fan reads without crossing down.
+d5 <- as.data.frame(table(now = factor(dat$typ_now, 1:6, typ),
+                          should = factor(dat$typ_should, 1:6, typ)),
+                    responseName = "n")
+d5$now    <- factor(d5$now, levels = rev(typ))
+d5$should <- factor(d5$should, levels = rev(typ))
+d5$hl <- ifelse(as.character(d5$now) %in% c("Master", "Guardian"),
+                as.character(d5$now), "other")
+
+fig5 <- function() {
+  ggplot(d5, aes(y = n, axis1 = now, axis2 = should)) +
+    geom_alluvium(aes(fill = hl), width = .12, alpha = .68, knot.pos = .32,
+                  curve_type = "sigmoid") +
+    geom_stratum(width = .12, fill = "grey97", colour = "grey55", linewidth = .4) +
+    geom_text(stat = "stratum", size = 3.1, colour = INK,
+              aes(label = paste0(after_stat(stratum), "  ", after_stat(count)))) +
+    scale_fill_manual(values = c(Master = ACCENT, Guardian = GREEN,
+                                 other = "#CFCFCF"), guide = "none") +
+    scale_x_discrete(limits = c("Role they see now", "Role they think there should be"),
+                     expand = expansion(mult = c(.16, .16))) +
+    labs(x = NULL, y = "Respondents",
+         title = "Where people move between the role they see and the role they want",
+         subtitle = "Ribbons leaving Master (orange) and Guardian (green); every other origin in grey",
+         caption = "Master shrinks from 776 to 496 and Guardian grows from 171 to 339: 480 respondents leave Master, 200 arrive (Bowker chi-squared = 184.5, p < .001).") +
+    hnr_theme() +
+    theme(panel.grid = element_blank(), axis.text.y = element_blank(),
+          axis.text.x = element_text(colour = INK, size = 11))
+}
+save_fig("fig5_alluvial", fig5, 9, 6.4)
+
+# --- Fig 5b (supplementary): the same flows as exact counts -------------
 # Fig 1 shows net shares; this shows the moves behind them. The diagonal is
 # outlined (same answer twice) and the two mastery margins are annotated,
 # because the asymmetry between them is the paper's central evidence.
@@ -207,7 +241,7 @@ d5$should <- factor(d5$should, levels = typ)
 d5$same   <- as.character(d5$now) == as.character(d5$should)
 d5$pct_of_row <- 100 * d5$n / ave(d5$n, d5$now, FUN = sum)
 
-fig5 <- function() {
+fig5b <- function() {
   ggplot(d5, aes(should, now)) +
     geom_tile(aes(fill = pct_of_row), colour = BG, linewidth = .8) +
     geom_tile(data = subset(d5, same), fill = NA, colour = INK, linewidth = .7) +
@@ -216,14 +250,14 @@ fig5 <- function() {
     scale_colour_manual(values = c("TRUE" = "white", "FALSE" = INK), guide = "none") +
     coord_fixed() +
     labs(x = "Role they think there should be", y = "Role they see now",
-         title = "Where people move between the role they see and the role they want",
+         title = "Transition matrix: exact counts behind Figure 5",
          subtitle = "Cells are respondents; shading is the share of each row. Outlined cells gave the same answer twice",
          caption = "480 respondents leave Master and 200 arrive at it (Bowker chi-squared = 184.5, p < .001). Source: 08_mastery_paradox.R") +
     hnr_theme() +
     theme(panel.grid.major = element_blank(), legend.position = "right",
           legend.title = element_text(colour = MUTE, size = 9))
 }
-save_fig("fig5_transition_matrix", fig5, 8.6, 6.4)
+save_fig("fig5b_transition_matrix", fig5b, 8.6, 6.4)
 
 # --- Fig 6: the gap against questionnaire language ----------------------
 # The paper cannot separate country from language; this shows both at once:
