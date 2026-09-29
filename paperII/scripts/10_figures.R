@@ -471,12 +471,12 @@ fig10 <- function() {
 save_fig("fig10_path_diagram", fig10, 9.6, 6.4)
 
 
-# --- Fig 11: the structural model with the own-place latent, via semPlot ---
+# --- Fig 11: the structural model with the place-agency latent, via semPlot ---
 # Drawn with semPlot from the fitted lavaan object in 18_place_relationship.R,
 # so every number is read from the model rather than retyped. The five
 # country dummies are in the model but are left out of the drawing: none
 # reaches p < .05, and they would swamp the diagram. Latent correlations
-# are also omitted (own place with restorative .36, dialogic .36,
+# are also omitted (place agency with restorative .36, dialogic .36,
 # serviced -.28) and given in the caption instead.
 suppressMessages(library(semPlot))
 fs  <- readRDS("hnr_place_relationship.rds")$structural
@@ -508,7 +508,7 @@ lab11 <- gsub("_", " ", sub("^rs_", "", sub("^mp_", "", nm11)))
 lab11[nm11 == "master_should"] <- "Wants\nmastery"
 lab11[nm11 == "age_num"] <- "Age"; lab11[nm11 == "gender_bin"] <- "Man"
 lab11[nm11 == "restorative"] <- "Restorative"; lab11[nm11 == "dialogic"] <- "Dialogic"
-lab11[nm11 == "serviced"] <- "Serviced"; lab11[nm11 == "place"] <- "Own place"
+lab11[nm11 == "serviced"] <- "Serviced"; lab11[nm11 == "place"] <- "Place agency"
 lab_pos <- ifelse(p11$edge == "~>", 0.30, 0.55)   # structural labels near their source
 col11 <- ifelse(p11$edge == "->", MUTE, ifelse(p11$std < 0, ACCENT, BLUE))
 
@@ -523,13 +523,13 @@ draw11 <- function() {
            color = list(lat = "#EAF3F9", man = "#F2F2F2"), border.color = MUTE,
            intercepts = FALSE, residuals = FALSE, thresholds = FALSE, exoCov = FALSE,
            mar = c(5, 3, 6, 3))
-  mtext("The role people want, from motives and from how they relate to their own place",
+  mtext("The role people want, from motives and from how much agency they grant a place",
         side = 3, line = -1.6, adj = 0.02, cex = .95, col = INK)
-  mtext("Standardised estimates. Orange paths lower the wish for mastery, blue paths raise it; grey are loadings.",
+  mtext("Standardised estimates. Orange paths lower the wish for mastery, blue paths raise it; grey are loadings. Place agency: higher = the place is granted more independence and influence.",
         side = 3, line = -3.1, adj = 0.02, cex = .7, col = MUTE)
-  mtext("WLSMV, n = 2,489, ordinal indicators. Country dummies are in the model but not drawn (none reaches p < .05). The own-place latent correlates .36 with restorative, .36 with dialogic and -.28 with serviced.",
+  mtext("WLSMV, n = 2,489, ordinal indicators. Country dummies are in the model but not drawn (none reaches p < .05). The place-agency latent correlates .36 with restorative, .36 with dialogic and -.28 with serviced.",
         side = 1, line = -2.4, adj = 0.02, cex = .55, col = MUTE)
-  mtext("Own place is the personal counterpart of the role item, so its path is partly the same construct measured twice; the motive paths shift once it is included. Source: 18_place_relationship.R",
+  mtext("Place agency is the personal counterpart of the role item, so its path is partly the same construct measured twice; the motive paths shift once it is included. Source: 18_place_relationship.R",
         side = 1, line = -1.4, adj = 0.02, cex = .55, col = MUTE)
 }
 png(file.path("figures", "fig11_semplot_place_model.png"), width = 3000, height = 2500, res = 240)
@@ -539,64 +539,80 @@ draw11(); invisible(dev.off())
 cat("wrote figures/fig11_semplot_place_model.png and .pdf\n")
 
 
-# --- Fig 12: the role people SEE and the role people WANT, side by side -----
-# One fitted model (19_now_vs_should_sem.R) with the same predictors for both
-# outcomes, drawn as two panels so the eye can compare path by path. Only the
-# structural part is shown (the measurement model is in Fig 11). A path is
-# drawn in colour when p < .05 and in pale grey otherwise; an asterisk on the
-# label marks a path whose size differs between the two panels (Wald p < .05).
-ns <- readRDS("hnr_now_vs_should_sem.rds")
-psn <- standardizedSolution(ns$fit); psn <- psn[psn$op == "~", ]
+# --- Figs 12-14: the role people SEE and the role they WANT, side by side ---
+# One fitted model per role (19 for Master, 20 for the others) with the same
+# predictors for both outcomes, drawn as two panels so the eye can compare
+# path by path. Only the structural part is shown (the measurement model is
+# in Fig 11). A path is coloured when p < .05 and pale grey otherwise; an
+# asterisk marks a path whose size differs between the panels (Wald p < .05).
 show <- c("place", "control", "serviced", "dialogic", "restorative", "age_num", "gender_bin")
-differs <- setNames(ns$wald$differs == "yes", ns$wald$predictor)
 n_ind <- c(place = 5, control = 12, serviced = 3, dialogic = 3, restorative = 6)
-lab12 <- c(place = "Own place", control = "Societal control", serviced = "Serviced",
+lab12 <- c(place = "Place agency", control = "Societal control", serviced = "Serviced",
            dialogic = "Dialogic", restorative = "Restorative", age_num = "Age",
            gender_bin = "Man")
 lab12[names(n_ind)] <- paste0(lab12[names(n_ind)], "  (", n_ind, ")")
 
-panel12 <- function(outcome, out_label, ttl) {
-  m <- semPlotModel(ns$fit)
-  p <- m@Pars
-  p <- p[p$edge == "~>" & p$rhs == outcome & p$lhs %in% show, ]
-  p <- p[match(show, p$lhs), ]                       # fixed order, top to bottom
-  m@Pars <- p
-  keep <- m@Vars$name %in% c(show, outcome)
-  m@Vars <- m@Vars[keep, ]
-  nm <- m@Vars$name
-  ys <- seq(1, -1, length.out = length(show))
-  L <- t(vapply(nm, function(v) if (v == outcome) c(1, 0) else c(-0.84, ys[match(v, show)]),
-                numeric(2)))
-  lab <- ifelse(nm == outcome, out_label, lab12[nm])
-  pv  <- psn$pvalue[match(paste(outcome, p$lhs), paste(psn$lhs, psn$rhs))]
-  b   <- psn$est.std[match(paste(outcome, p$lhs), paste(psn$lhs, psn$rhs))]
-  col <- ifelse(pv >= .05, "#C8C8C8", ifelse(b < 0, ACCENT, BLUE))
-  el  <- paste0(sprintf("%.2f", b), ifelse(differs[p$lhs], "*", ""))
-  semPaths(m, what = "std", whatLabels = "std", edgeLabels = el, layout = L,
-           nodeLabels = lab, nCharNodes = 0, shapeMan = "rectangle", shapeLat = "ellipse",
-           sizeMan = 15, sizeMan2 = 4.2, sizeLat = 17, sizeLat2 = 7,
-           label.cex = .7, label.scale = FALSE, edge.label.cex = .8,
-           edge.label.position = rep(.34, nrow(p)), edge.color = col, edge.width = 1.6,
-           weighted = FALSE, asize = 3, fade = FALSE, color = list(lat = "#EAF3F9", man = "#F2F2F2"),
-           border.color = MUTE, intercepts = FALSE, residuals = FALSE, thresholds = FALSE,
-           exoCov = FALSE, structural = FALSE, mar = c(3, 8, 6, 3))
-  mtext(ttl, side = 3, line = 1.4, cex = .95, col = INK)
+pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file, src) {
+  psn <- standardizedSolution(fit); pall <- psn; psn <- psn[psn$op == "~", ]
+  r2 <- inspect(fit, "r2")
+  rc <- pall[pall$op == "~~" & pall$lhs == out_now & pall$rhs == out_should, "est.std"]
+  panel <- function(outcome, out_label, ttl) {
+    m <- semPlotModel(fit); p <- m@Pars
+    p <- p[p$edge == "~>" & p$rhs == outcome & p$lhs %in% show, ]
+    p <- p[match(show, p$lhs), ]
+    m@Pars <- p; m@Vars <- m@Vars[m@Vars$name %in% c(show, outcome), ]
+    nm <- m@Vars$name
+    ys <- seq(1, -1, length.out = length(show))
+    L <- t(vapply(nm, function(v) if (v == outcome) c(1, 0) else c(-0.84, ys[match(v, show)]),
+                  numeric(2)))
+    lab <- ifelse(nm == outcome, out_label, lab12[nm])
+    key <- match(paste(outcome, p$lhs), paste(psn$lhs, psn$rhs))
+    b <- psn$est.std[key]; pv <- psn$pvalue[key]
+    col <- ifelse(pv >= .05, "#C8C8C8", ifelse(b < 0, ACCENT, BLUE))
+    el  <- paste0(sprintf("%.2f", b), ifelse(differs[p$lhs], "*", ""))
+    semPaths(m, what = "std", whatLabels = "std", edgeLabels = el, layout = L,
+             nodeLabels = lab, nCharNodes = 0, shapeMan = "rectangle", shapeLat = "ellipse",
+             sizeMan = 15, sizeMan2 = 4.2, sizeLat = 17, sizeLat2 = 7,
+             label.cex = .7, label.scale = FALSE, edge.label.cex = .8,
+             edge.label.position = rep(.34, nrow(p)), edge.color = col, edge.width = 1.6,
+             weighted = FALSE, asize = 3, fade = FALSE,
+             color = list(lat = "#EAF3F9", man = "#F2F2F2"), border.color = MUTE,
+             intercepts = FALSE, residuals = FALSE, thresholds = FALSE, exoCov = FALSE,
+             structural = FALSE, mar = c(3, 8, 6, 3))
+    mtext(ttl, side = 3, line = 1.4, cex = .95, col = INK)
+  }
+  draw <- function() {
+    par(mfrow = c(1, 2), oma = c(4, 0, 2, 0))
+    panel(out_now, paste0("Sees ", tolower(role), "\nnow"),
+          sprintf("The role people SEE  (R-squared %.2f)", r2[[out_now]]))
+    panel(out_should, paste0("Wants\n", tolower(role)),
+          sprintf("The role people WANT  (R-squared %.2f)", r2[[out_should]]))
+    mtext(headline, outer = TRUE, side = 3, line = 0, cex = 1, col = INK, adj = 0.02)
+    mtext("Standardised paths. Coloured = p < .05 (orange lowers, blue raises); grey = not significant. * = the path differs between the two panels (Wald p < .05). Latent variables show their indicator counts.",
+          outer = TRUE, side = 1, line = 2.2, cex = .6, col = MUTE, adj = 0.02)
+    mtext(sprintf("WLSMV, n = 2,489; country dummies are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
+          outer = TRUE, side = 1, line = 3.1, cex = .6, col = MUTE, adj = 0.02)
+  }
+  png(file.path("figures", paste0(file, ".png")), width = 3600, height = 1900, res = 240)
+  draw(); invisible(dev.off())
+  pdf(file.path("figures", paste0(file, ".pdf")), width = 15, height = 7.9)
+  draw(); invisible(dev.off())
+  cat("wrote figures/", file, ".png and .pdf\n", sep = "")
 }
-draw12 <- function() {
-  par(mfrow = c(1, 2), oma = c(4, 0, 2, 0))
-  panel12("master_now", "Sees mastery\nnow", "The role people SEE  (R-squared .16)")
-  panel12("master_should", "Wants\nmastery", "The role people WANT  (R-squared .36)")
-  mtext("Same model, two outcomes: the personal relationship to a place matters far more for wanting mastery than for seeing it",
-        outer = TRUE, side = 3, line = 0, cex = 1, col = INK, adj = 0.02)
-  mtext("Standardised paths. Coloured = p < .05 (orange lowers, blue raises); grey = not significant. * = the path differs between the two panels (Wald p < .05). Latent variables show their indicator counts.",
-        outer = TRUE, side = 1, line = 2.2, cex = .6, col = MUTE, adj = 0.02)
-  mtext("WLSMV, n = 2,489; country dummies are in the model, not drawn. The two outcomes keep a residual correlation of .43. Source: 19_now_vs_should_sem.R",
-        outer = TRUE, side = 1, line = 3.1, cex = .6, col = MUTE, adj = 0.02)
-}
-png(file.path("figures", "fig12_sem_now_vs_should.png"), width = 3600, height = 1900, res = 240)
-draw12(); invisible(dev.off())
-pdf(file.path("figures", "fig12_sem_now_vs_should.pdf"), width = 15, height = 7.9)
-draw12(); invisible(dev.off())
-cat("wrote figures/fig12_sem_now_vs_should.png and .pdf\n")
+
+ns <- readRDS("hnr_now_vs_should_sem.rds")
+d_m <- setNames(ns$wald$differs == "yes", ns$wald$predictor)
+pair_sem_fig(ns$fit, "master_now", "master_should", d_m, "Mastery",
+  "Same model, two outcomes: the personal relationship to a place matters far more for wanting mastery than for seeing it",
+  "fig12_sem_now_vs_should", "19_now_vs_should_sem.R")
+
+op <- readRDS("hnr_opposing_roles_sem.rds")
+dd <- function(r) setNames(op[[r]]$table$differs == "yes", op[[r]]$table$predictor)
+pair_sem_fig(op$Object$fit, "out_now", "out_should", dd("Object"), "Object",
+  "The far pole is the mirror image of Master: place agency raises seeing and wanting Object alike, where it lowers both for Master",
+  "fig13_sem_object", "20_opposing_roles_sem.R")
+pair_sem_fig(op$Guardian$fit, "out_now", "out_should", dd("Guardian"), "Guardian",
+  "Guardian is barely predictable from these measures: only place agency and gender reach significance",
+  "fig14_sem_guardian", "20_opposing_roles_sem.R")
 
 cat("Figures written to the figures/ folder", fill = TRUE)

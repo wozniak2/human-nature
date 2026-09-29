@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 10:12:25.485624 
-Time difference of 0.01817799 secs
-Computation Time: 0.01817799 
+Date of Analysis: 2026-09-29 10:20:07.074968 
+Time difference of 0.01698017 secs
+Computation Time: 0.01698017 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -990,6 +990,53 @@ Saved: hnr_motives_roles.rds
 
 
 ############################################################
+##  20_opposing_roles_sem.R 
+############################################################
+Respondents seeing / wanting each role:
+       Guardian Partner Object
+now         171     182    152
+should      339     220    128
+
+========== Guardian ==========
+fit: cfi 0.953  tli 0.964  rmsea 0.059  srmr 0.058 
+   predictor beta_now p_now beta_should p_should differs wald_p
+ restorative   -0.056 0.380       0.076  1.7e-01      no  0.088
+    dialogic   -0.002 0.980      -0.118  1.3e-01      no  0.290
+    serviced    0.116 0.120       0.019  7.8e-01      no  0.320
+       place    0.169 0.013       0.272  1.3e-06      no  0.210
+     control    0.012 0.790       0.000  1.0e+00      no  0.820
+     age_num    0.056 0.160       0.056  8.7e-02      no  1.000
+  gender_bin   -0.093 0.016      -0.136  1.7e-05      no  0.360
+R2 now 0.046 | R2 should 0.102 | residual correlation 0.259
+
+========== Partner ==========
+fit: cfi 0.952  tli 0.964  rmsea 0.06  srmr 0.059 
+   predictor beta_now p_now beta_should p_should differs wald_p
+ restorative    0.062 0.370       0.177   0.0068      no 0.1700
+    dialogic   -0.054 0.580      -0.158   0.0810      no 0.3900
+    serviced   -0.077 0.320      -0.110   0.1200      no 0.7400
+       place    0.161 0.014       0.197   0.0021      no 0.6400
+     control    0.072 0.056      -0.056   0.1400     yes 0.0081
+     age_num   -0.027 0.480       0.075   0.0530     yes 0.0390
+  gender_bin   -0.023 0.550      -0.123   0.0007     yes 0.0380
+R2 now 0.082 | R2 should 0.135 | residual correlation 0.431
+
+========== Object ==========
+fit: cfi 0.952  tli 0.964  rmsea 0.06  srmr 0.059 
+   predictor beta_now   p_now beta_should p_should differs wald_p
+ restorative   -0.245 3.7e-05      -0.333  8.5e-09      no  0.170
+    dialogic   -0.027 7.8e-01       0.139  1.6e-01      no  0.120
+    serviced    0.273 1.5e-03       0.092  3.0e-01      no  0.053
+       place    0.430 7.6e-10       0.418  7.9e-09      no  0.940
+     control    0.091 2.9e-02       0.103  1.3e-02      no  0.770
+     age_num    0.002 9.5e-01       0.048  2.9e-01      no  0.370
+  gender_bin   -0.065 1.0e-01      -0.045  3.0e-01      no  0.680
+R2 now 0.203 | R2 should 0.247 | residual correlation 0.577
+
+Saved: hnr_opposing_roles_sem.rds
+
+
+############################################################
 ##  19_now_vs_should_sem.R 
 ############################################################
 ========== 1. Fit ==========
@@ -1461,8 +1508,10 @@ wrote figures/fig9_motive_rrr.png and .pdf
 wrote figures/fig10_path_diagram.png and .pdf
 wrote figures/fig11_semplot_place_model.png and .pdf
 wrote figures/fig12_sem_now_vs_should.png and .pdf
+wrote figures/fig13_sem_object.png and .pdf
+wrote figures/fig14_sem_guardian.png and .pdf
 Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 

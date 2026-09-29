@@ -5,7 +5,7 @@
 # two can be compared path by path.
 #
 # Predictors, identical for both outcomes:
-#   the three motives (13), the own-place latent (18), a societal control
+#   the three motives (13), the place-agency latent (18), a societal control
 #   latent (the Q4 battery: how far humans exploit, manage, coexist with or
 #   are subject to twelve entities), age, gender and five country dummies.
 #
