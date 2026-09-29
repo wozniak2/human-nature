@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 13:39:37.420453 
-Time difference of 0.01846504 secs
-Computation Time: 0.01846504 
+Date of Analysis: 2026-09-29 13:56:55.921279 
+Time difference of 0.02121806 secs
+Computation Time: 0.02121806 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1066,7 +1066,7 @@ Saved: hnr_ordered_sem.rds
 ############################################################
 ##  27_ordered_mediation.R 
 ############################################################
-restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
+restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
 dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.053 | largest standardised path 0.53
 
 ========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
@@ -1093,7 +1093,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 8 seconds
+fitted in 7 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1557,9 +1557,9 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+restorative  fitted in  53 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
 dialogic     fitted in  48 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
-serviced     fitted in  47 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
+serviced     fitted in  49 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -1610,7 +1610,7 @@ serviced     fitted in  47 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 75 s | largest standardised path 1.42
+fitted in 76 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*
