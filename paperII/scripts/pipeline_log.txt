@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 12:45:54.372371 
-Time difference of 0.01862097 secs
-Computation Time: 0.01862097 
+Date of Analysis: 2026-09-29 13:15:36.27597 
+Time difference of 0.01892304 secs
+Computation Time: 0.01892304 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1042,7 +1042,7 @@ Saved: hnr_ordered_sem.rds
 ##  27_ordered_mediation.R 
 ############################################################
 restorative  fitted in  16 s | CFI 0.973 RMSEA 0.058 | largest standardised path 0.48
-dialogic     fitted in  12 s | CFI 0.975 RMSEA 0.057 | largest standardised path 0.52
+dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.057 | largest standardised path 0.52
 
 ========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
 -- restorative --  a: place +0.375*, control +0.070* | b (wanted): place +0.476*, control +0.127* | b (seen): place +0.349*, control +0.181*
@@ -1523,7 +1523,7 @@ serviced     fitted in  44 s | CFI 0.987 RMSEA 0.072 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 70 s | largest standardised path 1.43
+fitted in 69 s | largest standardised path 1.43
       motive  direct via_place total_indirect   total
  restorative -0.762*   +0.438*        +0.502* -0.260*
     dialogic +1.431*   -1.137*        -1.250* +0.181*

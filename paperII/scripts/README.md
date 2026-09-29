@@ -46,7 +46,7 @@ Always run script files. On this Windows machine, `Rscript -e "..."` crashes whe
 | 27_ordered_mediation.R | Mediation of the restorative and dialogic motives on the ordered role through place agency and societal control, one motive at a time, with an ordered-logit bootstrap cross-check | hnr_ordered_mediation.rds |
 | 28_story_model.R | The central story as one WLSMV model: restorative and dialogic motives, place agency and societal control as mediators, position and extremity of the wanted role as outcomes, with indirect and total effects | hnr_story_model.rds |
 | 11_square_table_models.R | Loglinear models for the 6x6 perceived-vs-ideal table: independence, quasi-independence, symmetry, quasi-symmetry; marginal homogeneity as the QS-vs-S contrast; fitted per country | hnr_square_table_models.rds |
-| 10_figures.R | Figures 1-20 (including the story path diagram, fig20), PNG and PDF | figures/ |
+| 10_figures.R | Figures 1-20, PNG and PDF. The path diagrams (11, 12-14, 16, 17, 20) are drawn from the fitted lavaan models by the small ggplot2 engine in sem_plot_helpers.R | figures/, sem_plot_helpers.R |
 
 The pipeline runs 01, 02, 04-09, 13, 14, 23, 24, 26, 27, 28, 25, 22, 21, 20, 19, 18, 17, 16, 15, 12, 11 and 10 in that order. The full run now takes roughly ten minutes, most of it script 21. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
 

@@ -63,6 +63,15 @@ save_fig <- function(name, build, w, h) {
   cat("wrote figures/", name, ".png and .pdf\n", sep = "")
 }
 
+# --- path diagrams: a small ggplot2 engine (sem_plot_helpers.R) draws estimates read from the lavaan fits
+source("sem_plot_helpers.R")
+save_sem <- function(g, name, w, h) {
+  dir.create("figures", showWarnings = FALSE)
+  ggsave(file.path("figures", paste0(name, ".png")), g, width = w, height = h, dpi = 300, bg = BG)
+  ggsave(file.path("figures", paste0(name, ".pdf")), g, width = w, height = h, bg = BG)
+  cat("wrote figures/", name, ".png and .pdf\n", sep = "")
+}
+
 # --- Fig 1: now -> should slopes -----------------------------------------
 d1 <- do.call(rbind, lapply(ctry, function(cn) {
   x <- subset(dat, country == cn)
@@ -471,135 +480,98 @@ fig10 <- function() {
 save_fig("fig10_path_diagram", fig10, 9.6, 6.4)
 
 
-# --- Fig 11: the structural model with the place-agency latent, via semPlot ---
-# Drawn with semPlot from the fitted lavaan object in 18_place_relationship.R,
-# so every number is read from the model rather than retyped. The five
-# country dummies are in the model but are left out of the drawing: none
-# reaches p < .05, and they would swamp the diagram. Latent correlations
-# are also omitted (place agency with restorative .36, dialogic .36,
-# serviced -.28) and given in the caption instead.
-suppressMessages(library(semPlot))
-fs  <- readRDS("hnr_place_relationship.rds")$structural
-m11 <- semPlotModel(fs)
-gone <- m11@Vars$name[grepl("^c_", m11@Vars$name)]
-p11 <- m11@Pars
-p11 <- p11[!(p11$lhs %in% gone | p11$rhs %in% gone) & p11$edge %in% c("->", "~>"), ]
-m11@Pars <- p11; m11@Vars <- m11@Vars[!(m11@Vars$name %in% gone), ]
-nm11 <- m11@Vars$name
-
-grp <- list(place = grep("^mp_", nm11, value = TRUE),
+# ---- Fig 11 (ggplot path engine): measurement + structural model, place model ----
+fs   <- readRDS("hnr_place_relationship.rds")$structural
+ld11 <- sem_loads(fs); sp11 <- sem_paths(fs)
+ind_lab <- function(v) gsub("_", " ", sub("^rs_", "", sub("^mp_", "", v)))
+grp <- list(place = grep("^mp_", unique(ld11$rhs), value = TRUE),
             serviced = c("rs_struggles", "rs_comfort", "rs_photos"),
             dialogic = c("rs_meet_animals", "rs_communicates", "rs_teaches"),
-            restorative = c("rs_relax", "rs_beauty", "rs_watch_plants",
-                            "rs_own_thoughts", "rs_quiet", "rs_active"))
-ys <- seq(1, -1, length.out = sum(lengths(grp)) + length(grp) - 1)
-pos <- list(); k <- 1
-for (gn in names(grp)) {
-  for (it in grp[[gn]]) { pos[[it]] <- c(-1, ys[k]); k <- k + 1 }
-  pos[[gn]] <- c(0, mean(vapply(grp[[gn]], function(i) pos[[i]][2], numeric(1))))
-  k <- k + 1
+            restorative = c("rs_relax", "rs_beauty", "rs_watch_plants", "rs_own_thoughts", "rs_quiet", "rs_active"))
+lat_lab <- c(place = "Place agency", serviced = "Serviced", dialogic = "Dialogic", restorative = "Restorative")
+yy <- 8.3; nd11 <- list(); lat_y <- c()
+for (gname in names(grp)) {
+  ys <- yy - 0.42 * (seq_along(grp[[gname]]) - 1)
+  nd11[[length(nd11) + 1]] <- data.frame(id = grp[[gname]], label = ind_lab(grp[[gname]]), x = 1.0, y = ys, shape = "box",
+                                         w = 1.7, h = 0.34, fill = "white", border = "#A8A8A8", size = 2.9, lwd = NA_real_)
+  lat_y[gname] <- mean(ys); yy <- min(ys) - 0.78
 }
-pos[["master_should"]] <- c(1, 0)
-pos[["age_num"]]       <- c(0.30, -1.05)
-pos[["gender_bin"]]    <- c(0.75, -1.05)
-L11 <- t(vapply(nm11, function(v) pos[[v]], numeric(2)))
+LATF <- "#E3EEF7"
+nd11[[length(nd11) + 1]] <- data.frame(id = names(grp), label = lat_lab[names(grp)], x = 4.6, y = unname(lat_y[names(grp)]),
+  shape = "ellipse", w = 2.0, h = 0.85, fill = LATF, border = "#5B87A6", size = 3.6, lwd = NA_real_)
+out_y <- mean(lat_y)
+nd11[[length(nd11) + 1]] <- data.frame(id = "master_should", label = "Wants\nmastery", x = 8.6, y = out_y, shape = "box",
+  w = 1.7, h = 1.5, fill = "white", border = "#1A1A1A", size = 3.8, lwd = 0.9)
+nd11[[length(nd11) + 1]] <- data.frame(id = c("age_num", "gender_bin"), label = c("Age", "Man"), x = c(7.1, 9.2), y = 0.55,
+  shape = "box", w = 1.3, h = 0.5, fill = "#F4F4F4", border = "#8A8A8A", size = 3.3, lwd = NA_real_)
+n11 <- do.call(rbind, nd11)
+n11$face <- ifelse(n11$id == "master_should", "bold", "plain")
+pth11 <- function(from, to, off, t, side = "left") { r <- sp11[sp11$lhs == to & sp11$rhs == from, ]
+  data.frame(from = from, to = to, label = fmt_b(r$est.std), kind = "path", beta = r$est.std, sig = r$pvalue < .05,
+             t = t, end_side = side, end_off = off) }
+lod11 <- function(f, i) { r <- ld11[ld11$lhs == f & ld11$rhs == i, ]
+  data.frame(from = f, to = i, label = fmt_b(r$est.std), kind = "load", beta = r$est.std, sig = TRUE, t = 0.5,
+             end_side = NA_character_, end_off = NA_real_) }
+e11 <- rbind(do.call(rbind, lapply(names(grp), function(g_) do.call(rbind, lapply(grp[[g_]], function(i) lod11(g_, i))))),
+  pth11("place", "master_should", 0.55, 0.5), pth11("serviced", "master_should", 0.2, 0.5),
+  pth11("dialogic", "master_should", -0.2, 0.5), pth11("restorative", "master_should", -0.55, 0.5),
+  pth11("age_num", "master_should", -0.35, 0.5, "bottom"), pth11("gender_bin", "master_should", 0.35, 0.5, "bottom"))
+g11 <- sem_plot(n11, e11, xlim = c(0, 10.2), ylim = c(-0.45, 9.0), legend_at = c(0.3, -0.2),
+  title = "The role people want, from motives and from how much agency they grant a place",
+  subtitle = "Standardised estimates. Line width grows with the size of the path; grey lines are loadings.
+Higher place agency = the place is granted more independence and influence.",
+  caption = paste0("WLSMV, n = 2,489, ordinal indicators. Country dummies are in the model but not drawn (none differs significantly from Canada).\n",
+    "The place-agency latent correlates .36 with restorative, .36 with dialogic and −.28 with serviced. Place agency is the personal counterpart of the role item,\n",
+    "so its path is partly the same construct measured twice; the motive paths shift once it is included. Source: 18_place_relationship.R"))
+save_sem(g11, "fig11_semplot_place_model", 10.2, 10.0)
 
-lab11 <- gsub("_", " ", sub("^rs_", "", sub("^mp_", "", nm11)))
-lab11[nm11 == "master_should"] <- "Wants\nmastery"
-lab11[nm11 == "age_num"] <- "Age"; lab11[nm11 == "gender_bin"] <- "Man"
-lab11[nm11 == "restorative"] <- "Restorative"; lab11[nm11 == "dialogic"] <- "Dialogic"
-lab11[nm11 == "serviced"] <- "Serviced"; lab11[nm11 == "place"] <- "Place agency"
-lab_pos <- ifelse(p11$edge == "~>", 0.30, 0.55)   # structural labels near their source
-col11 <- ifelse(p11$edge == "->", MUTE, ifelse(p11$std < 0, ACCENT, BLUE))
-
-draw11 <- function() {
-  par(mar = c(0, 0, 0, 0))
-  semPaths(m11, what = "std", whatLabels = "std", layout = L11, nodeLabels = lab11,
-           nCharNodes = 0, shapeMan = "rectangle", shapeLat = "ellipse",
-           sizeMan = 15, sizeMan2 = 3.0, sizeLat = 12, sizeLat2 = 8,
-           label.cex = .62, label.scale = FALSE, edge.label.cex = .52,
-           edge.label.position = lab_pos, edge.color = col11, edge.width = 1.2,
-           weighted = FALSE, fixedStyle = c(MUTE, 1), asize = 2.6, fade = FALSE,
-           color = list(lat = "#EAF3F9", man = "#F2F2F2"), border.color = MUTE,
-           intercepts = FALSE, residuals = FALSE, thresholds = FALSE, exoCov = FALSE,
-           mar = c(5, 3, 6, 3))
-  mtext("The role people want, from motives and from how much agency they grant a place",
-        side = 3, line = -1.6, adj = 0.02, cex = .95, col = INK)
-  mtext("Standardised estimates. Orange paths lower the wish for mastery, blue paths raise it; grey are loadings. Place agency: higher = the place is granted more independence and influence.",
-        side = 3, line = -3.1, adj = 0.02, cex = .7, col = MUTE)
-  mtext("WLSMV, n = 2,489, ordinal indicators. Country dummies are in the model but not drawn (none differs significantly from Canada). The place-agency latent correlates .36 with restorative, .36 with dialogic and -.28 with serviced.",
-        side = 1, line = -2.4, adj = 0.02, cex = .55, col = MUTE)
-  mtext("Place agency is the personal counterpart of the role item, so its path is partly the same construct measured twice; the motive paths shift once it is included. Source: 18_place_relationship.R",
-        side = 1, line = -1.4, adj = 0.02, cex = .55, col = MUTE)
-}
-png(file.path("figures", "fig11_semplot_place_model.png"), width = 3000, height = 2500, res = 240)
-draw11(); invisible(dev.off())
-pdf(file.path("figures", "fig11_semplot_place_model.pdf"), width = 12.5, height = 10.4)
-draw11(); invisible(dev.off())
-cat("wrote figures/fig11_semplot_place_model.png and .pdf\n")
-
-
-# --- Figs 12-14: the role people SEE and the role they WANT, side by side ---
-# One fitted model per role (19 for Master, 20 for the others) with the same
-# predictors for both outcomes, drawn as two panels so the eye can compare
-# path by path. Only the structural part is shown (the measurement model is
-# in Fig 11). A path is coloured when p < .05 and pale grey otherwise; an
-# asterisk marks a path whose size differs between the panels (Wald p < .05).
+# ---- Figs 12-14, 16, 17 (ggplot path engine): the role SEEN and WANTED, side by side ----
 show <- c("place", "control", "serviced", "dialogic", "restorative", "age_num", "gender_bin")
 n_ind <- c(place = 5, control = 12, serviced = 3, dialogic = 3, restorative = 6)
 lab12 <- c(place = "Place agency", control = "Societal control", serviced = "Serviced",
-           dialogic = "Dialogic", restorative = "Restorative", age_num = "Age",
-           gender_bin = "Man")
+           dialogic = "Dialogic", restorative = "Restorative", age_num = "Age", gender_bin = "Man")
 lab12[names(n_ind)] <- paste0(lab12[names(n_ind)], "  (", n_ind, ")")
 
-pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file, src, vars = show, lab_now = NULL, lab_should = NULL, note = "") {
-  psn <- standardizedSolution(fit); pall <- psn; psn <- psn[psn$op == "~", ]
-  r2 <- inspect(fit, "r2")
+pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file, src, vars = show,
+                         lab_now = NULL, lab_should = NULL, note = "") {
+  psn <- sem_paths(fit); pall <- lavaan::standardizedSolution(fit)
+  r2 <- lavaan::inspect(fit, "r2")
   rc <- pall[pall$op == "~~" & pall$lhs == out_now & pall$rhs == out_should, "est.std"]
-  panel <- function(outcome, out_label, ttl) {
-    m <- semPlotModel(fit); p <- m@Pars
-    p <- p[p$edge == "~>" & p$rhs == outcome & p$lhs %in% vars, ]
-    p <- p[match(vars, p$lhs), ]
-    m@Pars <- p; m@Vars <- m@Vars[m@Vars$name %in% c(vars, outcome), ]
-    nm <- m@Vars$name
-    ys <- seq(1, -1, length.out = length(vars))
-    L <- t(vapply(nm, function(v) if (v == outcome) c(1, 0) else c(-0.84, ys[match(v, vars)]),
-                  numeric(2)))
-    lab <- ifelse(nm == outcome, out_label, lab12[nm])
-    key <- match(paste(outcome, p$lhs), paste(psn$lhs, psn$rhs))
-    b <- psn$est.std[key]; pv <- psn$pvalue[key]
-    col <- ifelse(pv >= .05, "#C8C8C8", ifelse(b < 0, ACCENT, BLUE))
-    el  <- paste0(sprintf("%.2f", b), ifelse(differs[p$lhs], "*", ""))
-    semPaths(m, what = "std", whatLabels = "std", edgeLabels = el, layout = L,
-             nodeLabels = lab, nCharNodes = 0, shapeMan = "rectangle", shapeLat = "ellipse",
-             sizeMan = 15, sizeMan2 = 4.2, sizeLat = 17, sizeLat2 = 7,
-             label.cex = .7, label.scale = FALSE, edge.label.cex = .8,
-             edge.label.position = rep(.34, nrow(p)), edge.color = col, edge.width = 1.6,
-             weighted = FALSE, asize = 3, fade = FALSE,
-             color = list(lat = "#EAF3F9", man = "#F2F2F2"), border.color = MUTE,
-             intercepts = FALSE, residuals = FALSE, thresholds = FALSE, exoCov = FALSE,
-             structural = FALSE, mar = c(3, 8, 6, 3))
-    mtext(ttl, side = 3, line = 1.4, cex = .95, col = INK)
+  latent <- vars %in% names(n_ind)
+  nodes <- list(); edges <- list(); texts <- list(); bands <- list()
+  off_x <- c(0, 8.2)
+  for (k in 1:2) {
+    outc <- c(out_now, out_should)[k]; sfx <- c("_L", "_R")[k]
+    ys <- seq(6.3, 0.85, length.out = length(vars)); xs <- 1.75 + off_x[k]
+    nodes[[length(nodes) + 1]] <- data.frame(id = paste0(vars, sfx), label = unname(lab12[vars]), x = xs, y = ys,
+      shape = ifelse(latent, "ellipse", "box"), w = ifelse(latent, 2.75, 1.5), h = ifelse(latent, 0.66, 0.46),
+      fill = ifelse(latent, "#E3EEF7", "#F4F4F4"), border = ifelse(latent, "#5B87A6", "#8A8A8A"), size = 3.3,
+      lwd = NA_real_, face = "plain")
+    oy <- mean(range(ys))
+    nodes[[length(nodes) + 1]] <- data.frame(id = paste0("out", sfx),
+      label = if (k == 1) { if (is.null(lab_now)) paste0("Sees ", tolower(role), "\nnow") else lab_now }
+              else { if (is.null(lab_should)) paste0("Wants\n", tolower(role)) else lab_should },
+      x = 6.55 + off_x[k], y = oy, shape = "box", w = 1.75, h = 1.45, fill = "white", border = "#1A1A1A",
+      size = 3.7, lwd = 0.9, face = "bold")
+    offs <- seq(0.52, -0.52, length.out = length(vars))
+    r <- psn[psn$lhs == outc, ]; b <- r$est.std[match(vars, r$rhs)]; pv <- r$pvalue[match(vars, r$rhs)]
+    edges[[length(edges) + 1]] <- data.frame(from = paste0(vars, sfx), to = paste0("out", sfx),
+      label = paste0(fmt_b(b), ifelse(differs[vars], "*", "")), kind = "path", beta = b, sig = pv < .05,
+      t = 0.5, end_side = "left", end_off = offs)
+    texts[[length(texts) + 1]] <- data.frame(x = 0.35 + off_x[k], y = 7.35,
+      label = sprintf("The role people %s   (R² = %.2f)", c("SEE", "WANT")[k], r2[[outc]]),
+      size = 4.1, colour = sem_col$ink, hjust = 0, face = "bold")
+    bands[[length(bands) + 1]] <- data.frame(x = 3.7 + off_x[k], y = 3.6, w = 7.4, h = 6.1, fill = "#F6F7F9")
   }
-  draw <- function() {
-    par(mfrow = c(1, 2), oma = c(5.2, 0, 2, 0))
-    panel(out_now, if (is.null(lab_now)) paste0("Sees ", tolower(role), "\nnow") else lab_now,
-          sprintf("The role people SEE  (R-squared %.2f)", r2[[out_now]]))
-    panel(out_should, if (is.null(lab_should)) paste0("Wants\n", tolower(role)) else lab_should,
-          sprintf("The role people WANT  (R-squared %.2f)", r2[[out_should]]))
-    mtext(headline, outer = TRUE, side = 3, line = 0, cex = 1, col = INK, adj = 0.02)
-    mtext(paste0("Standardised paths. Coloured = p < .05 (orange lowers, blue raises); grey = not significant. * = the path differs between the two panels (Wald p < .05). Latent variables show their indicator counts."),
-          outer = TRUE, side = 1, line = 2.2, cex = .6, col = MUTE, adj = 0.02)
-    mtext(sprintf("WLSMV, n = 2,489; country dummies are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
-          outer = TRUE, side = 1, line = 3.1, cex = .6, col = MUTE, adj = 0.02)
-    if (nzchar(note)) mtext(note, outer = TRUE, side = 1, line = 4.1, cex = .6, col = MUTE, adj = 0.02)
-  }
-  png(file.path("figures", paste0(file, ".png")), width = 3600, height = 1900, res = 240)
-  draw(); invisible(dev.off())
-  pdf(file.path("figures", paste0(file, ".pdf")), width = 15, height = 7.9)
-  draw(); invisible(dev.off())
-  cat("wrote figures/", file, ".png and .pdf\n", sep = "")
+  g <- sem_plot(do.call(rbind, nodes), do.call(rbind, edges), xlim = c(0, 15.9), ylim = c(0.1, 7.85),
+    texts = do.call(rbind, texts), bands = do.call(rbind, bands), legend_at = c(0.4, 0.2),
+    title = headline,
+    subtitle = "Standardised paths. Line width grows with the size of the path; * = the path differs between the two panels (Wald p < .05). Latent variables show their indicator counts.",
+    caption = paste0(sprintf("WLSMV, n = 2,489; country dummies are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
+                     if (nzchar(note)) paste0("\n", note) else ""))
+  save_sem(g, file, 15.9, 8.4)
 }
+
 
 ns <- readRDS("hnr_now_vs_should_sem.rds")
 d_m <- setNames(ns$wald$differs == "yes", ns$wald$predictor)
@@ -758,88 +730,51 @@ fig19 <- function() {
 }
 save_fig("fig19_cutpoints", fig19, 11, 4.4)
 
-# --- Fig 20: the whole story as one path diagram, drawn with semPlot -----------
-# From 28_story_model.R: the two motives, place agency as the mediator, and the
-# position and extremity of the wanted role, with indicators. Age, gender and the
-# country dummies are in the model and not drawn; societal control is an observed
-# mean score. Both motives are in the model together, so their paths differ from
-# the one-at-a-time decomposition in Fig 18.
-suppressMessages({ library(semPlot); library(lavaan) })
-st  <- readRDS("hnr_story_model.rds")$fit
-m20 <- semPlotModel(st)
-drop20 <- m20@Vars$name[grepl("^c_|^age_num$|^gender_bin$", m20@Vars$name)]
-p20 <- m20@Pars
-
-p20 <- p20[!(p20$lhs %in% drop20 | p20$rhs %in% drop20) & p20$edge %in% c("->", "~>"), ]
-
-m20@Pars <- p20; m20@Vars <- m20@Vars[!(m20@Vars$name %in% drop20), ]; rownames(m20@Vars) <- NULL; rownames(m20@Pars) <- NULL
-# semPaths re-sorts the nodes internally, so layout and labels must follow ITS order
-nm20 <- names(semPaths(m20, what = "std", DoNotPlot = TRUE, intercepts = FALSE, residuals = FALSE, thresholds = FALSE)$graphAttributes$Nodes$labels)
-
+# ---- Fig 20 (ggplot path engine): the whole story as one path diagram ----
+# From 28_story_model.R: both motives, place agency and societal control as mediators, and position
+# and extremity of the wanted role, with indicators. Age, gender and country are in the model and not drawn.
+st <- readRDS("hnr_story_model.rds")$fit
+ld <- sem_loads(st); sp <- sem_paths(st)
+ind_lab <- function(v) gsub("_", " ", sub("^rs_", "", sub("^mp_", "", v)))
 it_rest <- c("rs_relax", "rs_beauty", "rs_watch_plants", "rs_own_thoughts", "rs_quiet", "rs_active")
 it_dia  <- c("rs_teaches", "rs_communicates", "rs_meet_animals")
 it_plc  <- c("mp_emancipation", "mp_dialogue", "mp_agency", "mp_learning", "mp_time")
-pos20 <- list()
-ys_r <- seq(1.0, 0.10, length.out = 6); ys_d <- c(-0.25, -0.45, -0.65)
-for (i in seq_along(it_rest)) pos20[[it_rest[i]]] <- c(-1.05, ys_r[i])
-for (i in seq_along(it_dia))  pos20[[it_dia[i]]]  <- c(-1.05, ys_d[i])
-for (i in seq_along(it_plc))  pos20[[it_plc[i]]]  <- c(seq(-0.2, 0.8, length.out = 5)[i], 1.45)
-pos20[["restorative"]] <- c(-0.45, mean(ys_r))
-pos20[["dialogic"]]    <- c(-0.45, mean(ys_d))
-pos20[["place"]]       <- c(0.30, 0.90)
-pos20[["ctl_mean"]]    <- c(0.45, -0.85)
-pos20[["pos_should"]]  <- c(1.10, 0.30)
-pos20[["ext_should"]]  <- c(1.10, -0.30)
-hid20 <- rep(FALSE, length(nm20))
-for (v in nm20[hid20]) pos20[[v]] <- c(1.35, -1.0)
-L20 <- t(vapply(nm20, function(v) pos20[[v]], numeric(2)))
-
-lab20 <- nm20
-lab20 <- gsub("_", " ", sub("^rs_", "", sub("^mp_", "", lab20))); lab20[hid20] <- ""
-lab20[nm20 == "restorative"] <- "Restorative"; lab20[nm20 == "dialogic"] <- "Dialogic"
-lab20[nm20 == "place"] <- "Place agency"; lab20[nm20 == "ctl_mean"] <- "Societal\ncontrol"
-lab20[nm20 == "pos_should"] <- "Position of\nwanted role"; lab20[nm20 == "ext_should"] <- "Extremity of\nwanted role"
-
-ps20 <- standardizedSolution(st); ps20 <- ps20[ps20$op == "~", ]
-key20 <- match(paste(p20$rhs, p20$lhs), paste(ps20$lhs, ps20$rhs))     # outcome, predictor
-b20 <- ps20$est.std[key20]; pv20 <- ps20$pvalue[key20]
-col20 <- ifelse(p20$edge == "->", MUTE, ifelse(pv20 >= .05, "#C8C8C8", ifelse(b20 < 0, ACCENT, BLUE)))
-pos_lab <- ifelse(p20$edge == "~>", 0.3, 0.5)
-pos_lab[p20$lhs == "place" & p20$rhs == "ext_should"] <- 0.56
-pos_lab[p20$lhs == "place" & p20$rhs == "pos_should"] <- 0.55
-pos_lab[p20$rhs == "ctl_mean"] <- 0.45
-pos_lab[p20$lhs == "ctl_mean" & p20$rhs == "pos_should"] <- 0.4
-pos_lab[p20$lhs == "ctl_mean" & p20$rhs == "ext_should"] <- 0.6
-pos_lab[p20$lhs == "dialogic" & p20$rhs == "place"] <- 0.62
-pos_lab[p20$lhs == "restorative" & p20$rhs == "place"] <- 0.45
-pos_lab[p20$lhs == "restorative" & p20$rhs == "pos_should"] <- 0.62
-pos_lab[p20$lhs == "restorative" & p20$rhs == "ext_should"] <- 0.75
-pos_lab[p20$lhs == "dialogic" & p20$rhs == "pos_should"] <- 0.8
-pos_lab[p20$lhs == "dialogic" & p20$rhs == "ext_should"] <- 0.45
-
-draw20 <- function() {
-  par(mar = c(0, 0, 0, 0))
-  semPaths(m20, what = "std", whatLabels = "std", layout = L20, nodeLabels = lab20,
-           nCharNodes = 0, shapeMan = "rectangle", shapeLat = "ellipse",
-           sizeMan = 8.5, sizeMan2 = 2.6, sizeLat = 11, sizeLat2 = 6.5,
-           label.cex = .55, label.scale = FALSE, edge.label.cex = .5,
-           edge.label.position = pos_lab, edge.color = col20, edge.width = 1.0,
-           weighted = FALSE, fixedStyle = c(MUTE, 1), asize = 2.2, fade = FALSE,
-           color = list(lat = "#EAF3F9", man = "#F2F2F2"), border.color = MUTE,
-           intercepts = FALSE, residuals = FALSE, thresholds = FALSE, exoCov = FALSE,
-           mar = c(6, 3, 7, 3))
-  mtext("How experience of a place reaches the role people want: through the agency they grant it",
-        side = 3, line = -1.6, adj = 0.02, cex = .95, col = INK)
-  mtext("Standardised estimates, both motives entered together. Orange lowers and blue raises the outcome; pale grey is not significant; grey lines are loadings.",
-        side = 3, line = -3.1, adj = 0.02, cex = .62, col = MUTE)
-  mtext("WLSMV, n = 2,489, ordinal indicators. Position runs from Master (1) to Object (6): positive = a role further from Master. Extremity = choosing either pole.",
-        side = 1, line = -2.4, adj = 0.02, cex = .55, col = MUTE)
-  mtext("Age, gender and country are in the model and not drawn; societal control is its mean score. Paths differ from the one-at-a-time decomposition because the motives share variance. Source: 28_story_model.R",
-        side = 1, line = -1.4, adj = 0.02, cex = .55, col = MUTE)
+LAT <- "#E3EEF7"; OBS <- "#F4F4F4"; OUT <- "#FFFFFF"
+mk <- function(...) { d <- data.frame(...); cols <- c("id","label","x","y","shape","w","h","fill","border","size","lwd"); for (c in cols) if (is.null(d[[c]])) d[[c]] <- NA; d[, cols] }
+n20 <- rbind(
+  mk(id = it_rest, label = ind_lab(it_rest), x = 0.9, y = seq(6.65, 3.9, length.out = 6), shape = "box", w = 1.5, h = 0.34, fill = "white", border = "#A8A8A8", size = 2.9),
+  mk(id = it_dia,  label = ind_lab(it_dia),  x = 0.9, y = c(2.85, 2.3, 1.75), shape = "box", w = 1.5, h = 0.34, fill = "white", border = "#A8A8A8", size = 2.9),
+  mk(id = it_plc,  label = ind_lab(it_plc),  x = seq(4.7, 9.9, length.out = 5), y = 7.0, shape = "box", w = 1.2, h = 0.34, fill = "white", border = "#A8A8A8", size = 2.9),
+  mk(id = c("restorative", "dialogic", "place"), label = c("Restorative", "Dialogic", "Place\nagency"),
+             x = c(3.75, 3.75, 7.3), y = c(5.28, 2.3, 5.85), shape = "ellipse", w = c(1.7, 1.7, 1.7), h = c(0.9, 0.9, 1.0),
+             fill = LAT, border = "#5B87A6", size = 3.6),
+  mk(id = "ctl_mean", label = "Societal\ncontrol", x = 7.3, y = 1.25, shape = "box", w = 1.4, h = 0.66, fill = OBS, border = "#8A8A8A", size = 3.4),
+  mk(id = c("pos_should", "ext_should"), label = c("Position of\nwanted role", "Extremity of\nwanted role"),
+             x = 11.75, y = c(4.6, 2.9), shape = "box", w = 1.9, h = 0.85, fill = OUT, border = "#1A1A1A", size = 3.6, lwd = 0.9))
+n20$face <- ifelse(n20$id %in% c("pos_should", "ext_should"), "bold", "plain")
+pth <- function(from, to, off = NA, t = 0.5, side = NA) {
+  r <- sp[sp$lhs == to & sp$rhs == from, ]
+  data.frame(from = from, to = to, label = fmt_b(r$est.std), kind = "path", beta = r$est.std, sig = r$pvalue < .05,
+             t = t, end_side = if (is.na(side)) NA_character_ else side, end_off = off)
 }
-png(file.path("figures", "fig20_story_model.png"), width = 3600, height = 2500, res = 240)
-draw20(); invisible(dev.off())
-pdf(file.path("figures", "fig20_story_model.pdf"), width = 15, height = 10.4)
-draw20(); invisible(dev.off())
-cat("wrote figures/fig20_story_model.png and .pdf\n")
+lod <- function(f, i, t) { r <- ld[ld$lhs == f & ld$rhs == i, ]
+  data.frame(from = f, to = i, label = fmt_b(r$est.std), kind = "load", beta = r$est.std, sig = TRUE, t = t, end_side = NA_character_, end_off = NA_real_) }
+e20 <- rbind(
+  do.call(rbind, lapply(it_rest, function(i) lod("restorative", i, 0.5))),
+  do.call(rbind, lapply(it_dia,  function(i) lod("dialogic", i, 0.5))),
+  do.call(rbind, lapply(it_plc,  function(i) lod("place", i, 0.6))),
+  pth("restorative", "place", t = 0.5), pth("dialogic", "place", t = 0.66),
+  pth("restorative", "ctl_mean", t = 0.78), pth("dialogic", "ctl_mean", t = 0.5),
+  pth("place", "pos_should", 0.30, 0.5, "left"), pth("restorative", "pos_should", 0.10, 0.60, "left"),
+  pth("dialogic", "pos_should", -0.10, 0.36, "left"), pth("ctl_mean", "pos_should", -0.30, 0.55, "left"),
+  pth("place", "ext_should", 0.30, 0.40, "left"), pth("restorative", "ext_should", 0.10, 0.72, "left"),
+  pth("dialogic", "ext_should", -0.10, 0.62, "left"), pth("ctl_mean", "ext_should", -0.30, 0.55, "left"))
+hd <- data.frame(x = c(2.4, 7.75, 11.75), y = 7.62, label = c("MOTIVES FOR VISITING A PLACE", "CONSTRUAL OF THE PLACE", "ROLE PEOPLE WANT"))
+bd <- data.frame(x = c(2.4, 7.75, 11.75), y = c(4.4, 4.4, 3.75), w = c(4.6, 5.9, 2.4), h = c(6.4, 6.4, 3.0), fill = "#F6F7F9")
+g20 <- sem_plot(n20, e20, xlim = c(0, 13), ylim = c(0.05, 7.95), headers = hd, bands = bd, legend_at = c(0.3, 0.32),
+  title = "How experience of a place reaches the role people want: through the agency they grant it",
+  subtitle = "Standardised estimates, both motives entered together. Line width grows with the size of the path.",
+  caption = "WLSMV, n = 2,489, ordinal indicators. Position runs from Master (1) to Object (6): positive = a role further from Master. Extremity = choosing either pole.\nAge, gender and country are in the model and not drawn; societal control is its mean score. Source: 28_story_model.R")
+save_sem(g20, "fig20_story_model", 13, 8.6)
+
 cat("Figures written to the figures/ folder", fill = TRUE)
