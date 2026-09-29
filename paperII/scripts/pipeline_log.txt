@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 09:50:47.736999 
-Time difference of 0.01722813 secs
-Computation Time: 0.01722813 
+Date of Analysis: 2026-09-29 09:57:37.518375 
+Time difference of 0.01771092 secs
+Computation Time: 0.01771092 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -990,6 +990,123 @@ Saved: hnr_motives_roles.rds
 
 
 ############################################################
+##  18_place_relationship.R 
+############################################################
+========== 1. Do the five items form a scale? ==========
+Response distributions (%, options 1-4):
+  mp_emancipation mp_dialogue mp_agency mp_learning mp_time
+1            19.4        27.1      15.9        15.9    17.4
+2            33.9        42.1      38.8        30.4    43.7
+3            20.7        18.8      29.7        44.8    23.6
+4            26.0        11.9      15.7         9.0    15.3
+
+Polychoric correlations:
+                mp_emancipation mp_dialogue mp_agency mp_learning mp_time
+mp_emancipation            1.00        0.24      0.39        0.31    0.26
+mp_dialogue                0.24        1.00      0.31        0.33    0.35
+mp_agency                  0.39        0.31      1.00        0.38    0.29
+mp_learning                0.31        0.33      0.38        1.00    0.37
+mp_time                    0.26        0.35      0.29        0.37    1.00
+
+alpha (ordinal, from polychoric): 0.705 
+one-factor loadings: mp_emancipation 0.52  mp_dialogue 0.53  mp_agency 0.61  mp_learning 0.63  mp_time 0.55 
+Parallel analysis suggests that the number of factors =  2  and the number of components =  NA 
+parallel analysis (polychoric) suggests: 2 factor(s)
+(A useful scale wants alpha of about .70 and loadings above .40 on every
+ item; the four stances are alternatives to one another, not indicators.)
+
+========== 2. Is the personal stance the counterpart of the societal role? ==========
+Q7 -- control over MY place (1 = depends entirely on my will .. 4 = it shapes me)
+by the role people SEE now and the role they WANT:
+  seen now :   Master  Manager     User Guardian  Partner   Object 
+    2.41     2.34     2.76     2.51     2.75     2.84 
+  wanted   :   Master  Manager     User Guardian  Partner   Object 
+    2.08     2.33     2.75     2.80     2.90     3.03 
+  eta2 (role_now) = 0.0298, p = 6.18e-15
+  eta2 (role_ideal) = 0.0840, p = 1.43e-45
+Spearman of each me-place item with the 12-item control battery:
+mp_emancipation     mp_dialogue       mp_agency     mp_learning         mp_time 
+          0.099           0.066           0.125           0.042           0.039 
+
+========== 3. Do they enrich the existing latents? ==========
+                restorative dialogic serviced agency_mean
+mp_emancipation       0.183    0.017   -0.228       0.038
+mp_dialogue           0.121    0.279   -0.015       0.372
+mp_agency             0.132    0.064   -0.150       0.118
+mp_learning           0.258    0.228   -0.149       0.167
+mp_time               0.277    0.267   -0.093       0.229
+(Which of the motive and agency scales each place stance tracks.)
+
+========== 4. Do they change what predicts the role people want? ==========
+                    added    LR df  p pseudoR2
+ (motives + demographics)    NA NA NA   0.0335
+          mp_emancipation 184.2 15  0   0.0558
+              mp_dialogue 133.2 15  0   0.0497
+                mp_agency 172.0 15  0   0.0544
+              mp_learning 121.1 15  0   0.0482
+                  mp_time 157.8 15  0   0.0526
+        all five together 464.9 75  0   0.0899
+
+========== 5. Do the stances differ across countries? ==========
+  mp_emancipation  chi2 p = 2.09e-10  Cramer V = 0.101
+  mp_dialogue      chi2 p = 1.1e-08   Cramer V = 0.095
+  mp_agency        chi2 p = 0.384     Cramer V = 0.046
+  mp_learning      chi2 p = 0.0547    Cramer V = 0.057
+  mp_time          chi2 p = 3.44e-05  Cramer V = 0.079
+
+========== 6. Can the five items be used as ONE latent? ==========
+ chisq     df    cfi    tli  rmsea   srmr 
+42.032  5.000  0.988  0.976  0.054  0.032 
+
+two-factor solution (blank = below .25), factor correlation 0.64 :
+                 ML1  ML2
+mp_emancipation   NA 0.44
+mp_dialogue     0.47   NA
+mp_agency         NA 0.76
+mp_learning     0.43   NA
+mp_time         0.70   NA
+(A single factor fits well. Parallel analysis prefers two, but they correlate
+ .64 and split by content -- who acts on the place (emancipation, agency)
+ versus what passes between them (dialogue, learning, time) -- so one general
+ latent with two facets is the defensible reading.)
+
+========== 7. Personal versus societal ==========
+Q7 (control over MY place) x role SEEN now:   Cramer V = 0.122
+Q7 (control over MY place) x role WANTED:     Cramer V = 0.187
+Q4 societal control battery x role SEEN now:  Spearman   = 0.164
+Q4 societal control battery x role WANTED:    Spearman   = 0.108
+(The societal battery tracks the role people SEE; the personal stance tracks
+ the role people WANT. What people want appears to be grounded in how they
+ relate to a particular place, not in beliefs about control in general.)
+
+========== 8. Do the motives survive once the place stances are in? ==========
+stances + demographics -> + motives: LR chi2(15) = 61.6, p = 1.35e-07
+pseudo-R2: 0.0824 -> 0.0899
+(Motives keep an independent contribution, but a smaller one than the place
+ stances make. The stances are the personal-level counterpart of the role item,
+ so their strength is partly the same construct measured twice -- convergent
+ validity, not an independent explanation. The motives are the less circular
+ of the two predictors.)
+
+========== 9. One structural model: motives and the place latent together ==========
+   chisq       df      cfi      tli    rmsea     srmr 
+2812.050  245.000    0.872    0.920    0.065    0.060 
+   predictor   beta    se        p
+ restorative -0.212 0.049 1.36e-05
+    dialogic  0.474 0.073 8.89e-11
+    serviced -0.201 0.058 4.81e-04
+       place -0.623 0.047 0.00e+00
+     age_num -0.143 0.029 1.20e-06
+  gender_bin  0.129 0.028 5.30e-06
+R2 for wanting mastery: 0.3559 (motives + demographics alone: .1006 in script 15)
+latent correlations with the place latent:
+restorative    dialogic    serviced 
+       0.36        0.36       -0.28 
+
+Saved: hnr_place_relationship.rds
+
+
+############################################################
 ##  17_scenarios_and_roles.R 
 ############################################################
 ========== 1. Mean agreement with each stance, by the role people want ==========
@@ -1305,4 +1422,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 

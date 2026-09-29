@@ -114,6 +114,14 @@ load_one_country <- function(path, country_name) {
                    "sc_nature_partner", "sc_humans_lose",
                    "cl_denial", "cl_tech_stops", "cl_cannot_stop", "cl_extinction")
 
+  # --- relationship to one's OWN favourite place: four ordered stances, each
+  #     a sub-indicator of the integrated Me-Place indicator (Q7 emancipation,
+  #     Q8 dialogue, Q9 agency, Q10 learning), plus Q12 (does the place change,
+  #     and can that change be communication). Ordinal 1-4, never summed
+  #     without checking they form a scale (alpha .61).
+  meplace <- as.data.frame(lapply(c(56:59, 65), g))
+  names(meplace) <- c("mp_emancipation", "mp_dialogue", "mp_agency", "mp_learning", "mp_time")
+
   # --- reasons for staying in a natural place (Q13, 14 items) ---
   reason_labels <- c("relax", "beauty", "meet_people", "watch_plants", "meet_animals",
                      "own_thoughts", "quiet", "communicates", "teaches", "struggles",
@@ -145,7 +153,7 @@ load_one_country <- function(path, country_name) {
       residence_raw  = residence_raw,
       indigenous_raw = indigenous_raw
     ),
-    q1, validity, style, agency_now, agency_future, reasons, scen
+    q1, validity, style, agency_now, agency_future, reasons, scen, meplace
   )
   out
 }
