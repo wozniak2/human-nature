@@ -122,6 +122,15 @@ Saved: hnr_data.rds (updated with q1_factor column), hnr_cfa_fits.rds
 ############################################################
 ##  04_mimic_model.R 
 ############################################################
+Education (1 primary, 2 high school, 3 higher; NA = prefer not to answer), by country:
+             
+                1   2   3 <NA>
+  Canada       24 247 137    3
+  Panama        2 123 286    5
+  Poland       12 236 176    0
+  Netherlands  24 188 208    5
+  Spain        17 167 240    1
+  Sweden       49 194 155   14
 Respondents: 2513 | complete cases for MIMIC model: 2489 ( 24 dropped, mostly non-binary/trans/prefer-not-say gender and prefer-not-say age)
 
 ========== MIMIC model fit ==========
@@ -320,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 13:15:36.27597 
-Time difference of 0.01892304 secs
-Computation Time: 0.01892304 
+Date of Analysis: 2026-09-29 13:39:37.420453 
+Time difference of 0.01846504 secs
+Computation Time: 0.01846504 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -526,34 +535,43 @@ now        Master Manager User Guardian Partner Object
 
 ========== 4. Personal endorsement of mastery (Q5 = Master) ~ country + age + gender ==========
                      OR   lo   hi        p
-countryPanama      0.74 0.52 1.05 9.15e-02
-countryPoland      0.82 0.58 1.16 2.56e-01
-countryNetherlands 0.74 0.52 1.05 9.43e-02
-countrySpain       1.36 0.98 1.89 6.56e-02
-countrySweden      0.96 0.68 1.35 8.12e-01
-age_num            0.85 0.80 0.91 2.27e-06
-gender_bin         1.59 1.30 1.95 6.14e-06
+countryPanama      0.79 0.56 1.13 2.00e-01
+countryPoland      0.83 0.59 1.18 3.09e-01
+countryNetherlands 0.75 0.53 1.08 1.23e-01
+countrySpain       1.42 1.02 1.98 3.79e-02
+countrySweden      0.94 0.66 1.33 7.27e-01
+age_num            0.85 0.80 0.91 3.00e-06
+gender_bin         1.60 1.31 1.96 4.82e-06
+edu_primary        1.33 0.86 2.08 2.04e-01
+edu_higher         0.86 0.70 1.07 1.68e-01
+edu_na             1.14 0.45 2.89 7.87e-01
 
 -- for contrast: perceived mastery (Q4 = Master) ~ country + age + gender --
                      OR   lo   hi        p
-countryPanama      1.68 1.23 2.28 9.77e-04
-countryPoland      1.44 1.05 1.96 2.25e-02
-countryNetherlands 1.13 0.82 1.56 4.46e-01
-countrySpain       2.90 2.15 3.92 4.69e-12
-countrySweden      1.26 0.92 1.74 1.54e-01
-age_num            0.94 0.88 0.99 2.41e-02
-gender_bin         1.27 1.07 1.51 6.38e-03
+countryPanama      1.59 1.16 2.18 3.66e-03
+countryPoland      1.41 1.03 1.92 3.11e-02
+countryNetherlands 1.11 0.81 1.54 5.11e-01
+countrySpain       2.81 2.07 3.81 3.09e-11
+countrySweden      1.29 0.94 1.78 1.19e-01
+age_num            0.93 0.88 0.99 2.04e-02
+gender_bin         1.27 1.06 1.51 7.82e-03
+edu_primary        0.79 0.51 1.23 2.93e-01
+edu_higher         1.13 0.94 1.35 1.96e-01
+edu_na             0.57 0.21 1.52 2.60e-01
 
 ========== 5. Who holds the paradox? (among Master-now respondents: should != Master) ==========
 n Master-now = 776 
                      OR   lo   hi        p
-countryPanama      1.82 1.06 3.11 0.028600
-countryPoland      1.89 1.08 3.28 0.024600
-countryNetherlands 2.04 1.13 3.69 0.018300
-countrySpain       1.28 0.77 2.11 0.337000
-countrySweden      1.20 0.69 2.10 0.517000
-age_num            1.02 0.92 1.13 0.716000
-gender_bin         0.59 0.43 0.79 0.000462
+countryPanama      1.60 0.93 2.78 0.090700
+countryPoland      1.89 1.08 3.29 0.024900
+countryNetherlands 1.93 1.06 3.50 0.031100
+countrySpain       1.18 0.71 1.97 0.516000
+countrySweden      1.22 0.69 2.15 0.492000
+age_num            1.02 0.92 1.13 0.688000
+gender_bin         0.59 0.44 0.80 0.000592
+edu_primary        1.17 0.52 2.62 0.703000
+edu_higher         1.46 1.07 2.00 0.018400
+edu_na             0.60 0.10 3.77 0.584000
 
 Relational-belief score by paradox status (Master-now respondents):
     0     1 
@@ -593,13 +611,16 @@ Spain       363       44.1          21.5                     65.0
 Sweden      339       26.3          17.7                     61.8
 Pooled McNemar (clean): 110.1 
                      OR   lo   hi        p
-countryPanama      0.65 0.44 0.95 2.62e-02
-countryPoland      0.72 0.48 1.07 9.99e-02
-countryNetherlands 0.70 0.47 1.04 7.94e-02
-countrySpain       1.14 0.79 1.64 4.71e-01
-countrySweden      0.91 0.62 1.34 6.43e-01
-age_num            0.84 0.78 0.91 5.35e-06
-gender_bin         1.44 1.15 1.81 1.62e-03
+countryPanama      0.68 0.46 1.01 5.54e-02
+countryPoland      0.73 0.49 1.08 1.13e-01
+countryNetherlands 0.72 0.48 1.07 1.04e-01
+countrySpain       1.19 0.82 1.72 3.56e-01
+countrySweden      0.90 0.61 1.33 6.02e-01
+age_num            0.84 0.78 0.91 7.65e-06
+gender_bin         1.45 1.15 1.82 1.54e-03
+edu_primary        1.13 0.65 1.97 6.62e-01
+edu_higher         0.86 0.67 1.09 2.04e-01
+edu_na             1.58 0.55 4.54 3.93e-01
 
 ========== 8. Full six-by-six test: do perceived and ideal role distributions differ? ==========
              chi2 df        p
@@ -649,26 +670,28 @@ typ_should_f : F = 5.38  p = 6.36e-05  eta2 = 0.0106
 -- (a) Overall country effect on mastery as ideal (LR test, 5 df) --
 Analysis of Deviance Table
 
-Model 1: master_should ~ age_num + gender_bin
-Model 2: master_should ~ country + age_num + gender_bin
+Model 1: master_should ~ age_num + gender_bin + edu_primary + edu_higher + 
+    edu_na
+Model 2: master_should ~ country + age_num + gender_bin + edu_primary + 
+    edu_higher + edu_na
   Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
-1      2486     2431.0                        
-2      2481     2412.8  5   18.221 0.002682 **
+1      2483     2426.3                        
+2      2478     2408.3  5   17.999 0.002948 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 -- (b) Predicted P(mastery as ideal): age, gender vs country ranges --
-  country age_num gender_bin     p
-1  Canada       1          0 0.235
-2  Canada       6          0 0.121
-3  Canada       1          1 0.329
-4  Canada       6          1 0.180
-      country age_num gender_bin     p
-1      Canada       3          0 0.182
-2      Panama       3          0 0.142
-3      Poland       3          0 0.154
-4 Netherlands       3          0 0.141
-5       Spain       3          0 0.233
-6      Sweden       3          0 0.176
+  country age_num gender_bin edu_primary edu_higher edu_na     p
+1  Canada       1          0           0          0      0 0.239
+2  Canada       6          0           0          0      0 0.125
+3  Canada       1          1           0          0      0 0.335
+4  Canada       6          1           0          0      0 0.186
+      country age_num gender_bin edu_primary edu_higher edu_na     p
+1      Canada       3          0           0          0      0 0.186
+2      Panama       3          0           0          0      0 0.154
+3      Poland       3          0           0          0      0 0.160
+4 Netherlands       3          0           0          0      0 0.147
+5       Spain       3          0           0          0      0 0.245
+6      Sweden       3          0           0          0      0 0.177
 -- (c) Net change in mastery (now minus should), 95% CI, per country --
              net   lo   hi changed_answer
 Canada       1.5 -3.2  6.1           58.2
@@ -896,19 +919,19 @@ motive scores built from:
 -- restorative --
      Canada      Panama      Poland Netherlands       Spain      Sweden 
        3.99        4.13        4.00        3.78        4.00        3.83 
-   country p = 1e-12     partial eta2 = 0.025 | age b = +0.078 p = 1.47e-16 | man vs woman b = -0.167 p = 4.83e-09
+   country p = 7e-13     partial eta2 = 0.025 | age b = +0.076 p = 3.13e-16 | man vs woman b = -0.173 p = 1.23e-09
   man woman 
  3.88  4.03 
 -- dialogic --
      Canada      Panama      Poland Netherlands       Spain      Sweden 
        3.60        3.67        3.57        3.23        3.54        3.32 
-   country p = 3.52e-16  partial eta2 = 0.032 | age b = +0.019 p = 0.0933   | man vs woman b = -0.190 p = 6.6e-08
+   country p = 3.46e-16  partial eta2 = 0.032 | age b = +0.019 p = 0.0989   | man vs woman b = -0.191 p = 5.3e-08
   man woman 
  3.39  3.57 
 -- serviced --
      Canada      Panama      Poland Netherlands       Spain      Sweden 
        3.09        2.99        2.99        2.89        3.07        2.91 
-   country p = 0.00697   partial eta2 = 0.006 | age b = -0.074 p = 3.72e-09 | man vs woman b = +0.075 p = 0.0473
+   country p = 0.00687   partial eta2 = 0.006 | age b = -0.073 p = 5.19e-09 | man vs woman b = +0.079 p = 0.0375
   man woman 
  3.02  2.95 
 (gender_bin: 0 = woman, 1 = man, so a positive coefficient means men score higher.)
@@ -920,71 +943,73 @@ Does adding the three motives improve on country + age + gender?
 Likelihood ratio tests of Multinomial Models
 
 Response: role_ideal
-                                                               Model Resid. df
-1                                     country + age_num + gender_bin     12405
-2 restorative + dialogic + serviced + country + age_num + gender_bin     12390
-  Resid. Dev   Test    Df LR stat. Pr(Chi)
-1   8107.680                              
-2   7970.715 1 vs 2    15 136.9652       0
-McFadden pseudo-R2: 0.0169 -> 0.0335
+                                                                                                   Model
+1                                     country + age_num + gender_bin + edu_primary + edu_higher + edu_na
+2 restorative + dialogic + serviced + country + age_num + gender_bin + edu_primary + edu_higher + edu_na
+  Resid. df Resid. Dev   Test    Df LR stat. Pr(Chi)
+1     12390   8082.574                              
+2     12375   7949.692 1 vs 2    15 132.8823       0
+McFadden pseudo-R2: 0.0199 -> 0.0361
 
 Relative risk ratios for the motives (reference role: Manager)
 -- restorative --
  vs_Manager  RRR   lo   hi        p
-     Master 0.66 0.55 0.80 2.13e-05
-       User 1.18 0.98 1.41 7.50e-02
-   Guardian 1.22 0.98 1.53 7.64e-02
-    Partner 1.46 1.12 1.91 4.90e-03
-     Object 0.56 0.40 0.77 3.69e-04
+     Master 0.67 0.55 0.81 3.89e-05
+       User 1.18 0.98 1.42 7.36e-02
+   Guardian 1.22 0.97 1.53 8.58e-02
+    Partner 1.48 1.13 1.93 4.08e-03
+     Object 0.58 0.42 0.81 1.15e-03
 -- dialogic --
  vs_Manager  RRR   lo   hi        p
-     Master 1.29 1.09 1.53 3.55e-03
-       User 0.96 0.83 1.11 5.72e-01
-   Guardian 1.10 0.91 1.31 3.21e-01
-    Partner 0.97 0.79 1.19 7.96e-01
-     Object 1.89 1.40 2.55 2.92e-05
+     Master 1.29 1.09 1.53 3.59e-03
+       User 0.96 0.82 1.11 5.65e-01
+   Guardian 1.10 0.92 1.31 3.18e-01
+    Partner 0.97 0.79 1.18 7.46e-01
+     Object 1.89 1.40 2.55 3.59e-05
 -- serviced --
  vs_Manager  RRR   lo   hi        p
-     Master 1.06 0.92 1.21 4.20e-01
-       User 0.82 0.72 0.93 1.54e-03
-   Guardian 0.75 0.65 0.86 7.85e-05
-    Partner 0.62 0.53 0.74 5.42e-08
-     Object 0.82 0.67 1.01 6.80e-02
+     Master 1.06 0.92 1.21 4.31e-01
+       User 0.82 0.73 0.93 1.79e-03
+   Guardian 0.75 0.65 0.87 9.33e-05
+    Partner 0.62 0.52 0.74 4.37e-08
+     Object 0.81 0.66 1.01 5.73e-02
 (RRR above 1: a one-point rise in that motive raises the chance of choosing
  that role rather than Manager.)
 
 ========== 3. The same thing as a simple contrast: mastery as the ideal ==========
 Analysis of Deviance Table
 
-Model 1: master_should ~ country + age_num + gender_bin
+Model 1: master_should ~ country + age_num + gender_bin + edu_primary + 
+    edu_higher + edu_na
 Model 2: master_should ~ restorative + dialogic + serviced + country + 
-    age_num + gender_bin
+    age_num + gender_bin + edu_primary + edu_higher + edu_na
   Resid. Df Resid. Dev Df Deviance  Pr(>Chi)    
-1      2481     2412.8                          
-2      2478     2358.9  3   53.916 1.169e-11 ***
+1      2478     2408.3                          
+2      2475     2356.2  3   52.057 2.913e-11 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
         term   OR   lo   hi        p
- restorative 0.61 0.52 0.72 4.57e-09
-    dialogic 1.24 1.06 1.44 5.50e-03
-    serviced 1.25 1.11 1.41 1.73e-04
+ restorative 0.61 0.52 0.73 9.93e-09
+    dialogic 1.24 1.06 1.44 5.54e-03
+    serviced 1.25 1.11 1.41 1.83e-04
 
 ========== 4. And among those who perceive mastery, who rejects it? ==========
 n = 773 
 Analysis of Deviance Table
 
-Model 1: rej ~ country + age_num + gender_bin
+Model 1: rej ~ country + age_num + gender_bin + edu_primary + edu_higher + 
+    edu_na
 Model 2: rej ~ restorative + dialogic + serviced + country + age_num + 
-    gender_bin
+    gender_bin + edu_primary + edu_higher + edu_na
   Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
-1       765    1003.04                        
-2       762     988.84  3   14.198 0.002647 **
+1       762     996.90                        
+2       759     983.13  3    13.77 0.003235 **
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
         term   OR   lo   hi       p
- restorative 1.15 0.91 1.46 0.25500
-    dialogic 0.94 0.76 1.15 0.52800
-    serviced 0.76 0.65 0.90 0.00108
+ restorative 1.14 0.89 1.44 0.29900
+    dialogic 0.94 0.76 1.16 0.55200
+    serviced 0.76 0.65 0.90 0.00119
 
 Saved: hnr_motives_roles.rds
 
@@ -992,45 +1017,45 @@ Saved: hnr_motives_roles.rds
 ############################################################
 ##  26_ordered_sem.R 
 ############################################################
-fitted in 22 seconds
+fitted in 24 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
-5100.255  563.000    0.970    0.977    0.057    0.053 
+5277.882  641.000    0.969    0.979    0.054    0.053 
 
 ========== 2. Standardised paths ==========
 position: positive = a role further from Master. extremity: positive = more likely at either pole.
    predictor position_now position_wanted extremity_now extremity_wanted
- restorative      -0.044          +0.055        -0.075           -0.265*
-    dialogic      -0.053          -0.192*       +0.116*          +0.364*
+ restorative      -0.030          +0.058        -0.071           -0.253*
+    dialogic      -0.059          -0.193*       +0.115*          +0.360*
        place      +0.316*         +0.466*       -0.151*          -0.314*
-     control      +0.135*         +0.066*       -0.116*          -0.074*
-     age_num      +0.045*         +0.115*       -0.056*          -0.107*
-  gender_bin      -0.081*         -0.136*       +0.045           +0.099*
+     control      +0.135*         +0.065*       -0.116*          -0.072*
+     age_num      +0.047*         +0.115*       -0.055*          -0.105*
+  gender_bin      -0.078*         -0.136*       +0.046           +0.102*
 
 ========== 3. Does each path differ between seeing and wanting? (Wald) ==========
    outcome   predictor  chi2        p differs
-  position restorative  7.81 5.21e-03     yes
-  position    dialogic 13.97 1.86e-04     yes
-  position       place 28.83 7.91e-08     yes
-  position     control 10.05 1.52e-03     yes
-  position     age_num  7.97 4.75e-03     yes
-  position  gender_bin  5.51 1.89e-02     yes
- extremity restorative 15.51 8.19e-05     yes
- extremity    dialogic 24.84 6.22e-07     yes
- extremity       place 15.76 7.20e-05     yes
- extremity     control  2.21 1.37e-01      no
- extremity     age_num  2.31 1.29e-01      no
- extremity  gender_bin  2.83 9.25e-02      no
+  position restorative  6.15 1.32e-02     yes
+  position    dialogic 13.21 2.79e-04     yes
+  position       place 28.07 1.17e-07     yes
+  position     control 10.43 1.24e-03     yes
+  position     age_num  7.42 6.45e-03     yes
+  position  gender_bin  6.02 1.41e-02     yes
+ extremity restorative 14.12 1.71e-04     yes
+ extremity    dialogic 24.45 7.62e-07     yes
+ extremity       place 15.74 7.27e-05     yes
+ extremity     control  2.30 1.29e-01      no
+ extremity     age_num  2.19 1.39e-01      no
+ extremity  gender_bin  3.08 7.93e-02      no
 
 ========== 4. Variance explained and residual associations ==========
-R2  position now 0.146 | position wanted 0.251 | extremity now 0.088 | extremity wanted 0.194
+R2  position now 0.154 | position wanted 0.251 | extremity now 0.089 | extremity wanted 0.199
                      pair      r
     pos_now ~~ pos_should  0.295
-       pos_now ~~ ext_now -0.530
-    pos_now ~~ ext_should -0.067
-    pos_should ~~ ext_now -0.139
- pos_should ~~ ext_should -0.349
-    ext_now ~~ ext_should  0.456
+       pos_now ~~ ext_now -0.536
+    pos_now ~~ ext_should -0.074
+    pos_should ~~ ext_now -0.138
+ pos_should ~~ ext_should -0.352
+    ext_now ~~ ext_should  0.457
 (Position wanted and position seen share a large residual association: what people
  see and what they want move together beyond every predictor. That is the answer-
  consistency question raised by the survey order; it cannot be settled here.)
@@ -1041,24 +1066,24 @@ Saved: hnr_ordered_sem.rds
 ############################################################
 ##  27_ordered_mediation.R 
 ############################################################
-restorative  fitted in  16 s | CFI 0.973 RMSEA 0.058 | largest standardised path 0.48
-dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.057 | largest standardised path 0.52
+restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
+dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.053 | largest standardised path 0.53
 
 ========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
--- restorative --  a: place +0.375*, control +0.070* | b (wanted): place +0.476*, control +0.127* | b (seen): place +0.349*, control +0.181*
--- dialogic --  a: place +0.401*, control +0.111* | b (wanted): place +0.525*, control +0.134* | b (seen): place +0.358*, control +0.181*
+-- restorative --  a: place +0.372*, control +0.071* | b (wanted): place +0.476*, control +0.127* | b (seen): place +0.349*, control +0.182*
+-- dialogic --  a: place +0.399*, control +0.111* | b (wanted): place +0.525*, control +0.134* | b (seen): place +0.361*, control +0.182*
 
 ========== 2. Decomposition of the effect on position ==========
 (positive = a role further from Master; * = p < .05)
       motive outcome   total  direct via_place via_control total_indirect
- restorative  wanted +0.106* -0.082*   +0.178*     +0.009*        +0.187*
- restorative    seen +0.045* -0.099*   +0.131*     +0.013*        +0.144*
+ restorative  wanted +0.106* -0.080*   +0.177*     +0.009*        +0.186*
+ restorative    seen +0.054* -0.088*   +0.130*     +0.013*        +0.143*
     dialogic  wanted +0.016  -0.209*   +0.210*     +0.015*        +0.225*
-    dialogic    seen +0.043  -0.120*   +0.143*     +0.020*        +0.163*
+    dialogic    seen +0.046  -0.118*   +0.144*     +0.020*        +0.164*
 
 ========== 3. Bootstrap cross-check (observed composites, ordered logit, 500 resamples) ==========
-restorative    indirect via place agency +0.181 [+0.149, +0.220] | direct +0.024 [-0.053, +0.109]   (log-odds per SD, wanted position)
-dialogic       indirect via place agency +0.177 [+0.145, +0.211] | direct -0.157 [-0.233, -0.074]   (log-odds per SD, wanted position)
+restorative    indirect via place agency +0.181 [+0.148, +0.220] | direct +0.024 [-0.053, +0.110]   (log-odds per SD, wanted position)
+dialogic       indirect via place agency +0.177 [+0.144, +0.211] | direct -0.158 [-0.236, -0.075]   (log-odds per SD, wanted position)
 (Percentile intervals. An indirect effect whose interval excludes zero alongside a direct
  effect that does not is complete mediation; opposite signs are suppression.)
 
@@ -1068,37 +1093,37 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 7 seconds
+fitted in 8 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
-1991.317  199.000    0.965    0.976    0.060    0.052 
+2082.257  238.000    0.964    0.979    0.056    0.052 
 largest standardised structural path: 0.5   (inside +/-1) 
 
 ========== 2. Structural paths (standardised) ==========
     outcome   predictor   beta     p
-      place restorative  0.211 0.000
-      place    dialogic  0.224 0.000
-   ctl_mean restorative -0.023 0.450
-   ctl_mean    dialogic  0.110 0.000
- pos_should restorative  0.061 0.045
- pos_should    dialogic -0.216 0.000
+      place restorative  0.207 0.000
+      place    dialogic  0.225 0.000
+   ctl_mean restorative -0.020 0.510
+   ctl_mean    dialogic  0.109 0.000
+ pos_should restorative  0.063 0.035
+ pos_should    dialogic -0.217 0.000
  pos_should       place  0.499 0.000
  pos_should    ctl_mean  0.130 0.000
- ext_should restorative -0.268 0.000
- ext_should    dialogic  0.384 0.000
+ ext_should restorative -0.256 0.000
+ ext_should    dialogic  0.380 0.000
  ext_should       place -0.345 0.000
  ext_should    ctl_mean -0.115 0.000
 
 ========== 3. What the motives do to the wanted position ==========
     label est.std ci.lower ci.upper pvalue
- ind_rest   0.105    0.073    0.137  0.000
+ ind_rest   0.103    0.072    0.135  0.000
   ind_dia   0.112    0.077    0.147  0.000
- tot_rest   0.166    0.107    0.224  0.000
-  tot_dia  -0.104   -0.167   -0.041  0.001
+ tot_rest   0.167    0.108    0.226  0.000
+  tot_dia  -0.105   -0.168   -0.042  0.001
 (ind_ = the indirect effect through place agency; tot_ = direct plus indirect. Compare
  with script 27, which fitted the motives one at a time.)
 
-R2: place agency 0.227 | position wanted 0.265 | extremity wanted 0.205
+R2: place agency 0.226 | position wanted 0.265 | extremity wanted 0.210
 
 Saved: hnr_story_model.rds
 
@@ -1108,17 +1133,17 @@ Saved: hnr_story_model.rds
 ############################################################
 ========== 1. Item level: which items carry the effects? ==========
          item      factor position_OR extremity_OR
-        relax restorative       1.07         0.85*
-        quiet restorative       1.03         0.85*
+        relax restorative       1.07         0.86*
+        quiet restorative       1.03         0.86*
  own_thoughts restorative       1.00         0.89*
-       beauty restorative       1.02         0.92 
+       beauty restorative       1.02         0.93 
  watch_plants restorative       1.00         0.90*
-       active restorative       0.99         0.95 
+       active restorative       0.99         0.96 
       teaches    dialogic       0.85*        1.28*
  communicates    dialogic       0.88*        1.20*
- meet_animals    dialogic       0.93*        1.09 
+ meet_animals    dialogic       0.92*        1.10 
       comfort    serviced       0.88*        1.14*
-       photos    serviced       0.92*        1.03 
+       photos    serviced       0.92*        1.02 
     struggles    serviced       0.91*        1.15*
   meet_people     dropped       0.87*        1.09 
         cheap     dropped       0.94         0.94 
@@ -1127,10 +1152,10 @@ Saved: hnr_story_model.rds
 
 ========== 2. Alternative scorings ==========
                           scoring items alpha position_OR extremity_OR
-       restorative, all six items     6  0.84       1.13*        0.70*
-           restorative, core four     4  0.82       1.13*        0.72*
-       restorative, relax + quiet     2  0.76       1.13*        0.74*
-      restorative, without active     5  0.84       1.13*        0.70*
+       restorative, all six items     6  0.84       1.13*        0.71*
+           restorative, core four     4  0.82       1.13*        0.73*
+       restorative, relax + quiet     2  0.76       1.13*        0.75*
+      restorative, without active     5  0.84       1.13*        0.71*
         dialogic, all three items     3  0.75       0.81*        1.49*
  dialogic, teaches + communicates     2  0.78       0.82*        1.47*
 (The other motive and place agency are held constant in each row.)
@@ -1141,7 +1166,7 @@ share of random half-samples (n about 1,245) in which the effect on position is 
         0.51         0.99         1.00 
 median p-value:
  restorative     dialogic place agency 
-     4.9e-02      6.1e-04      1.5e-36 
+     4.9e-02      5.7e-04      1.3e-36 
 
 full-sample odds ratios: restorative 1.13, dialogic 0.81, place agency 2.11
 (A true effect of this size should be significant in most half-samples if power is
@@ -1167,8 +1192,8 @@ place_agency         1.00
 
 alpha: all three 0.66 | comfort + photos 0.56
                       score position_OR extremity_OR
-        serviced, all three       0.92*        1.06 
- amenity (comfort + photos)       0.91*        1.06 
+        serviced, all three       0.92*        1.05 
+ amenity (comfort + photos)       0.91*        1.05 
        nuisance (struggles)       0.97         1.03 
 (If amenity and nuisance behave differently, the serviced factor is two things and its
  instability in the structural models is unsurprising.)
@@ -1226,41 +1251,41 @@ ctl          0.024 0.034
 -- wanted role: odds ratio per SD of being at a HIGHER role than the cut (* p < .05) --
                   cut   plc restorative dialogic   ctl
    Master | Manager + 2.13*       1.27*    0.70* 1.33*
-     Manager | User + 2.01*       1.15*    0.78* 1.17*
-    User | Guardian + 1.80*       1.07     0.90  1.06 
- Guardian | Partner + 1.78*       0.99     0.93  1.04 
-   Partner | Object + 1.98*       0.57*    1.46* 1.33*
+     Manager | User + 2.02*       1.15*    0.78* 1.17*
+    User | Guardian + 1.81*       1.07     0.90  1.05 
+ Guardian | Partner + 1.79*       1.00     0.92  1.03 
+   Partner | Object + 1.97*       0.58*    1.47* 1.33*
 
 -- seen role --
                   cut   plc restorative dialogic   ctl
-   Master | Manager + 1.42*       0.99     0.96  1.40*
-     Manager | User + 1.65*       1.16*    0.85* 1.27*
-    User | Guardian + 1.50*       0.86*    1.09  1.24*
- Guardian | Partner + 1.59*       0.87     1.04  1.28*
-   Partner | Object + 1.71*       0.61*    1.35* 1.42*
+   Master | Manager + 1.43*       1.00     0.95  1.40*
+     Manager | User + 1.65*       1.17*    0.85* 1.27*
+    User | Guardian + 1.51*       0.88*    1.09  1.25*
+ Guardian | Partner + 1.59*       0.89     1.04  1.28*
+   Partner | Object + 1.71*       0.63*    1.37* 1.42*
 (If one ordered scale held, each column would show roughly one odds ratio all the way
  down. Place agency does. Dialogic reverses sign across the cuts, so it is not
  describing position on the scale.)
 
 Proportional-odds model, wanted role (odds ratio per SD, higher = a role further from Master):
    predictor   OR        p
-         plc 2.08 1.25e-67
- restorative 1.13 5.35e-03
-    dialogic 0.81 6.00e-07
-         ctl 1.17 1.72e-05
+         plc 2.08 9.05e-68
+ restorative 1.13 5.46e-03
+    dialogic 0.81 5.15e-07
+         ctl 1.17 1.98e-05
 
-BIC: ordered logit 7896 | multinomial 8143 (lower is better; the multinomial is far more flexible)
+BIC: ordered logit 7918 | multinomial 8240 (lower is better; the multinomial is far more flexible)
 
 ========== 3. Does the ordering of the middle roles matter? ==========
 best five of the 24 orderings of the four middle roles (Master first, Object last):
                                                  order    BIC rank
- Master > Manager > User > Guardian > Partner > Object 7895.6    1
- Master > Manager > User > Partner > Guardian > Object 7904.2    2
- Master > Manager > Guardian > User > Partner > Object 7935.7    3
- Master > Manager > Partner > User > Guardian > Object 7940.7    4
- Master > Manager > Guardian > Partner > User > Object 7971.9    5
+ Master > Manager > User > Guardian > Partner > Object 7917.5    1
+ Master > Manager > User > Partner > Guardian > Object 7926.7    2
+ Master > Manager > Guardian > User > Partner > Object 7957.7    3
+ Master > Manager > Partner > User > Guardian > Object 7963.8    4
+ Master > Manager > Guardian > Partner > User > Object 7994.5    5
 
-the theoretical ordering ranks 1 of 24 (BIC 7895.6, best 7895.6)
+the theoretical ordering ranks 1 of 24 (BIC 7917.5, best 7917.5)
 (Ordering by fit is data-driven and partly circular, since place agency defines much of
  the fit. It shows whether the reading of the text is contradicted, not that it is right.)
 
@@ -1268,17 +1293,17 @@ the theoretical ordering ranks 1 of 24 (BIC 7895.6, best 7895.6)
 
 -- wanted role --  extremity: either pole (n = 618) versus the middle | direction: Object versus Master (n = 618)
    predictor extremity_OR direction_OR
-         plc        0.67*        2.52*
- restorative        0.70*        0.73*
-    dialogic        1.50*        1.08 
-         ctl        0.86*        1.51*
+         plc        0.67*        2.54*
+ restorative        0.71*        0.74*
+    dialogic        1.50*        1.09 
+         ctl        0.87*        1.54*
 
 -- seen role --  extremity: either pole (n = 924) versus the middle | direction: Object versus Master (n = 924)
    predictor extremity_OR direction_OR
-         plc        0.84*        1.79*
- restorative        0.89*        0.64*
-    dialogic        1.11*        1.29*
-         ctl        0.81*        1.62*
+         plc        0.84*        1.81*
+ restorative        0.90*        0.66*
+    dialogic        1.11*        1.32*
+         ctl        0.81*        1.66*
 
 (Reading: place agency separates Object from Master (direction), while the dialogic
  motive predicts being at EITHER pole (extremity) and not which one, and the restorative
@@ -1295,99 +1320,161 @@ Saved: hnr_outcome_structure.rds
 ############################################################
 ========== 0. Reference: the pooled model ==========
        variant    n restorative p_restorative dialogic p_dialogic  plc   p_plc
- wants mastery 2489        0.79       0.00017     1.43    1.0e-07 0.47 1.5e-33
-  sees mastery 2489        1.01       0.83000     1.04    4.1e-01 0.70 1.5e-12
+ wants mastery 2489        0.79       0.00027     1.42    1.2e-07 0.47 2.2e-33
+  sees mastery 2489        1.00       0.96000     1.05    3.5e-01 0.70 8.3e-13
   ctl   p_ctl
- 0.75 3.7e-07
- 0.72 9.4e-13
+ 0.75 5.1e-07
+ 0.72 9.1e-13
 (Odds ratios per standard deviation. Place agency lowers wanting mastery more than seeing it;
  restorative matters for wanting and not for seeing.)
 
 ========== 1. Question stems: split by stem group, and drop each country in turn ==========
                          variant    n restorative p_restorative dialogic
-     stem announced (NL, SE, PL) 1254        0.80        0.0100     1.39
- stem not announced (CA, ES, PA) 1235        0.76        0.0047     1.46
- p_dialogic  plc p_plc  ctl   p_ctl
-    0.00043 0.44 1e-18 0.78 2.7e-03
-    0.00009 0.50 3e-16 0.72 3.3e-05
-  restorative    x stem group   chi2(1) =  0.00   p = 0.98
-  dialogic       x stem group   chi2(1) =  0.02   p = 0.886
-  plc            x stem group   chi2(1) =  0.73   p = 0.394
-  ctl            x stem group   chi2(1) =  0.48   p = 0.491
+     stem announced (NL, SE, PL) 1254        0.80        0.0110     1.38
+ stem not announced (CA, ES, PA) 1235        0.77        0.0073     1.45
+ p_dialogic  plc   p_plc  ctl   p_ctl
+    0.00062 0.44 1.4e-18 0.79 3.1e-03
+    0.00011 0.50 3.2e-16 0.72 2.7e-05
+  restorative    x stem group   chi2(1) =  0.00   p = 0.954
+  dialogic       x stem group   chi2(1) =  0.03   p = 0.862
+  plc            x stem group   chi2(1) =  0.66   p = 0.417
+  ctl            x stem group   chi2(1) =  0.43   p = 0.514
              variant    n restorative p_restorative dialogic p_dialogic  plc
-      without Canada 2081        0.81       1.9e-03     1.39    4.1e-06 0.47
-      without Panama 2081        0.81       3.1e-03     1.45    2.8e-07 0.46
-      without Poland 2068        0.83       7.3e-03     1.37    1.3e-05 0.47
- without Netherlands 2064        0.75       4.0e-05     1.46    2.6e-07 0.48
-       without Spain 2070        0.75       3.4e-05     1.42    3.0e-06 0.46
-      without Sweden 2081        0.77       2.7e-04     1.48    1.7e-07 0.48
+      without Canada 2081        0.81       2.9e-03     1.39    5.4e-06 0.47
+      without Panama 2081        0.82       5.2e-03     1.44    4.0e-07 0.46
+      without Poland 2068        0.84       1.2e-02     1.37    1.4e-05 0.47
+ without Netherlands 2064        0.75       5.5e-05     1.46    2.7e-07 0.48
+       without Spain 2070        0.75       3.4e-05     1.42    2.9e-06 0.46
+      without Sweden 2081        0.78       4.7e-04     1.47    2.3e-07 0.48
    p_plc  ctl   p_ctl
- 3.6e-28 0.75 2.2e-06
- 2.0e-29 0.75 1.5e-06
- 1.7e-28 0.74 1.2e-06
- 1.6e-27 0.75 1.9e-06
- 2.3e-28 0.78 1.1e-04
- 2.0e-27 0.75 2.2e-06
+ 6.0e-28 0.75 3.2e-06
+ 3.4e-29 0.75 1.8e-06
+ 1.8e-28 0.74 1.6e-06
+ 2.1e-27 0.75 2.4e-06
+ 2.5e-28 0.78 1.4e-04
+ 3.6e-27 0.75 2.3e-06
 (If the stem wording produced the result, it would differ between the stem groups and
  collapse when Canada, the least contrastive stem, is dropped.)
 
 ========== 2. Response style added as covariates ==========
               variant    n restorative p_restorative dialogic p_dialogic  plc
- wants, + ARS MRS ERS 2489        0.73       3.0e-06     1.38    2.9e-06 0.47
- sees,  + ARS MRS ERS 2489        0.96       4.5e-01     1.03    5.5e-01 0.70
+ wants, + ARS MRS ERS 2489        0.73       5.6e-06     1.38    3.0e-06 0.47
+ sees,  + ARS MRS ERS 2489        0.94       3.2e-01     1.04    5.2e-01 0.70
    p_plc  ctl   p_ctl
- 2.7e-32 0.75 2.8e-07
- 2.9e-12 0.71 8.2e-13
+ 3.5e-32 0.75 3.9e-07
+ 1.9e-12 0.71 6.9e-13
 
 ========== 3. Place agency without the control items (communicative items only) ==========
 Uses dialogue, learning and time; drops emancipation and agency, the two closest in content
 to the Master narrative (the place serves my will / rules defined by humans).
                                    variant    n restorative p_restorative
- wants, place agency = communicative items 2489        0.74       1.9e-06
- sees,  place agency = communicative items 2489        0.98       7.8e-01
+ wants, place agency = communicative items 2489        0.74       3.6e-06
+ sees,  place agency = communicative items 2489        0.97       5.8e-01
  dialogic p_dialogic plc_comm p_plc_comm  ctl   p_ctl
-     1.55    1.1e-10     0.52    1.5e-26 0.72 3.5e-09
-     1.09    1.1e-01     0.71    2.8e-11 0.70 4.9e-14
+     1.54    1.5e-10     0.52    2.4e-26 0.72 4.6e-09
+     1.10    8.8e-02     0.71    1.5e-11 0.70 4.3e-14
 correlation of the two place-agency versions: 0.876 
 
 ========== 4. Mediation, bootstrapped (motive -> place agency -> wanting mastery) ==========
-restorative  a = +0.252  b = -0.767 | indirect -0.194 [-0.238, -0.153] | direct -0.077 [-0.201, +0.035] (logit scale, per SD)
-dialogic     a = +0.232  b = -0.829 | indirect -0.192 [-0.239, -0.150] | direct +0.220 [+0.105, +0.330] (logit scale, per SD)
+restorative  a = +0.251  b = -0.767 | indirect -0.193 [-0.238, -0.152] | direct -0.071 [-0.197, +0.042] (logit scale, per SD)
+dialogic     a = +0.231  b = -0.826 | indirect -0.191 [-0.239, -0.150] | direct +0.222 [+0.109, +0.334] (logit scale, per SD)
 (Percentile intervals, 1000 resamples of respondents. Non-collapsibility of the logit makes the
  split between direct and indirect approximate; the sign pattern is the point.)
 
 ========== 5. What the effects mean in probabilities ==========
        outcome   predictor  p10  p90 change_pp
- wants mastery         plc 34.5  7.5     -27.0
- wants mastery restorative 24.1 15.6      -8.4
- wants mastery    dialogic 14.3 27.3      12.9
-  sees mastery         plc 40.3 22.2     -18.1
-  sees mastery restorative 30.8 31.3       0.6
-  sees mastery    dialogic 30.0 32.2       2.3
+ wants mastery         plc 34.4  7.5     -26.9
+ wants mastery restorative 23.9 15.7      -8.2
+ wants mastery    dialogic 14.4 27.2      12.9
+  sees mastery         plc 40.4 22.1     -18.3
+  sees mastery restorative 31.1 31.0      -0.1
+  sees mastery    dialogic 29.8 32.4       2.6
 (Average predicted probability, in percent, with the predictor set to its 10th and 90th
  percentile for everyone and all else left as observed.)
 
 ========== 6. Split-half replication (same halves as script 13) ==========
                               variant    n restorative p_restorative dialogic
- wants, half A (structure found here) 1241        0.87       0.12000     1.28
-             wants, half B (held out) 1248        0.73       0.00044     1.56
- sees,  half A (structure found here) 1241        0.97       0.74000     1.08
-             sees,  half B (held out) 1248        1.05       0.54000     1.01
+ wants, half A (structure found here) 1241        0.87       0.14000     1.28
+             wants, half B (held out) 1248        0.73       0.00052     1.55
+ sees,  half A (structure found here) 1241        0.95       0.56000     1.08
+             sees,  half B (held out) 1248        1.04       0.63000     1.02
  p_dialogic  plc   p_plc  ctl   p_ctl
-    7.8e-03 0.40 1.1e-23 0.80 3.9e-03
-    5.0e-06 0.54 2.7e-12 0.71 1.7e-05
-    3.5e-01 0.69 8.9e-08 0.73 2.5e-06
-    8.6e-01 0.72 5.4e-06 0.70 1.2e-07
+    7.9e-03 0.40 1.0e-23 0.81 6.0e-03
+    5.7e-06 0.54 2.9e-12 0.70 1.3e-05
+    3.0e-01 0.68 5.6e-08 0.73 3.2e-06
+    8.1e-01 0.72 4.3e-06 0.70 9.5e-08
 
 ========== 7. Excluding respondents flagged for speeding or straight-lining ==========
       variant    n restorative p_restorative dialogic p_dialogic  plc   p_plc
- wants, clean 2120        0.75       8.5e-05     1.37    1.3e-05 0.49 4.3e-23
- sees,  clean 2120        0.99       8.0e-01     1.02    7.5e-01 0.77 2.1e-06
+ wants, clean 2120        0.76       0.00011     1.37    1.4e-05 0.49 4.9e-23
+ sees,  clean 2120        0.97       0.65000     1.02    7.0e-01 0.76 1.5e-06
   ctl   p_ctl
- 0.76 6.4e-05
- 0.73 7.1e-09
+ 0.76 8.2e-05
+ 0.73 6.5e-09
 
 Saved: hnr_robustness.rds
+
+
+############################################################
+##  29_education_check.R 
+############################################################
+respondents in the models: 2489 
+
+========== 1. Education by country (harmonised) ==========
+             lv
+              primary high school higher <NA>
+  Canada           24         247    137    3
+  Panama            2         123    286    5
+  Poland           12         236    176    0
+  Netherlands      24         188    208    5
+  Spain            17         167    240    1
+  Sweden           49         194    155   14
+             lv
+              primary high school higher
+  Canada            6          61     34
+  Panama            0          30     70
+  Poland            3          56     42
+  Netherlands       6          45     50
+  Spain             4          39     57
+  Sweden           12          49     39
+not stated: 28 respondents
+
+========== 2. What education goes with (adjusted for country, age, gender) ==========
+(SD of the construct; reference = high school)
+  outcome primary p_primary higher p_higher
+1     plc  -0.094     0.314  0.030    0.468
+2    rest  -0.418     0.000  0.059    0.152
+3     dia  -0.190     0.042 -0.004    0.920
+4     ctl   0.041     0.667  0.066    0.116
+
+-- the wanted role and its extremity, education terms --
+position (ordered logit): primary -0.13 (p = 0.467), higher -0.03 (p = 0.665)
+extremity (logit): primary +0.36 (p = 0.095), higher -0.20 (p = 0.047)
+
+========== 3. The central estimates with and without education ==========
+-- wanted role, ordered logit (log-odds per SD) --
+     without   with
+plc    0.733  0.734
+rest   0.123  0.123
+dia   -0.214 -0.216
+ctl    0.161  0.160
+-- extremity, logit (log-odds per SD) --
+     without   with
+plc   -0.405 -0.403
+rest  -0.358 -0.345
+dia    0.405  0.403
+ctl   -0.147 -0.144
+-- wanting Master, odds ratio per SD --
+     without  with
+plc    0.469 0.469
+rest   0.785 0.790
+dia    1.426 1.425
+ctl    0.752 0.754
+
+========== 4. Does education moderate the place-agency effect? ==========
+place agency x education (linear, 1-3): -0.053 (t = -0.84, p = 0.400)
+
+Saved: hnr_education_check.rds
 
 
 ############################################################
@@ -1395,10 +1482,10 @@ Saved: hnr_robustness.rds
 ############################################################
 ========== 1. Are the country differences in wanting mastery carried by the constructs? ==========
                    chi2 df        p
-age + gender       18.2  5 0.002680
-+ motives          17.6  5 0.003450
-+ place agency     25.0  5 0.000141
-+ societal control 24.4  5 0.000184
+age + gender       18.0  5 0.002950
++ motives          17.9  5 0.003130
++ place agency     25.5  5 0.000113
++ societal control 24.6  5 0.000167
 (Omnibus test of country, five degrees of freedom, once each block is controlled. If the
  constructs carried the country effect, chi2 would fall toward zero. It does not: it
  barely moves with the motives and RISES when place agency is added.)
@@ -1417,20 +1504,20 @@ Sweden              2.36             19.42
 
 With every construct controlled, log-odds of wanting mastery relative to Spain:
                    Estimate Pr(>|z|)
-countryCanada        -0.432    0.015
-countryPanama        -0.619    0.001
-countryPoland        -0.746    0.000
-countryNetherlands   -0.792    0.000
-countrySweden        -0.534    0.003
+countryCanada        -0.462    0.010
+countryPanama        -0.600    0.001
+countryPoland        -0.770    0.000
+countryNetherlands   -0.803    0.000
+countrySweden        -0.571    0.002
 (Spain differs from every other sample. Panama reads identical Spanish wording, so this
  is not simply a translation effect.)
 
 ========== 2. Does country change how the constructs relate to wanting mastery? ==========
-  restorative  x country   chi2(5) =   9.8   p = 0.0817
-  dialogic     x country   chi2(5) =   3.2   p = 0.666
-  serviced     x country   chi2(5) =   4.9   p = 0.431
-  plcm         x country   chi2(5) =   2.3   p = 0.805
-  ctl          x country   chi2(5) =   1.9   p = 0.866
+  restorative  x country   chi2(5) =  10.1   p = 0.0726
+  dialogic     x country   chi2(5) =   3.1   p = 0.68
+  serviced     x country   chi2(5) =   5.0   p = 0.411
+  plcm         x country   chi2(5) =   2.4   p = 0.796
+  ctl          x country   chi2(5) =   1.9   p = 0.869
 (None reaches p < .05. The mechanism looks the same in every sample.)
 
 Can slopes be compared? Place-agency invariance across countries (MLR):
@@ -1453,69 +1540,69 @@ scalar     0.932 0.059 0.051 -0.0368
 
 Rural versus urban, adjusted for country, age and gender:
        outcome   OR     p
- wants mastery 1.00 0.974
-  sees mastery 1.07 0.544
-  restorative  rural b = -0.038  p = 0.286
-  dialogic     rural b = +0.014  p = 0.746
-  serviced     rural b = -0.072  p = 0.13
-  plcm         rural b = +0.021  p = 0.485
-  ctl          rural b = +0.036  p = 0.278
+ wants mastery 0.96 0.760
+  sees mastery 1.10 0.393
+  restorative  rural b = -0.025  p = 0.487
+  dialogic     rural b = +0.017  p = 0.696
+  serviced     rural b = -0.078  p = 0.106
+  plcm         rural b = +0.027  p = 0.369
+  ctl          rural b = +0.042  p = 0.21
 
 rural x country interaction on wanting mastery:
  chi2    df     p 
-3.500 5.000 0.622 
+3.100 5.000 0.688 
 (Residence as reported predicts nothing and does not vary by country.)
 
 
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  52 s | CFI 0.986 RMSEA 0.073 | largest standardised path 0.65
-dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.062 | largest standardised path 0.78
-serviced     fitted in  44 s | CFI 0.987 RMSEA 0.072 | largest standardised path 1.62
+restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+dialogic     fitted in  48 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
+serviced     fitted in  47 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
 
 ========== 1. Mediator -> outcome paths (b), across the three runs ==========
        outcome     mediator restorative dialogic serviced
- master_should        place      -0.559   -0.782   -1.204
- master_should       agency       0.063   -0.005   -0.480
- master_should relational_f       0.060   -0.099   -0.273
- master_should      control      -0.189   -0.208   -0.277
-    master_now        place      -0.348   -0.398   -0.508
-    master_now       agency      -0.026   -0.029   -0.157
-    master_now relational_f       0.125    0.064    0.010
-    master_now      control      -0.208   -0.210   -0.229
+ master_should        place      -0.560   -0.779   -1.199
+ master_should       agency       0.061   -0.012   -0.505
+ master_should relational_f       0.065   -0.094   -0.277
+ master_should      control      -0.188   -0.208   -0.276
+    master_now        place      -0.349   -0.401   -0.522
+    master_now       agency      -0.021   -0.023   -0.169
+    master_now relational_f       0.121    0.058   -0.004
+    master_now      control      -0.207   -0.210   -0.231
 (If the effect of a mediator on the outcome is stable across runs, it does not
  depend on which motive is examined; large differences would be a further sign
  of instability.)
 
 ========== 2. Motive -> mediator paths (a) ==========
       motive beta.place beta.agency beta.relational_f beta.control
- restorative    +0.502*     +0.268*           +0.647*      +0.094*
-    dialogic    +0.594*     +0.538*           +0.400*      +0.124*
-    serviced    +0.586*     +0.609*           +0.337*      +0.144*
+ restorative    +0.503*     +0.276*           +0.640*      +0.096*
+    dialogic    +0.592*     +0.543*           +0.402*      +0.123*
+    serviced    +0.583*     +0.616*           +0.342*      +0.141*
 
 ========== 3. Decomposition for WANTING mastery (one motive at a time) ==========
       motive   total  direct via_place via_agency via_relational via_control
- restorative -0.144* +0.098    -0.280*    +0.017*        +0.039      -0.018*
-    dialogic +0.038  +0.571*   -0.464*    -0.003         -0.040*     -0.026*
-    serviced +0.487* +1.616*   -0.705*    -0.292*        -0.092*     -0.040*
+ restorative -0.139* +0.103    -0.282*    +0.017         +0.041      -0.018*
+    dialogic +0.041  +0.572*   -0.461*    -0.006         -0.038*     -0.026*
+    serviced +0.494* +1.637*   -0.699*    -0.311*        -0.095*     -0.039*
  total_indirect               stable     share_mediated
-        -0.242*                  yes               168%
-        -0.532*                  yes n/a (total near 0)
-        -1.129* NO: do not interpret              -232%
+        -0.242*                  yes               174%
+        -0.531*                  yes n/a (total near 0)
+        -1.143* NO: do not interpret              -232%
 
 ========== 4. Decomposition for SEEING mastery ==========
       motive   total  direct via_place via_agency via_relational via_control
- restorative -0.038  +0.082    -0.174*    -0.007         +0.081*     -0.020*
-    dialogic -0.026  +0.226*   -0.236*    -0.016         +0.026      -0.026*
-    serviced +0.096  +0.518*   -0.297*    -0.096         +0.003      -0.033*
+ restorative -0.045  +0.079    -0.176*    -0.006         +0.078*     -0.020*
+    dialogic -0.028  +0.225*   -0.237*    -0.013         +0.023      -0.026*
+    serviced +0.108  +0.549*   -0.304*    -0.104         -0.001      -0.033*
  total_indirect               stable     share_mediated
-        -0.120*                  yes n/a (total near 0)
+        -0.123*                  yes n/a (total near 0)
         -0.252*                  yes n/a (total near 0)
-        -0.423* NO: do not interpret              -442%
+        -0.442* NO: do not interpret              -411%
 
 (* = p < .05, delta-method SE. Standardised on the latent-response scale for the
  binary outcome. share_mediated = total indirect / total, reported only when the
@@ -1523,11 +1610,11 @@ serviced     fitted in  44 s | CFI 0.987 RMSEA 0.072 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 69 s | largest standardised path 1.43
+fitted in 75 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
- restorative -0.762*   +0.438*        +0.502* -0.260*
-    dialogic +1.431*   -1.137*        -1.250* +0.181*
-    serviced -0.770*   +0.800*        +0.830* +0.060 
+ restorative -0.748*   +0.429*        +0.494* -0.254*
+    dialogic +1.416*   -1.121*        -1.236* +0.180*
+    serviced -0.759*   +0.789*        +0.820* +0.061 
 (Compare the direct and indirect columns with section 3: where they are large and
  nearly cancel, the decomposition is a suppression artefact of correlated motives.)
 
@@ -1543,40 +1630,40 @@ now         171     182    152
 should      339     220    128
 
 ========== Guardian ==========
-fit: cfi 0.953  tli 0.964  rmsea 0.059  srmr 0.058 
+fit: cfi 0.951  tli 0.968  rmsea 0.056  srmr 0.058 
    predictor beta_now p_now beta_should p_should differs wald_p
- restorative   -0.056 0.380       0.076  1.7e-01      no  0.088
-    dialogic   -0.002 0.980      -0.118  1.3e-01      no  0.290
-    serviced    0.116 0.120       0.019  7.8e-01      no  0.320
-       place    0.169 0.013       0.272  1.3e-06      no  0.210
-     control    0.012 0.790       0.000  1.0e+00      no  0.820
-     age_num    0.056 0.160       0.056  8.7e-02      no  1.000
-  gender_bin   -0.093 0.016      -0.136  1.7e-05      no  0.360
-R2 now 0.046 | R2 should 0.102 | residual correlation 0.259
+ restorative   -0.044 0.480       0.070  2.0e-01      no   0.14
+    dialogic   -0.004 0.960      -0.116  1.4e-01      no   0.30
+    serviced    0.112 0.130       0.021  7.6e-01      no   0.34
+       place    0.166 0.013       0.272  1.1e-06      no   0.19
+     control    0.016 0.730       0.000  9.9e-01      no   0.77
+     age_num    0.058 0.150       0.054  9.8e-02      no   0.94
+  gender_bin   -0.087 0.029      -0.137  1.5e-05      no   0.30
+R2 now 0.053 | R2 should 0.103 | residual correlation 0.263
 
 ========== Partner ==========
-fit: cfi 0.952  tli 0.964  rmsea 0.06  srmr 0.059 
+fit: cfi 0.951  tli 0.968  rmsea 0.057  srmr 0.059 
    predictor beta_now p_now beta_should p_should differs wald_p
- restorative    0.062 0.370       0.177   0.0068      no 0.1700
-    dialogic   -0.054 0.580      -0.158   0.0810      no 0.3900
-    serviced   -0.077 0.320      -0.110   0.1200      no 0.7400
-       place    0.161 0.014       0.197   0.0021      no 0.6400
-     control    0.072 0.056      -0.056   0.1400     yes 0.0081
-     age_num   -0.027 0.480       0.075   0.0530     yes 0.0390
-  gender_bin   -0.023 0.550      -0.123   0.0007     yes 0.0380
-R2 now 0.082 | R2 should 0.135 | residual correlation 0.431
+ restorative    0.058 0.390       0.177  0.00580      no 0.1500
+    dialogic   -0.057 0.550      -0.162  0.06900      no 0.3800
+    serviced   -0.078 0.300      -0.111  0.11000      no 0.7400
+       place    0.162 0.012       0.200  0.00170      no 0.6300
+     control    0.072 0.056      -0.058  0.12000     yes 0.0068
+     age_num   -0.027 0.480       0.073  0.06000     yes 0.0420
+  gender_bin   -0.022 0.570      -0.122  0.00084     yes 0.0400
+R2 now 0.094 | R2 should 0.143 | residual correlation 0.429
 
 ========== Object ==========
-fit: cfi 0.952  tli 0.964  rmsea 0.06  srmr 0.059 
+fit: cfi 0.951  tli 0.968  rmsea 0.056  srmr 0.059 
    predictor beta_now   p_now beta_should p_should differs wald_p
- restorative   -0.245 3.7e-05      -0.333  8.5e-09      no  0.170
-    dialogic   -0.027 7.8e-01       0.139  1.6e-01      no  0.120
-    serviced    0.273 1.5e-03       0.092  3.0e-01      no  0.053
-       place    0.430 7.6e-10       0.418  7.9e-09      no  0.940
-     control    0.091 2.9e-02       0.103  1.3e-02      no  0.770
-     age_num    0.002 9.5e-01       0.048  2.9e-01      no  0.370
-  gender_bin   -0.065 1.0e-01      -0.045  3.0e-01      no  0.680
-R2 now 0.203 | R2 should 0.247 | residual correlation 0.577
+ restorative   -0.223 8.3e-05      -0.317  1.2e-08      no  0.150
+    dialogic   -0.006 9.5e-01       0.147  1.2e-01      no  0.140
+    serviced    0.239 3.6e-03       0.073  3.9e-01      no  0.073
+       place    0.408 9.8e-10       0.407  7.2e-09      no  1.000
+     control    0.101 1.4e-02       0.108  8.7e-03      no  0.860
+     age_num    0.007 8.6e-01       0.050  2.7e-01      no  0.400
+  gender_bin   -0.058 1.5e-01      -0.039  3.6e-01      no  0.700
+R2 now 0.219 | R2 should 0.253 | residual correlation 0.572
 
 Saved: hnr_opposing_roles_sem.rds
 
@@ -1586,36 +1673,36 @@ Saved: hnr_opposing_roles_sem.rds
 ############################################################
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
-6101.298  618.000    0.953    0.964    0.060    0.058 
+6312.402  705.000    0.952    0.968    0.057    0.058 
 (CFI and TLI are above .95 and RMSEA is .060. The control block alone fits less
  well, RMSEA .103 by itself, which is why it enters as one latent among five.)
 
 ========== 2. Standardised paths: role SEEN now versus role WANTED ==========
    predictor beta_now   p_now beta_should p_should
- restorative   -0.003 9.5e-01      -0.205  2.1e-05
-    dialogic    0.129 4.4e-02       0.455  6.5e-10
-    serviced   -0.092 7.7e-02      -0.177  3.0e-03
-       place   -0.312 5.4e-12      -0.594  0.0e+00
-     control   -0.154 1.3e-08      -0.099  1.3e-03
-     age_num   -0.061 2.5e-02      -0.143  1.2e-06
-  gender_bin    0.071 6.2e-03       0.129  5.3e-06
+ restorative   -0.011 8.1e-01      -0.199  3.2e-05
+    dialogic    0.132 3.7e-02       0.451  6.4e-10
+    serviced   -0.090 8.0e-02      -0.175  3.3e-03
+       place   -0.313 3.6e-12      -0.591  0.0e+00
+     control   -0.153 1.3e-08      -0.098  1.5e-03
+     age_num   -0.063 2.0e-02      -0.141  1.6e-06
+  gender_bin    0.069 7.9e-03       0.131  4.1e-06
 
 ========== 3. Does each path differ between the two outcomes? (Wald) ==========
    predictor  chi2        p differs
- restorative 13.70 2.15e-04     yes
-    dialogic 16.65 4.50e-05     yes
-    serviced  1.71 1.91e-01      no
-       place 24.26 8.44e-07     yes
-     control  3.12 7.73e-02      no
-     age_num  5.58 1.82e-02     yes
-  gender_bin  3.17 7.52e-02      no
+ restorative 12.08 5.09e-04     yes
+    dialogic 16.39 5.16e-05     yes
+    serviced  1.72 1.90e-01      no
+       place 23.74 1.11e-06     yes
+     control  3.20 7.37e-02      no
+     age_num  5.12 2.37e-02     yes
+  gender_bin  3.54 6.00e-02      no
 (A Wald test of a path against its twin: 'yes' means the predictor relates
  differently to the role people see than to the role they want.)
 
 ========== 4. Variance explained and residual association ==========
-R2 sees mastery now:   0.1592 
-R2 wants mastery:      0.3646 
-residual correlation between the two outcomes: 0.429 
+R2 sees mastery now:   0.1643 
+R2 wants mastery:      0.3642 
+residual correlation between the two outcomes: 0.433 
 (What remains shared between seeing and wanting mastery after every
  predictor is held constant.)
 
@@ -1672,13 +1759,13 @@ mp_time               0.277    0.267   -0.093       0.229
 
 ========== 4. Do they change what predicts the role people want? ==========
                     added    LR df  p pseudoR2
- (motives + demographics)    NA NA NA   0.0335
-          mp_emancipation 184.2 15  0   0.0558
-              mp_dialogue 133.2 15  0   0.0497
-                mp_agency 172.0 15  0   0.0544
-              mp_learning 121.1 15  0   0.0482
-                  mp_time 157.8 15  0   0.0526
-        all five together 464.9 75  0   0.0899
+ (motives + demographics)    NA NA NA   0.0361
+          mp_emancipation 184.1 15  0   0.0584
+              mp_dialogue 134.9 15  0   0.0524
+                mp_agency 169.8 15  0   0.0566
+              mp_learning 119.4 15  0   0.0505
+                  mp_time 157.0 15  0   0.0551
+        all five together 462.7 75  0   0.0922
 
 ========== 5. Do the stances differ across countries? ==========
   mp_emancipation  chi2 p = 2.09e-10  Cramer V = 0.101
@@ -1713,8 +1800,8 @@ Q4 societal control battery x role WANTED:    Spearman   = 0.108
  relate to a particular place, not in beliefs about control in general.)
 
 ========== 8. Do the motives survive once the place stances are in? ==========
-stances + demographics -> + motives: LR chi2(15) = 61.6, p = 1.35e-07
-pseudo-R2: 0.0824 -> 0.0899
+stances + demographics -> + motives: LR chi2(15) = 60.6, p = 1.96e-07
+pseudo-R2: 0.0848 -> 0.0922
 (Motives keep an independent contribution, but a smaller one than the place
  stances make. The stances are the personal-level counterpart of the role item,
  so their strength is partly the same construct measured twice -- convergent
@@ -1723,15 +1810,15 @@ pseudo-R2: 0.0824 -> 0.0899
 
 ========== 9. One structural model: motives and the place latent together ==========
    chisq       df      cfi      tli    rmsea     srmr 
-2812.050  245.000    0.872    0.920    0.065    0.060 
+2938.307  296.000    0.868    0.932    0.060    0.060 
    predictor   beta    se        p
- restorative -0.212 0.049 1.36e-05
-    dialogic  0.474 0.073 8.89e-11
-    serviced -0.201 0.058 4.81e-04
-       place -0.623 0.047 0.00e+00
-     age_num -0.143 0.029 1.20e-06
-  gender_bin  0.129 0.028 5.30e-06
-R2 for wanting mastery: 0.3559 (motives + demographics alone: .1006 in script 15)
+ restorative -0.206 0.048 2.03e-05
+    dialogic  0.471 0.073 8.97e-11
+    serviced -0.198 0.057 5.50e-04
+       place -0.619 0.047 0.00e+00
+     age_num -0.141 0.029 1.60e-06
+  gender_bin  0.131 0.028 4.09e-06
+R2 for wanting mastery: 0.3557 (motives + demographics alone: .1006 in script 15)
 latent correlations with the place latent:
 restorative    dialogic    serviced 
        0.36        0.36       -0.28 
@@ -1772,38 +1859,39 @@ eta2 of the ideal role on each stance:
 Analysis of Deviance Table
 
 Model 1: master_should ~ restorative + dialogic + serviced + country + 
-    age_num + gender_bin
+    age_num + gender_bin + edu_primary + edu_higher + edu_na
 Model 2: master_should ~ restorative + dialogic + serviced + sc_not_message + 
     sc_tech_prevents + sc_heed_signals + sc_nature_partner + 
     sc_humans_lose + cl_denial + cl_tech_stops + cl_cannot_stop + 
-    cl_extinction + country + age_num + gender_bin
+    cl_extinction + country + age_num + gender_bin + edu_primary + 
+    edu_higher + edu_na
   Resid. Df Resid. Dev Df Deviance Pr(>Chi)  
-1      2478     2358.9                       
-2      2469     2342.6  9   16.294  0.06099 .
+1      2475     2356.2                       
+2      2466     2340.2  9   16.054  0.06577 .
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
             stance   OR   lo   hi      p
-    sc_not_message 0.95 0.86 1.04 0.2390
-  sc_tech_prevents 1.06 0.95 1.19 0.3010
-   sc_heed_signals 1.02 0.90 1.15 0.7370
- sc_nature_partner 1.03 0.92 1.15 0.6460
-    sc_humans_lose 0.92 0.81 1.03 0.1550
-         cl_denial 1.02 0.93 1.11 0.6880
-     cl_tech_stops 1.12 1.02 1.24 0.0205
-    cl_cannot_stop 1.03 0.93 1.15 0.5320
-     cl_extinction 1.09 0.99 1.21 0.0942
+    sc_not_message 0.95 0.86 1.04 0.2480
+  sc_tech_prevents 1.06 0.95 1.19 0.3090
+   sc_heed_signals 1.02 0.90 1.15 0.7310
+ sc_nature_partner 1.02 0.91 1.14 0.7140
+    sc_humans_lose 0.92 0.81 1.03 0.1530
+         cl_denial 1.02 0.93 1.11 0.7290
+     cl_tech_stops 1.12 1.02 1.23 0.0229
+    cl_cannot_stop 1.03 0.93 1.15 0.5580
+     cl_extinction 1.09 0.99 1.21 0.0834
 
 ========== 3. And beyond the motives for the whole typology? ==========
 Likelihood ratio tests of Multinomial Models
 
 Response: role_ideal
-                                                                                                                                                                                                                       Model
-1                                                                                                                                                         restorative + dialogic + serviced + country + age_num + gender_bin
-2 restorative + dialogic + serviced + sc_not_message + sc_tech_prevents + sc_heed_signals + sc_nature_partner + sc_humans_lose + cl_denial + cl_tech_stops + cl_cannot_stop + cl_extinction + country + age_num + gender_bin
+                                                                                                                                                                                                                                                           Model
+1                                                                                                                                                         restorative + dialogic + serviced + country + age_num + gender_bin + edu_primary + edu_higher + edu_na
+2 restorative + dialogic + serviced + sc_not_message + sc_tech_prevents + sc_heed_signals + sc_nature_partner + sc_humans_lose + cl_denial + cl_tech_stops + cl_cannot_stop + cl_extinction + country + age_num + gender_bin + edu_primary + edu_higher + edu_na
   Resid. df Resid. Dev   Test    Df LR stat.    Pr(Chi)
-1     12390   7970.715                                 
-2     12345   7910.568 1 vs 2    45 60.14669 0.06493291
-McFadden pseudo-R2: 0.0335 -> 0.0408
+1     12375   7949.692                                 
+2     12330   7889.788 1 vs 2    45 59.90413 0.06765198
+McFadden pseudo-R2: 0.0361 -> 0.0433
 
 Saved: hnr_scenarios.rds
 
@@ -1862,39 +1950,42 @@ Saved: hnr_motive_invariance.rds
 ############################################################
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
-7652.598  630.000    0.896    0.923    0.067    0.062 
+7812.248  720.000    0.895    0.932    0.063    0.061 
 (CFI below .95: the agency block fits poorly on its own and carries that
  here too. The structural estimates are the point, not the global fit.)
 
 ========== 2. Standardised paths to mastery as the ideal ==========
      predictor   beta    se        p s
-   restorative -0.265 0.064 3.05e-05 *
-      dialogic  0.186 0.074 1.16e-02 *
-      serviced  0.090 0.045 4.57e-02 *
-        agency -0.057 0.041 1.70e-01  
-  relational_f  0.024 0.041 5.54e-01  
-       age_num -0.143 0.029 1.20e-06 *
-    gender_bin  0.129 0.028 5.30e-06 *
-      c_Panama -0.059 0.037 1.06e-01  
-      c_Poland -0.038 0.037 3.08e-01  
- c_Netherlands -0.060 0.038 1.19e-01  
-       c_Spain  0.068 0.036 6.20e-02  
-      c_Sweden -0.007 0.037 8.58e-01  
+   restorative -0.262 0.063 3.30e-05 *
+      dialogic  0.186 0.073 1.11e-02 *
+      serviced  0.091 0.045 4.38e-02 *
+        agency -0.059 0.041 1.54e-01  
+  relational_f  0.027 0.041 5.17e-01  
+       age_num -0.141 0.029 1.60e-06 *
+    gender_bin  0.131 0.028 4.09e-06 *
+   edu_primary  0.035 0.028 2.12e-01  
+    edu_higher -0.042 0.030 1.64e-01  
+        edu_na  0.008 0.027 7.59e-01  
+      c_Panama -0.045 0.037 2.30e-01  
+      c_Poland -0.034 0.037 3.66e-01  
+ c_Netherlands -0.055 0.038 1.49e-01  
+       c_Spain  0.076 0.036 3.67e-02 *
+      c_Sweden -0.011 0.037 7.71e-01  
 
 Country: none of the five dummies differs significantly from Canada once the motives and
-demographics are in the model (smallest p = 0.062 ).
+demographics are in the model (smallest p = 0.0367 ).
 
 ========== 3. What the two attitude scales add ==========
-R2 for the outcome, motives + demographics only: 0.1006 
-R2 with the agency and belief scales added:     0.1012 
+R2 for the outcome, motives + demographics only: 0.1027 
+R2 with the agency and belief scales added:     0.1036 
 
 ========== 4. Correlations among the latents ==========
              restorative dialogic serviced agency relational_f
-restorative         1.00     0.62     0.01   0.13         0.59
+restorative         1.00     0.62     0.02   0.14         0.58
 dialogic            0.62     1.00     0.39   0.50         0.36
-serviced            0.01     0.39     1.00   0.17         0.01
-agency              0.13     0.50     0.17   1.00         0.18
-relational_f        0.59     0.36     0.01   0.18         1.00
+serviced            0.02     0.39     1.00   0.16         0.02
+agency              0.14     0.50     0.16   1.00         0.18
+relational_f        0.58     0.36     0.02   0.18         1.00
 
 Saved: hnr_structural_model.rds
 
@@ -2065,4 +2156,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_education_check.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds 

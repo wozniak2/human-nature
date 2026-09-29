@@ -42,7 +42,7 @@ for (v in c("restorative", "dialogic", "serviced", "plc", "ctl")) dat[[paste0(v,
 dat <- dat[complete.cases(dat[, c("typ_now", "typ_should", "age_num", "gender_bin")]), ]
 roles <- c("Master", "Manager", "User", "Guardian", "Partner", "Object")
 preds <- c("plc_z", "restorative_z", "dialogic_z", "ctl_z")
-cov   <- "age_num + gender_bin + country"
+cov   <- "age_num + gender_bin + edu_primary + edu_higher + edu_na + country"
 pname <- function(x) sub("_z", "", x)
 
 cat("========== 1. Do the predictors line up with the ordering? (means by role) ==========\n")

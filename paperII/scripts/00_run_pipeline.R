@@ -85,6 +85,7 @@ steps <- c(
   "25_motive_measurement.R",   # item-level effects, alternative scorings, split-half noise, serviced, invariance
   "24_outcome_structure.R",    # is the role one ordered scale? position versus extremity
   "23_robustness.R",           # the attacks a critical referee would make, and the tests that answer them
+  "29_education_check.R",      # education (three harmonised levels): what it goes with, and that it changes nothing central
   "22_geography.R",            # can geography moderate, or account for, anything? (country, residence)
   "21_mediation_sem.R",        # do the motives act on the wanted role through place agency? (slow: about 4 minutes)
   "20_opposing_roles_sem.R",    # the same model for the roles that oppose Master

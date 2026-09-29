@@ -33,7 +33,7 @@ dat <- dat[complete.cases(dat[, c("typ_should", "age_num", "gender_bin")]), ]
 dat$pole <- as.integer(dat$typ_should %in% c(1, 6))
 dat$ranked <- factor(dat$typ_should, levels = 1:6, ordered = TRUE)
 dat$plc_z <- zs(dat$plc); dat$ctl_z <- zs(dat$ctl)
-cov <- "age_num + gender_bin + country"
+cov <- "age_num + gender_bin + edu_primary + edu_higher + edu_na + country"
 
 ord_p <- function(d, terms) {
   m <- polr(as.formula(paste("ranked ~", paste(terms, collapse = " + "), "+", cov)), d, Hess = TRUE)

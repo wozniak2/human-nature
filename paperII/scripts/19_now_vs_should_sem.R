@@ -40,7 +40,7 @@ cd <- paste0("c_", others)
 # Latent names must not match observed columns; the motive score columns
 # are not created here, so nothing collides.
 lat <- c("restorative", "dialogic", "serviced", "place", "control")
-preds <- c(lat, "age_num", "gender_bin", cd)
+preds <- c(lat, "age_num", "gender_bin", "edu_primary", "edu_higher", "edu_na", cd)
 eq <- function(out, tag) paste0(out, " ~ ",
         paste(paste0(tag, seq_along(preds), "*", preds), collapse = " + "))
 mod <- paste0(
@@ -65,7 +65,7 @@ ps_all <- standardizedSolution(fit); ps <- ps_all[ps_all$op == "~", ]
 tab <- function(out) { d <- ps[ps$lhs == out, ]; setNames(d[, c("est.std", "pvalue")], c("beta", "p")) -> d
                        rownames(d) <- ps$rhs[ps$lhs == out]; d }
 now <- tab("master_now"); sho <- tab("master_should")
-shown <- rownames(now)[!grepl("^c_", rownames(now))]
+shown <- rownames(now)[!grepl("^c_|^edu", rownames(now))]
 cmp <- data.frame(predictor = shown,
                   beta_now = round(now[shown, "beta"], 3), p_now = signif(now[shown, "p"], 2),
                   beta_should = round(sho[shown, "beta"], 3), p_should = signif(sho[shown, "p"], 2))

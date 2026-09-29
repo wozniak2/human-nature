@@ -45,10 +45,11 @@ Always run script files. On this Windows machine, `Rscript -e "..."` crashes whe
 | 26_ordered_sem.R | One joint WLSMV model with four outcomes: the ordered position of the role seen and wanted, and its extremity (either pole), with a Wald test of every path across seeing and wanting | hnr_ordered_sem.rds |
 | 27_ordered_mediation.R | Mediation of the restorative and dialogic motives on the ordered role through place agency and societal control, one motive at a time, with an ordered-logit bootstrap cross-check | hnr_ordered_mediation.rds |
 | 28_story_model.R | The central story as one WLSMV model: restorative and dialogic motives, place agency and societal control as mediators, position and extremity of the wanted role as outcomes, with indirect and total effects | hnr_story_model.rds |
+| 29_education_check.R | Education (three harmonised levels, built in 04): its distribution, what it goes with, the central estimates with and without it, and a test of moderation of place agency | hnr_education_check.rds |
 | 11_square_table_models.R | Loglinear models for the 6x6 perceived-vs-ideal table: independence, quasi-independence, symmetry, quasi-symmetry; marginal homogeneity as the QS-vs-S contrast; fitted per country | hnr_square_table_models.rds |
 | 10_figures.R | Figures 1-20, PNG and PDF. The path diagrams (11, 12-14, 16, 17, 20) are drawn from the fitted lavaan models by the small ggplot2 engine in sem_plot_helpers.R | figures/, sem_plot_helpers.R |
 
-The pipeline runs 01, 02, 04-09, 13, 14, 23, 24, 26, 27, 28, 25, 22, 21, 20, 19, 18, 17, 16, 15, 12, 11 and 10 in that order. The full run now takes roughly ten minutes, most of it script 21. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
+The pipeline runs 01, 02, 04-09, 13, 14, 23, 29, 24, 26, 27, 28, 25, 22, 21, 20, 19, 18, 17, 16, 15, 12, 11 and 10 in that order. The full run now takes roughly ten minutes, most of it script 21. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
 
 ## Notes
 - Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).

@@ -41,7 +41,7 @@ for (c_ in others) dat[[paste0("c_", c_)]] <- as.integer(dat$country == c_)
 cd <- paste0("c_", others)
 
 lat   <- c("restorative", "dialogic", "place", "control")
-preds <- c(lat, "age_num", "gender_bin", cd)
+preds <- c(lat, "age_num", "gender_bin", "edu_primary", "edu_higher", "edu_na", cd)
 outs  <- c(pos_now = "pn", pos_should = "pw", ext_now = "en", ext_should = "ew")
 eq <- function(y, tag) paste0(y, " ~ ", paste(paste0(tag, seq_along(preds), "*", preds), collapse = " + "))
 mod <- paste(c(

@@ -65,7 +65,7 @@ cat("\n========== 4. Do they change what predicts the role people want? ========
 d <- dat[complete.cases(dat[, c("role_ideal", mot, mp, "country", "age_num", "gender_bin")]), ]
 d$role_ideal <- relevel(d$role_ideal, ref = "Manager")
 for (v in mp) d[[v]] <- factor(d[[v]])
-base <- paste("role_ideal ~", paste(mot, collapse = " + "), "+ country + age_num + gender_bin")
+base <- paste("role_ideal ~", paste(mot, collapse = " + "), "+ country + age_num + gender_bin + edu_primary + edu_higher + edu_na")
 m0 <- multinom(as.formula(base), d, trace = FALSE)
 r2 <- function(m) 1 - m$deviance / multinom(role_ideal ~ 1, d, trace = FALSE)$deviance
 res <- data.frame(added = "(motives + demographics)", LR = NA, df = NA, p = NA, pseudoR2 = round(r2(m0), 4))
@@ -119,7 +119,7 @@ cat("\n========== 8. Do the motives survive once the place stances are in? =====
 dd <- dat[complete.cases(dat[, c("role_ideal", mot, mp, "country", "age_num", "gender_bin")]), ]
 dd$role_ideal <- relevel(dd$role_ideal, ref = "Manager")
 for (v in mp) dd[[v]] <- factor(dd[[v]])
-dm <- "+ country + age_num + gender_bin"
+dm <- "+ country + age_num + gender_bin + edu_primary + edu_higher + edu_na"
 ms <- multinom(as.formula(paste("role_ideal ~", paste(mp, collapse = " + "), dm)), dd, trace = FALSE)
 mb <- multinom(as.formula(paste("role_ideal ~", paste(c(mp, mot), collapse = " + "), dm)), dd, trace = FALSE)
 an <- anova(ms, mb); n0 <- multinom(role_ideal ~ 1, dd, trace = FALSE)$deviance
@@ -140,12 +140,12 @@ sm <- paste0(
   dialogic    =~ ', paste(g$dialogic,    collapse = " + "), '
   serviced    =~ ', paste(g$serviced,    collapse = " + "), '
   place       =~ ', paste(mp, collapse = " + "), '
-  master_should ~ restorative + dialogic + serviced + place + age_num + gender_bin + ',
+  master_should ~ restorative + dialogic + serviced + place + age_num + gender_bin + edu_primary + edu_higher + edu_na + ',
   paste(cd, collapse = " + "))
 dat9 <- dat[, setdiff(names(dat), mot)]   # observed scores would collide with the latent names
 fs <- sem(sm, dat9, estimator = "WLSMV", ordered = c("master_should", mp))
 print(round(fitmeasures(fs, c("chisq","df","cfi","tli","rmsea","srmr")), 3))
-ps <- standardizedSolution(fs); ps <- ps[ps$op == "~" & ps$lhs == "master_should" & !grepl("^c_", ps$rhs), ]
+ps <- standardizedSolution(fs); ps <- ps[ps$op == "~" & ps$lhs == "master_should" & !grepl("^c_|^edu", ps$rhs), ]
 print(data.frame(predictor = ps$rhs, beta = round(ps$est.std, 3), se = round(ps$se, 3),
                  p = signif(ps$pvalue, 3)), row.names = FALSE)
 cat("R2 for wanting mastery:", round(inspect(fs, "r2")[["master_should"]], 4),

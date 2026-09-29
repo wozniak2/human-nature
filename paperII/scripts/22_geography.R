@@ -33,7 +33,7 @@ lr <- function(m0, m1) { a <- anova(m0, m1, test = "Chisq")
   c(chi2 = round(a$Deviance[2], 1), df = a$Df[2], p = signif(a[2, "Pr(>Chi)"], 3)) }
 
 cat("========== 1. Are the country differences in wanting mastery carried by the constructs? ==========\n")
-m1 <- glm(mw ~ age_num + gender_bin, binomial, dd)
+m1 <- glm(mw ~ age_num + gender_bin + edu_primary + edu_higher + edu_na, binomial, dd)
 m2 <- update(m1, . ~ . + restorative + dialogic + serviced)
 m3 <- update(m2, . ~ . + plcm)
 m4 <- update(m3, . ~ . + ctl)
@@ -49,7 +49,7 @@ cat("(Spain has the highest place agency AND the highest wish for mastery -- the
 cat(" the individual-level relation, so place agency acts as a suppressor of the country\n")
 cat(" effect, not a mediator of it.)\n")
 dd$country <- relevel(dd$country, "Spain")
-ms <- glm(mw ~ country + age_num + gender_bin + restorative + dialogic + serviced + plcm, binomial, dd)
+ms <- glm(mw ~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na + restorative + dialogic + serviced + plcm, binomial, dd)
 cat("\nWith every construct controlled, log-odds of wanting mastery relative to Spain:\n")
 print(round(summary(ms)$coefficients[grep("^country", rownames(summary(ms)$coefficients)), c(1, 4)], 3))
 cat("(Spain differs from every other sample. Panama reads identical Spanish wording, so this\n")
@@ -57,7 +57,7 @@ cat(" is not simply a translation effect.)\n")
 
 cat("\n========== 2. Does country change how the constructs relate to wanting mastery? ==========\n")
 dd$country <- relevel(dd$country, "Canada")
-base <- glm(mw ~ country + age_num + gender_bin + restorative + dialogic + serviced + plcm + ctl, binomial, dd)
+base <- glm(mw ~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na + restorative + dialogic + serviced + plcm + ctl, binomial, dd)
 for (v in c("restorative", "dialogic", "serviced", "plcm", "ctl")) {
   r <- lr(base, update(base, as.formula(paste(". ~ . +", v, ":country"))))
   cat(sprintf("  %-12s x country   chi2(%d) = %5.1f   p = %.3g\n", v, r["df"], r["chi2"], r["p"]))
@@ -77,15 +77,15 @@ cat(" so country MEANS on place agency cannot be.)\n")
 cat("\n========== 3. Urban versus rural, as reported ==========\n")
 print(round(100 * prop.table(table(d$country, d$rural), 1), 1))
 res <- do.call(rbind, lapply(c("mw", "mn"), function(y) {
-  m <- glm(as.formula(paste(y, "~ rural + country + age_num + gender_bin")), binomial, d)
+  m <- glm(as.formula(paste(y, "~ rural + country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), binomial, d)
   s <- summary(m)$coefficients["rural", ]
   data.frame(outcome = ifelse(y == "mw", "wants mastery", "sees mastery"),
              OR = round(exp(s[1]), 2), p = signif(s[4], 3)) }))
 cat("\nRural versus urban, adjusted for country, age and gender:\n"); print(res, row.names = FALSE)
 for (v in c("restorative", "dialogic", "serviced", "plcm", "ctl")) {
-  m <- lm(as.formula(paste(v, "~ rural + country + age_num + gender_bin")), d)
+  m <- lm(as.formula(paste(v, "~ rural + country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), d)
   s <- summary(m)$coefficients["rural", ]; cat(sprintf("  %-12s rural b = %+.3f  p = %.3g\n", v, s[1], s[4]))
 }
-mr <- glm(mw ~ rural + country + age_num + gender_bin, binomial, d[!is.na(d$rural), ])
+mr <- glm(mw ~ rural + country + age_num + gender_bin + edu_primary + edu_higher + edu_na, binomial, d[!is.na(d$rural), ])
 cat("\nrural x country interaction on wanting mastery:\n"); print(lr(mr, update(mr, . ~ . + rural:country)))
 cat("(Residence as reported predicts nothing and does not vary by country.)\n")

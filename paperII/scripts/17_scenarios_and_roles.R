@@ -49,9 +49,9 @@ cat(" those wanting Object.)\n")
 cat("\n========== 2. Do the stances add beyond the motives? (mastery as ideal) ==========\n")
 d <- dat[complete.cases(dat[, c("master_should", mot, items, "country","age_num","gender_bin")]), ]
 f0 <- glm(as.formula(paste("master_should ~", paste(mot, collapse=" + "),
-                           "+ country + age_num + gender_bin")), binomial, d)
+                           "+ country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), binomial, d)
 f1 <- glm(as.formula(paste("master_should ~", paste(c(mot, items), collapse=" + "),
-                           "+ country + age_num + gender_bin")), binomial, d)
+                           "+ country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), binomial, d)
 print(anova(f0, f1, test = "Chisq"))
 s <- coef(summary(f1))
 s <- s[rownames(s) %in% items, , drop = FALSE]
@@ -63,9 +63,9 @@ print(data.frame(stance = rownames(s), OR = round(exp(s[,1]), 2),
 cat("\n========== 3. And beyond the motives for the whole typology? ==========\n")
 d$role_ideal <- relevel(d$role_ideal, ref = "Manager")
 m0 <- multinom(as.formula(paste("role_ideal ~", paste(mot, collapse=" + "),
-                                "+ country + age_num + gender_bin")), d, trace = FALSE)
+                                "+ country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), d, trace = FALSE)
 m1 <- multinom(as.formula(paste("role_ideal ~", paste(c(mot, items), collapse=" + "),
-                                "+ country + age_num + gender_bin")), d, trace = FALSE)
+                                "+ country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), d, trace = FALSE)
 print(anova(m0, m1))
 cat(sprintf("McFadden pseudo-R2: %.4f -> %.4f\n",
             1 - m0$deviance / multinom(role_ideal ~ 1, d, trace = FALSE)$deviance,

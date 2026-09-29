@@ -14,6 +14,8 @@
 #    Panama's codes run 2-7. DO NOT pool education_raw across
 #    countries without recoding into a harmonized ordinal scheme --
 #    confirm the actual per-country answer-option wording first.
+#    (Done in 04_mimic_model.R: harmonised to primary / high school / higher, with a
+#    "not stated" flag; see edu_level() there.)
 #  - Gender granularity differs: Netherlands shows only codes 1-2
 #    (suggests binary-only recruitment), the other 5 countries show
 #    4-5 categories.

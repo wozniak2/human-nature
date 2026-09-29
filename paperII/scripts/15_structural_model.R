@@ -43,7 +43,7 @@ mod <- paste0(
   agency       =~ ', paste(ag, collapse = " + "), '
   relational_f =~ ', paste(q1, collapse = " + "), '
   master_should ~ restorative + dialogic + serviced + agency + relational_f +
-                  age_num + gender_bin + ', paste(cd, collapse = " + "))
+                  age_num + gender_bin + edu_primary + edu_higher + edu_na + ', paste(cd, collapse = " + "))
 
 fit <- sem(mod, dat, estimator = "WLSMV", ordered = "master_should")
 
@@ -68,7 +68,7 @@ mod_nolat <- paste0(
  'restorative =~ ', paste(g$restorative, collapse = " + "), '
   dialogic    =~ ', paste(g$dialogic,    collapse = " + "), '
   serviced    =~ ', paste(g$serviced,    collapse = " + "), '
-  master_should ~ restorative + dialogic + serviced + age_num + gender_bin + ',
+  master_should ~ restorative + dialogic + serviced + age_num + gender_bin + edu_primary + edu_higher + edu_na + ',
   paste(cd, collapse = " + "))
 fit_nolat <- sem(mod_nolat, dat, estimator = "WLSMV", ordered = "master_should")
 cat("R2 for the outcome, motives + demographics only:",

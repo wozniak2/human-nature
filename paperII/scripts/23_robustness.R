@@ -39,7 +39,7 @@ dat$stem <- ifelse(stem_announced, "announced", "not announced")
 
 core <- c("restorative_z", "dialogic_z", "plc_z", "ctl_z")
 fit_or <- function(d, y, terms = core, extra = character(0), country = TRUE) {
-  rhs <- c(terms, extra, "age_num", "gender_bin", if (country && length(unique(d$country)) > 1) "country")
+  rhs <- c(terms, extra, "age_num", "gender_bin", "edu_primary", "edu_higher", "edu_na", if (country && length(unique(d$country)) > 1) "country")
   m <- glm(as.formula(paste(y, "~", paste(rhs, collapse = " + "))), binomial, d)
   s <- summary(m)$coefficients[terms, , drop = FALSE]
   setNames(c(rbind(round(exp(s[, 1]), 2), signif(s[, 4], 2))),
@@ -57,7 +57,7 @@ cat("\n========== 1. Question stems: split by stem group, and drop each country 
 sg <- rbind(show("stem announced (NL, SE, PL)", dat[stem_announced, ]),
             show("stem not announced (CA, ES, PA)", dat[!stem_announced, ]))
 print(sg, row.names = FALSE)
-base <- glm(mw ~ restorative_z + dialogic_z + plc_z + ctl_z + age_num + gender_bin + country, binomial, dat)
+base <- glm(mw ~ restorative_z + dialogic_z + plc_z + ctl_z + age_num + gender_bin + edu_primary + edu_higher + edu_na + country, binomial, dat)
 for (v in c("restorative_z", "dialogic_z", "plc_z", "ctl_z")) {
   a <- anova(base, update(base, as.formula(paste(". ~ . +", v, ":stem"))), test = "Chisq")
   cat(sprintf("  %-14s x stem group   chi2(1) = %5.2f   p = %.3g\n", sub("_z", "", v), a$Deviance[2], a[2, "Pr(>Chi)"]))
@@ -84,8 +84,8 @@ cat("correlation of the two place-agency versions:", round(cor(dat$plc, dat$plc_
 cat("\n========== 4. Mediation, bootstrapped (motive -> place agency -> wanting mastery) ==========\n")
 set.seed(20260929)
 med_once <- function(d, x, m = "plc_z") {
-  a <- coef(lm(as.formula(paste(m, "~", x, "+ age_num + gender_bin + country")), d))[[x]]
-  f <- glm(as.formula(paste("mw ~", x, "+", m, "+ age_num + gender_bin + country")), binomial, d)
+  a <- coef(lm(as.formula(paste(m, "~", x, "+ age_num + gender_bin + edu_primary + edu_higher + edu_na + country")), d))[[x]]
+  f <- glm(as.formula(paste("mw ~", x, "+", m, "+ age_num + gender_bin + edu_primary + edu_higher + edu_na + country")), binomial, d)
   b <- coef(f)[[m]]; dr <- coef(f)[[x]]
   c(a = a, b = b, indirect = a * b, direct = dr, prop = a * b / (a * b + dr))
 }
@@ -101,7 +101,7 @@ cat(" split between direct and indirect approximate; the sign pattern is the poi
 
 cat("\n========== 5. What the effects mean in probabilities ==========\n")
 mods <- lapply(c(mw = "mw", mn = "mn"), function(y)
-  glm(as.formula(paste(y, "~ restorative_z + dialogic_z + plc_z + ctl_z + age_num + gender_bin + country")), binomial, dat))
+  glm(as.formula(paste(y, "~ restorative_z + dialogic_z + plc_z + ctl_z + age_num + gender_bin + edu_primary + edu_higher + edu_na + country")), binomial, dat))
 pp <- function(m, v, lo, hi) {
   d1 <- dat; d1[[v]] <- lo; d2 <- dat; d2[[v]] <- hi
   c(low = mean(predict(m, d1, "response")), high = mean(predict(m, d2, "response")))

@@ -520,7 +520,7 @@ g11 <- sem_plot(n11, e11, xlim = c(0, 10.2), ylim = c(-0.45, 9.0), legend_at = c
   title = "The role people want, from motives and from how much agency they grant a place",
   subtitle = "Standardised estimates. Line width grows with the size of the path; grey lines are loadings.
 Higher place agency = the place is granted more independence and influence.",
-  caption = paste0("WLSMV, n = 2,489, ordinal indicators. Country dummies are in the model but not drawn (none differs significantly from Canada).\n",
+  caption = paste0("WLSMV, n = 2,489, ordinal indicators. Education and country dummies are in the model but not drawn (no country differs significantly from Canada).\n",
     "The place-agency latent correlates .36 with restorative, .36 with dialogic and −.28 with serviced. Place agency is the personal counterpart of the role item,\n",
     "so its path is partly the same construct measured twice; the motive paths shift once it is included. Source: 18_place_relationship.R"))
 save_sem(g11, "fig11_semplot_place_model", 10.2, 10.0)
@@ -567,7 +567,7 @@ pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file
     texts = do.call(rbind, texts), bands = do.call(rbind, bands), legend_at = c(0.4, 0.2),
     title = headline,
     subtitle = "Standardised paths. Line width grows with the size of the path; * = the path differs between the two panels (Wald p < .05). Latent variables show their indicator counts.",
-    caption = paste0(sprintf("WLSMV, n = 2,489; country dummies are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
+    caption = paste0(sprintf("WLSMV, n = 2,489; education (three levels) and country dummies are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
                      if (nzchar(note)) paste0("\n", note) else ""))
   save_sem(g, file, 15.9, 8.4)
 }
@@ -700,7 +700,7 @@ cp <- local({
   cuts <- c("Master | Manager", "Manager | User", "User | Guardian", "Guardian | Partner", "Partner | Object")
   do.call(rbind, lapply(1:5, function(k) {
     d$y <- as.integer(d$typ_should > k)
-    m <- glm(y ~ PlaceAgency + Restorative + Dialogic + Control + age_num + gender_bin + country, binomial, d)
+    m <- glm(y ~ PlaceAgency + Restorative + Dialogic + Control + age_num + gender_bin + edu_primary + edu_higher + edu_na + country, binomial, d)
     s <- summary(m)$coefficients[c("PlaceAgency", "Restorative", "Dialogic", "Control"), , drop = FALSE]
     data.frame(cut = cuts[k],
                predictor = c("Place agency", "Restorative motive", "Dialogic motive", "Societal control"),
@@ -774,7 +774,7 @@ bd <- data.frame(x = c(2.4, 7.75, 11.75), y = c(4.4, 4.4, 3.75), w = c(4.6, 5.9,
 g20 <- sem_plot(n20, e20, xlim = c(0, 13), ylim = c(0.05, 7.95), headers = hd, bands = bd, legend_at = c(0.3, 0.32),
   title = "How experience of a place reaches the role people want: through the agency they grant it",
   subtitle = "Standardised estimates, both motives entered together. Line width grows with the size of the path.",
-  caption = "WLSMV, n = 2,489, ordinal indicators. Position runs from Master (1) to Object (6): positive = a role further from Master. Extremity = choosing either pole.\nAge, gender and country are in the model and not drawn; societal control is its mean score. Source: 28_story_model.R")
+  caption = "WLSMV, n = 2,489, ordinal indicators. Position runs from Master (1) to Object (6): positive = a role further from Master. Extremity = choosing either pole.\nAge, gender, education and country are in the model and not drawn; societal control is its mean score. Source: 28_story_model.R")
 save_sem(g20, "fig20_story_model", 13, 8.6)
 
 cat("Figures written to the figures/ folder", fill = TRUE)

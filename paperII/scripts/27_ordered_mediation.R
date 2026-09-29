@@ -39,7 +39,7 @@ dat$pos_now <- dat$typ_now; dat$pos_should <- dat$typ_should
 others <- setdiff(levels(dat$country), "Canada")
 for (c_ in others) dat[[paste0("c_", c_)]] <- as.integer(dat$country == c_)
 cd   <- paste0("c_", others)
-covs <- c("age_num", "gender_bin", cd)
+covs <- c("age_num", "gender_bin", "edu_primary", "edu_higher", "edu_na", cd)
 ms <- c("place", "control")
 ys <- c("pos_should", "pos_now")
 
@@ -61,7 +61,7 @@ med_model <- function(x) {
   mod <- paste(c(unlist(meas[c(x, ms)]), a_eq, y_eq, "pos_now ~~ pos_should", def), collapse = "\n")
   fit <- sem(mod, dat, estimator = "WLSMV", ordered = c(ys, mp, ctl, g[[x]]))
   ps <- standardizedSolution(fit)
-  reg <- ps[ps$op == "~" & !grepl("^c_|^age|^gender", ps$rhs), "est.std"]
+  reg <- ps[ps$op == "~" & !grepl("^c_|^age|^gender|^edu", ps$rhs), "est.std"]
   list(fit = fit, ps = ps, max_std = max(abs(reg), na.rm = TRUE))
 }
 star <- function(ps, l) { r <- ps[match(l, ps$label), ]; sprintf("%+.3f%s", r$est.std, ifelse(r$pvalue < .05, "*", " ")) }
@@ -103,8 +103,8 @@ for (v in c("plc", "restorative_s", "dialogic_s")) dat[[paste0(v, "_z")]] <- zs(
 d0 <- dat[complete.cases(dat[, c("typ_should", "age_num", "gender_bin")]), ]
 d0$ranked <- factor(d0$typ_should, levels = 1:6, ordered = TRUE)
 med_once <- function(d, x) {
-  a <- coef(lm(as.formula(paste("plc_z ~", x, "+ age_num + gender_bin + country")), d))[[x]]
-  f <- polr(as.formula(paste("ranked ~", x, "+ plc_z + age_num + gender_bin + country")), d)
+  a <- coef(lm(as.formula(paste("plc_z ~", x, "+ age_num + gender_bin + edu_primary + edu_higher + edu_na + country")), d))[[x]]
+  f <- polr(as.formula(paste("ranked ~", x, "+ plc_z + age_num + gender_bin + edu_primary + edu_higher + edu_na + country")), d)
   b <- coef(f)[["plc_z"]]; dr <- coef(f)[[x]]
   c(indirect = a * b, direct = dr)
 }

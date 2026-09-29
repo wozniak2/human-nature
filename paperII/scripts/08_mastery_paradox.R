@@ -53,17 +53,17 @@ or_tab <- function(m) {
 cat("\n========== 4. Personal endorsement of mastery (Q5 = Master) ~ country + age + gender ==========\n")
 dat$master_should <- as.integer(dat$typ_should == 1)
 dat$master_now    <- as.integer(dat$typ_now == 1)
-m_should <- glm(master_should ~ country + age_num + gender_bin, family = binomial, data = dat)
+m_should <- glm(master_should ~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na, family = binomial, data = dat)
 print(or_tab(m_should))
 cat("\n-- for contrast: perceived mastery (Q4 = Master) ~ country + age + gender --\n")
-m_now <- glm(master_now ~ country + age_num + gender_bin, family = binomial, data = dat)
+m_now <- glm(master_now ~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na, family = binomial, data = dat)
 print(or_tab(m_now))
 
 cat("\n========== 5. Who holds the paradox? (among Master-now respondents: should != Master) ==========\n")
 mn <- subset(dat, typ_now == 1)
 mn$paradox <- as.integer(mn$typ_should != 1)
 cat("n Master-now =", nrow(mn), "\n")
-m_par <- glm(paradox ~ country + age_num + gender_bin, family = binomial, data = mn)
+m_par <- glm(paradox ~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na, family = binomial, data = mn)
 print(or_tab(m_par))
 cat("\nRelational-belief score by paradox status (Master-now respondents):\n")
 print(round(tapply(mn$relational, mn$paradox, mean), 3))
@@ -91,7 +91,7 @@ print(do.call(rbind, lapply(split(cl, cl$country), function(x) data.frame(
   n = nrow(x), master_now = pct(mean(x$typ_now == 1)), master_should = pct(mean(x$typ_should == 1)),
   paradox_among_master_now = pct(mean(x$typ_should[x$typ_now == 1] != 1))))))
 cat("Pooled McNemar (clean):", round(mcnemar.test(table(cl$typ_now == 1, cl$typ_should == 1))$statistic, 1), "\n")
-print(or_tab(glm(master_should ~ country + age_num + gender_bin, family = binomial, data = cl)))
+print(or_tab(glm(master_should ~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na, family = binomial, data = cl)))
 
 cat("\n========== 8. Full six-by-six test: do perceived and ideal role distributions differ? ==========\n")
 # Stuart-Maxwell test of marginal homogeneity for a paired k x k table
@@ -126,12 +126,12 @@ for (v in c("typ_now_f", "typ_should_f")) {
 
 cat("\n========== 10. Checks against over-interpretation ==========\n")
 cat("-- (a) Overall country effect on mastery as ideal (LR test, 5 df) --\n")
-m_should0 <- glm(master_should ~ age_num + gender_bin, family = binomial, data = dat)
+m_should0 <- glm(master_should ~ age_num + gender_bin + edu_primary + edu_higher + edu_na, family = binomial, data = dat)
 print(anova(m_should0, m_should, test = "Chisq"))
 cat("-- (b) Predicted P(mastery as ideal): age, gender vs country ranges --\n")
-nd <- expand.grid(country = factor("Canada", levels(dat$country)), age_num = c(1, 6), gender_bin = c(0, 1))
+nd <- expand.grid(country = factor("Canada", levels(dat$country)), age_num = c(1, 6), gender_bin = c(0, 1), edu_primary = 0, edu_higher = 0, edu_na = 0)
 print(cbind(nd, p = round(predict(m_should, nd, type = "response"), 3)))
-nc <- data.frame(country = factor(levels(dat$country), levels(dat$country)), age_num = 3, gender_bin = 0)
+nc <- data.frame(country = factor(levels(dat$country), levels(dat$country)), age_num = 3, gender_bin = 0, edu_primary = 0, edu_higher = 0, edu_na = 0)
 print(cbind(nc, p = round(predict(m_should, nc, type = "response"), 3)))
 cat("-- (c) Net change in mastery (now minus should), 95% CI, per country --\n")
 print(do.call(rbind, lapply(split(dat, dat$country), function(x) {

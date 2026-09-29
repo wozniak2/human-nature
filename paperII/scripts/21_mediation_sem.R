@@ -44,7 +44,7 @@ dat$master_should <- as.integer(dat$typ_should == 1)
 others <- setdiff(levels(dat$country), "Canada")
 for (c_ in others) dat[[paste0("c_", c_)]] <- as.integer(dat$country == c_)
 cd   <- paste0("c_", others)
-covs <- c("age_num", "gender_bin", cd)
+covs <- c("age_num", "gender_bin", "edu_primary", "edu_higher", "edu_na", cd)
 
 ms <- c("place", "agency", "relational_f", "control")
 ys <- c("master_should", "master_now")
@@ -83,7 +83,7 @@ med_model <- function(xs) {
   fit <- sem(mod, dat, estimator = "WLSMV", ordered = items)
   ps <- standardizedSolution(fit)
   get <- function(l) ps[match(l, ps$label), c("est.std", "pvalue")]
-  reg <- ps[ps$op == "~" & !grepl("^c_|^age|^gender", ps$rhs), "est.std"]
+  reg <- ps[ps$op == "~" & !grepl("^c_|^age|^gender|^edu", ps$rhs), "est.std"]
   rows <- do.call(rbind, lapply(seq_len(nrow(tg)), function(i) {
     y <- tg$y[i]; x <- tg$x[i]
     ids <- grid$name[grid$y == y & grid$x == x]; mm <- grid$m[grid$y == y & grid$x == x]

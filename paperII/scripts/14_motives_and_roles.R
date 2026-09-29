@@ -39,7 +39,7 @@ cat("\n========== 1. Who holds which motive? ==========\n")
 for (g in mot) {
   cat("--", g, "--\n")
   print(round(tapply(dat[[g]], dat$country, mean, na.rm = TRUE), 2))
-  m <- lm(as.formula(paste(g, "~ country + age_num + gender_bin")), dat)
+  m <- lm(as.formula(paste(g, "~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), dat)
   a <- anova(m)
   cat(sprintf("   country p = %-9.3g partial eta2 = %.3f | age b = %+.3f p = %-8.3g | man vs woman b = %+.3f p = %.3g\n",
       a["country","Pr(>F)"], a["country","Sum Sq"]/sum(a[,"Sum Sq"]),
@@ -56,9 +56,9 @@ dat$role_ideal <- relevel(dat$role_ideal, ref = "Manager")
 keep <- complete.cases(dat[, c("role_ideal", mot, "country", "age_num", "gender_bin")])
 d <- dat[keep, ]
 cat("n =", nrow(d), "\n")
-base <- multinom(role_ideal ~ country + age_num + gender_bin, d, trace = FALSE)
+base <- multinom(role_ideal ~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na, d, trace = FALSE)
 full <- multinom(as.formula(paste("role_ideal ~", paste(mot, collapse = " + "),
-                                  "+ country + age_num + gender_bin")), d, trace = FALSE)
+                                  "+ country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), d, trace = FALSE)
 cat("\nDoes adding the three motives improve on country + age + gender?\n")
 print(anova(base, full))
 cat(sprintf("McFadden pseudo-R2: %.4f -> %.4f\n",
@@ -80,9 +80,9 @@ cat(" that role rather than Manager.)\n")
 
 cat("\n========== 3. The same thing as a simple contrast: mastery as the ideal ==========\n")
 d$master_should <- as.integer(d$typ_should == 1)
-m0 <- glm(master_should ~ country + age_num + gender_bin, binomial, d)
+m0 <- glm(master_should ~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na, binomial, d)
 m1 <- glm(as.formula(paste("master_should ~", paste(mot, collapse = " + "),
-                           "+ country + age_num + gender_bin")), binomial, d)
+                           "+ country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), binomial, d)
 print(anova(m0, m1, test = "Chisq"))
 s <- coef(summary(m1))
 print(data.frame(term = rownames(s), OR = round(exp(s[, 1]), 2),
@@ -93,9 +93,9 @@ print(data.frame(term = rownames(s), OR = round(exp(s[, 1]), 2),
 cat("\n========== 4. And among those who perceive mastery, who rejects it? ==========\n")
 mn <- subset(d, typ_now == 1); mn$rej <- as.integer(mn$typ_should != 1)
 cat("n =", nrow(mn), "\n")
-r0 <- glm(rej ~ country + age_num + gender_bin, binomial, mn)
+r0 <- glm(rej ~ country + age_num + gender_bin + edu_primary + edu_higher + edu_na, binomial, mn)
 r1 <- glm(as.formula(paste("rej ~", paste(mot, collapse = " + "),
-                           "+ country + age_num + gender_bin")), binomial, mn)
+                           "+ country + age_num + gender_bin + edu_primary + edu_higher + edu_na")), binomial, mn)
 print(anova(r0, r1, test = "Chisq"))
 s2 <- coef(summary(r1))
 print(data.frame(term = rownames(s2), OR = round(exp(s2[, 1]), 2),

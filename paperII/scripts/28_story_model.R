@@ -36,7 +36,7 @@ dat$ext_should <- as.integer(dat$typ_should %in% c(1, 6))
 dat$ctl_mean   <- dat$control_mean
 others <- setdiff(levels(dat$country), "Canada")
 for (c_ in others) dat[[paste0("c_", c_)]] <- as.integer(dat$country == c_)
-covs <- paste(c("age_num", "gender_bin", paste0("c_", others)), collapse = " + ")
+covs <- paste(c("age_num", "gender_bin", "edu_primary", "edu_higher", "edu_na", paste0("c_", others)), collapse = " + ")
 
 mod <- paste0(
   "restorative =~ ", paste(g$restorative, collapse = " + "), "\n",
@@ -60,7 +60,7 @@ cat("fitted in", round(as.numeric(difftime(Sys.time(), t0, units = "secs"))), "s
 cat("========== 1. Fit ==========\n")
 print(round(fitmeasures(fit, c("chisq", "df", "cfi", "tli", "rmsea", "srmr")), 3))
 ps <- standardizedSolution(fit)
-reg <- ps[ps$op == "~" & !grepl("^c_|^age|^gender", ps$rhs), ]
+reg <- ps[ps$op == "~" & !grepl("^c_|^age|^gender|^edu", ps$rhs), ]
 cat("largest standardised structural path:", round(max(abs(reg$est.std)), 2),
     ifelse(max(abs(reg$est.std)) > 1, "  <- UNSTABLE, do not interpret", "  (inside +/-1)"), "\n")
 
