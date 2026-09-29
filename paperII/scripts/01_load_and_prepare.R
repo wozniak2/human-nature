@@ -105,6 +105,12 @@ load_one_country <- function(path, country_name) {
   agency_now    <- as.data.frame(lapply(16:27, g)); names(agency_now)    <- paste0("ag_now_", agency_labels)
   agency_future <- as.data.frame(lapply(29:40, g)); names(agency_future) <- paste0("ag_fut_", agency_labels)
 
+  # --- reasons for staying in a natural place (Q13, 14 items) ---
+  reason_labels <- c("relax", "beauty", "meet_people", "watch_plants", "meet_animals",
+                     "own_thoughts", "quiet", "communicates", "teaches", "struggles",
+                     "active", "comfort", "photos", "cheap")
+  reasons <- as.data.frame(lapply(66:79, g)); names(reasons) <- paste0("rs_", reason_labels)
+
   # --- response-style indices from 10 agree/disagree items with opposing content:
   #     Q14 (3 pro- and 3 anti-tourism), Q10 "normal event" vs "message from nature",
   #     Q13 "can be stopped" vs "cannot be stopped" (Billiet & McClendon, 2000 logic) ---
@@ -130,7 +136,7 @@ load_one_country <- function(path, country_name) {
       residence_raw  = residence_raw,
       indigenous_raw = indigenous_raw
     ),
-    q1, validity, style, agency_now, agency_future
+    q1, validity, style, agency_now, agency_future, reasons
   )
   out
 }

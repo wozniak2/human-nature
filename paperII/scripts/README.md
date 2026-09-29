@@ -29,10 +29,11 @@ Always run script files. On this Windows machine, `Rscript -e "..."` crashes whe
 | 08_mastery_paradox.R | **Core analysis**: perceived (Q4 "now") vs ideal (Q5 "should") human role — McNemar, Stuart–Maxwell, logistic models, language checks, QC robustness | hnr_mastery_paradox.rds |
 | 09_response_style_validity.R | Belief scale: construct validity vs other batteries, response-style controls, 1- vs 2-factor check | hnr_style_validity.rds |
 | 12_agency_scale.R | Agency of non-human beings (Q2/Q3): descriptives and reliability, one- vs two-factor structure, multi-group invariance, latent change from present to future, validity against the relational scale and the role item | hnr_agency_scale.rds |
+| 13_reasons_efa.R | Reasons for staying (Q13, 14 items): factorability, parallel analysis, EFA in a country-stratified half, CFA in the held-out half, subscale reliability and relation to the role item | hnr_reasons_efa.rds |
 | 11_square_table_models.R | Loglinear models for the 6x6 perceived-vs-ideal table: independence, quasi-independence, symmetry, quasi-symmetry; marginal homogeneity as the QS-vs-S contrast; fitted per country | hnr_square_table_models.rds |
 | 10_figures.R | Figures 1-6 for the manuscript, PNG and PDF | figures/ |
 
-The pipeline runs 01, 02, 04-09, 12, 11 and 10 in that order. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
+The pipeline runs 01, 02, 04-09, 13, 12, 11 and 10 in that order. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
 
 ## Notes
 - Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).

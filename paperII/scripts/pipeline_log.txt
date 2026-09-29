@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 09:09:20.2999 
-Time difference of 0.01722002 secs
-Computation Time: 0.01722002 
+Date of Analysis: 2026-09-29 09:17:06.920095 
+Time difference of 0.02019405 secs
+Computation Time: 0.02019405 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -810,6 +810,81 @@ Saved: hnr_style_validity.rds
 
 
 ############################################################
+##  13_reasons_efa.R 
+############################################################
+EFA sample: 1255  CFA sample: 1258 
+
+========== 1. Is the block factorable? ==========
+KMO overall: 0.879 
+     rs_comfort    rs_struggles       rs_photos      rs_teaches rs_communicates 
+          0.721           0.743           0.818           0.832           0.837 
+       rs_relax        rs_quiet       rs_beauty rs_own_thoughts  rs_meet_people 
+          0.867           0.896           0.911           0.919           0.927 
+rs_watch_plants rs_meet_animals        rs_cheap       rs_active 
+          0.929           0.931           0.936           0.936 
+Bartlett chi2 = 5397.7  df = 91  p = 0 
+(KMO above .8 is good; items below .5 individually are poor candidates.)
+
+========== 2. How many factors? ==========
+Parallel analysis suggests that the number of factors =  3  and the number of components =  NA 
+parallel analysis suggests: 3 factors
+observed eigenvalues: 3.92 1.33 0.35 0.05 0.02 -0.04 
+simulated  eigenvalues: 0.34 0.15 0.12 0.09 0.07 0.05 
+
+========== 3. Exploratory factor analysis (oblimin, ML) ==========
+         item  ML3  ML1  ML2   h2
+        relax 0.83   NA   NA 0.64
+       beauty 0.63   NA   NA 0.43
+  meet_people   NA   NA 0.32 0.26
+ watch_plants 0.60   NA   NA 0.47
+ meet_animals   NA 0.41   NA 0.35
+ own_thoughts 0.64   NA   NA 0.50
+        quiet 0.73   NA   NA 0.55
+ communicates   NA 0.76   NA 0.60
+      teaches   NA 0.80   NA 0.64
+    struggles   NA   NA 0.57 0.48
+       active 0.43   NA   NA 0.34
+      comfort   NA   NA 0.73 0.50
+       photos   NA   NA 0.61 0.39
+        cheap 0.32   NA   NA 0.14
+
+Factor correlations:
+      ML3  ML1   ML2
+ML3  1.00 0.46 -0.01
+ML1  0.46 1.00  0.38
+ML2 -0.01 0.38  1.00
+
+Variance explained (cumulative): 0.209 0.11 0.103 
+(Loadings below .30 are blanked. Items loading on nothing, or on two
+ factors at once, are the ones to reconsider.)
+
+========== 4. Confirming the structure in the held-out half ==========
+items retained: 12 of 14 
+dropped: meet_people, cheap 
+
+model tested on the held-out half:
+F1 =~ rs_relax + rs_beauty + rs_watch_plants + rs_own_thoughts + rs_quiet + rs_active
+F2 =~ rs_meet_animals + rs_communicates + rs_teaches
+F3 =~ rs_struggles + rs_comfort + rs_photos 
+  chisq      df     cfi     tli   rmsea    srmr 
+413.039  51.000   0.927   0.906   0.075   0.071 
+
+========== 5. Reliability and naming ==========
+F1   k=6  alpha 0.84  items: relax, beauty, watch_plants, own_thoughts, quiet, active
+F2   k=3  alpha 0.76  items: meet_animals, communicates, teaches
+F3   k=3  alpha 0.65  items: struggles, comfort, photos
+
+========== 6. Do these motives relate to the role people want? ==========
+F1    eta2 0.0210  p 3.08e-10   means: Master 3.80  Manager 3.93  User 4.01  Guardian 4.08  Partner 4.13  Object 3.82
+F2    eta2 0.0039  p 0.0775     means: Master 3.52  Manager 3.46  User 3.43  Guardian 3.55  Partner 3.47  Object 3.64
+F3    eta2 0.0295  p 8.63e-15   means: Master 3.20  Manager 3.10  User 2.89  Guardian 2.85  Partner 2.65  Object 3.01
+(For reference: the relational scale reaches eta2 = .011 and the agency
+ scale .009 on the same outcome.)
+
+Saved: hnr_reasons_efa.rds
+
+
+############################################################
 ##  12_agency_scale.R 
 ############################################################
 ========== 1. Items and descriptives (now) ==========
@@ -962,4 +1037,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_qc_robustness_fits.rds, hnr_square_table_models.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_square_table_models.rds, hnr_style_validity.rds 
