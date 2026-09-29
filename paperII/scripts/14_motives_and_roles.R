@@ -103,6 +103,13 @@ print(data.frame(term = rownames(s2), OR = round(exp(s2[, 1]), 2),
                  hi = round(exp(s2[, 1] + 1.96 * s2[, 2]), 2),
                  p = signif(s2[, 4], 3))[2:4, ], row.names = FALSE)
 
-saveRDS(list(base = base, full = full, master = m1, reject = r1, groups = groups),
+# tidy RRR table, saved so the figures script does not have to refit
+co_ <- summary(full)$coefficients; se_ <- summary(full)$standard.errors
+rrr_tab <- do.call(rbind, lapply(mot, function(g) data.frame(
+  motive = g, role = rownames(co_), rrr = exp(co_[, g]),
+  lo = exp(co_[, g] - 1.96 * se_[, g]), hi = exp(co_[, g] + 1.96 * se_[, g]),
+  p = 2 * pnorm(-abs(co_[, g] / se_[, g])), row.names = NULL)))
+
+saveRDS(list(base = base, full = full, master = m1, reject = r1, groups = groups, rrr = rrr_tab),
         "hnr_motives_roles.rds")
 cat("\nSaved: hnr_motives_roles.rds\n")

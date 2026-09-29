@@ -375,4 +375,36 @@ Restorative and Serviced are uncorrelated (r = -.01). Source: 13_reasons_efa.R")
 }
 save_fig("fig8_reasons_loadings", fig8, 7.6, 5.4)
 
+
+# --- Fig 9: what each motive does to the role people want ------------------
+# Relative risk ratios from the multinomial model in 14_motives_and_roles.R,
+# each role against Manager, the modal ideal. Manager is drawn at 1 as the
+# reference so the anchor is visible rather than implied.
+mr <- readRDS("hnr_motives_roles.rds")
+d9 <- mr$rrr
+d9 <- rbind(d9, data.frame(motive = unique(d9$motive), role = "Manager (ref.)",
+                           rrr = 1, lo = NA, hi = NA, p = NA))
+d9$role <- factor(d9$role, levels = rev(c("Manager (ref.)", "Master", "User",
+                                          "Guardian", "Partner", "Object")))
+d9$motive <- factor(d9$motive, levels = c("restorative", "dialogic", "serviced"),
+                    labels = c("Restorative", "Dialogic", "Serviced"))
+d9$kind <- ifelse(is.na(d9$lo), "ref", ifelse(d9$lo > 1 | d9$hi < 1, "sig", "ns"))
+
+fig9 <- function() {
+  ggplot(d9, aes(rrr, role, colour = kind)) +
+    geom_vline(xintercept = 1, linetype = 2, colour = MUTE, linewidth = .4) +
+    geom_linerange(aes(xmin = lo, xmax = hi), linewidth = 1, na.rm = TRUE) +
+    geom_point(aes(shape = kind), size = 2.2, fill = BG, na.rm = TRUE) +
+    facet_wrap(~motive, nrow = 1) +
+    scale_x_log10(breaks = c(.5, .75, 1, 1.5, 2, 3)) +
+    scale_colour_manual(values = c(ref = MUTE, ns = MUTE, sig = BLUE), guide = "none") +
+    scale_shape_manual(values = c(ref = 21, ns = 19, sig = 19), guide = "none") +
+    labs(x = "Relative risk ratio against Manager (log scale)", y = NULL,
+         title = "What each motive does to the role people want",
+         subtitle = "Restorative pulls away from both poles; the dialogic motive raises both of them",
+         caption = "Multinomial logit, n = 2,489, adjusted for country, age and gender. Coloured intervals exclude 1.\nAdding the motives improves on country, age and gender alone: LR chi-squared(15) = 137.0. Source: 14_motives_and_roles.R") +
+    hnr_theme()
+}
+save_fig("fig9_motive_rrr", fig9, 10, 4.2)
+
 cat("Figures written to the figures/ folder", fill = TRUE)
