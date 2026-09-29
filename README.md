@@ -11,7 +11,7 @@ Analysis code for a six-country survey (Canada, Panama, Poland, the Netherlands,
 
 ## The idea in one paragraph
 
-People in six countries see more human *mastery* over nature than they want. The gap has a clear direction and its size differs by country. What people want is mainly one thing, how much power humans should have, and it is tied to how much independence, voice and influence a person gives to a natural place they know (**place agency**), more than to general beliefs about nature or nationality. A second dimension, how *extreme* the wanted role is, is where two kinds of visit differ: calm, restorative visits go with a gentler role and moderate views; visits where the place feels like something to talk to (dialogic) go with the same shift through place agency, but also push views toward the extremes.
+People in six countries see more human *mastery* over nature than they want. The gap has a clear direction and its size differs by country. What people want is mainly one thing, how much power humans should have, and it is tied to how much independence, voice and influence a person gives to a natural place they know (**place agency**), more than to general beliefs about nature or nationality. A second dimension, how *extreme* the wanted role is, is where two kinds of visit differ: calm, restorative visits go with giving the place more independence and, through that, with a gentler role and moderate views; visits where the place feels like something to talk to (dialogic) go mainly with more extreme choices at either end.
 
 ## Main results
 
@@ -19,7 +19,7 @@ People in six countries see more human *mastery* over nature than they want. The
 |---|---|
 | **The gap** | 31% see *Master* as the human role now, 20% think it should be. 480 people move away from Master when asked what *should* be; 200 move toward it. Net shift −11.2 percentage points; the direction holds in five of six countries. |
 | **Place agency** | The strongest link to the wanted role (Spearman ρ = +.35). The odds ratio is about 2 per standard deviation at every step of the six-role scale. Moving from low to high place agency (10th to 90th percentile) cuts the chance of wanting Master from 34% to 7.5%. |
-| **Two kinds of visit** | Restorative and dialogic motives both go with a role further from Master, mainly *through* place agency. They differ in polarisation: the dialogic motive predicts choosing either pole. |
+| **Two kinds of visit** | Restorative visits go with a role further from Master mainly *through* place agency, and this route holds even when no question wording is shared. Dialogic visits mainly go with choosing either end of the scale; their link through place agency runs only through items worded like the motive itself, so it is not claimed. |
 | **Seeing vs wanting** | What relates to the role people see differs from what relates to the role they want (explained variance .15 vs .25). Of 16 seen-versus-wanted comparisons, six survive a multiple-testing correction. |
 | **Robustness** | The place-agency result holds across countries, question wording, random halves, response style, careless respondents and education. The restorative effect is the sensitive one. |
 
@@ -54,7 +54,7 @@ Rscript 00_setup.R          # installs missing packages
 Rscript 00_run_pipeline.R   # runs every step, about ten minutes
 ```
 
-The master script clears earlier outputs, runs the 29 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
+The master script clears earlier outputs, runs the 30 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
 
 ## Repository map
 
@@ -77,7 +77,7 @@ human-nature/
 | Question | Scripts |
 |---|---|
 | Is there a gap between the role seen and wanted? | `08_mastery_paradox`, `11_square_table_models` |
-| How solid are the measures? | `12_agency_scale`, `13_reasons_efa`, `16_motive_invariance`, `18_place_relationship`, `25_motive_measurement` |
+| How solid are the measures? | `12_agency_scale`, `13_reasons_efa`, `16_motive_invariance`, `18_place_relationship`, `25_motive_measurement`, `31_place_agency_facets` |
 | Is the wanted role one scale? What is left over? | `24_outcome_structure` |
 | What relates to seeing and to wanting? | `19_now_vs_should_sem`, `20_opposing_roles_sem`, `26_ordered_sem` |
 | Do the motives act through place agency? | `21_mediation_sem`, `27_ordered_mediation`, `28_story_model` |
