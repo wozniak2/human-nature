@@ -526,7 +526,7 @@ Higher place agency = the place is granted more independence and influence.",
 save_sem(g11, "fig11_semplot_place_model", 10.2, 10.0)
 
 # ---- Figs 12-14, 16, 17 (ggplot path engine): the role SEEN and WANTED, side by side ----
-show <- c("place", "control", "serviced", "dialogic", "restorative", "age_num", "gender_bin")
+show <- c("place", "control", "serviced", "dialogic", "restorative", "age_num", "gender_bin", "edu_primary", "edu_higher")
 n_ind <- c(place = 5, control = 12, serviced = 3, dialogic = 3, restorative = 6)
 lab12 <- c(place = "Place agency", control = "Societal control", serviced = "Serviced",
            dialogic = "Dialogic", restorative = "Restorative", age_num = "Age", gender_bin = "Man")
@@ -540,7 +540,8 @@ pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file
   latent <- vars %in% names(n_ind)
   ilab <- function(v) gsub("_", " ", sub("^(rs|mp|ctl)_", "", v))
   lab_lat <- c(place = "Place agency", control = "Societal control", serviced = "Serviced",
-               dialogic = "Dialogic", restorative = "Restorative", age_num = "Age", gender_bin = "Man")
+               dialogic = "Dialogic", restorative = "Restorative", age_num = "Age", gender_bin = "Man",
+               edu_primary = "Primary education", edu_higher = "Higher education")
 
   # vertical layout, shared by both panels: each latent sits at the mean height of its indicators
   dy <- 0.235; gap <- 0.32; top <- 0
@@ -578,7 +579,7 @@ pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file
       size = 3.7, lwd = 0.9, face = "bold")
     r <- psn[psn$lhs == outc, ]; b <- r$est.std[match(vars, r$rhs)]; pv <- r$pvalue[match(vars, r$rhs)]
     edges[[length(edges) + 1]] <- data.frame(from = paste0(vars, sfx), to = paste0("out", sfx),
-      label = paste0(fmt_b(b), ifelse(differs[vars], "*", "")), kind = "path", beta = b, sig = pv < .05,
+      label = paste0(fmt_b(b), ifelse(!is.na(differs[vars]) & differs[vars], "*", "")), kind = "path", beta = b, sig = pv < .05,
       t = 0.5, end_side = "left", end_off = seq(0.55, -0.55, length.out = length(vars)))
     texts[[length(texts) + 1]] <- data.frame(x = 0.2 + ox, y = ymax + 0.75,
       label = sprintf("The role people %s   (R² = %.2f)", c("SEE", "WANT")[k], r2[[outc]]),
@@ -590,7 +591,7 @@ pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file
     texts = do.call(rbind, texts), bands = do.call(rbind, bands), legend_at = c(0.3, ylo - 0.2),
     title = headline,
     subtitle = "Standardised estimates. Line width grows with the size of the path; grey lines are loadings; * = the path differs between the two panels (Wald p < .05).",
-    caption = paste0(sprintf("WLSMV, n = 2,489; education and country dummies are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
+    caption = paste0(sprintf("WLSMV, n = 2,489; country dummies and a not-stated education flag are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
                      if (nzchar(note)) paste0("\n", note) else ""))
   save_sem(g, file, 2 * PW - 0.3, (yhi - ylo + 0.45) + 1.7)
 }
@@ -658,7 +659,7 @@ save_fig("fig15_mediation", fig15, 11, 4.6)
 # From 26_ordered_sem.R and 27_ordered_mediation.R, after script 24 showed the
 # wanted role is one ordered dominance scale plus a second dimension, extremity.
 so <- readRDS("hnr_ordered_sem.rds")
-show2 <- c("place", "control", "dialogic", "restorative", "age_num", "gender_bin")
+show2 <- c("place", "control", "dialogic", "restorative", "age_num", "gender_bin", "edu_primary", "edu_higher")
 wd <- function(o) { w <- so$wald[so$wald$outcome == o, ]; setNames(w$differs == "yes", w$predictor) }
 pair_sem_fig(so$fit, "pos_now", "pos_should", wd("position"), "position",
   "The wanted role sits further from Master the more agency a person grants a place, and that link is stronger for wanting than for seeing",
@@ -772,7 +773,9 @@ n20 <- rbind(
              fill = LAT, border = "#5B87A6", size = 3.6),
   mk(id = "ctl_mean", label = "Societal\ncontrol", x = 7.3, y = 1.25, shape = "box", w = 1.4, h = 0.66, fill = OBS, border = "#8A8A8A", size = 3.4),
   mk(id = c("pos_should", "ext_should"), label = c("Position of\nwanted role", "Extremity of\nwanted role"),
-             x = 11.75, y = c(4.6, 2.9), shape = "box", w = 1.9, h = 0.85, fill = OUT, border = "#1A1A1A", size = 3.6, lwd = 0.9))
+             x = 11.75, y = c(4.6, 2.9), shape = "box", w = 1.9, h = 1.15, fill = OUT, border = "#1A1A1A", size = 3.6, lwd = 0.9),
+  mk(id = c("edu_primary", "edu_higher"), label = c("Primary\neducation", "Higher\neducation"),
+             x = 14.7, y = c(4.05, 3.45), shape = "box", w = 1.4, h = 0.52, fill = OBS, border = "#8A8A8A", size = 3.1))
 n20$face <- ifelse(n20$id %in% c("pos_should", "ext_should"), "bold", "plain")
 pth <- function(from, to, off = NA, t = 0.5, side = NA) {
   r <- sp[sp$lhs == to & sp$rhs == from, ]
@@ -787,16 +790,18 @@ e20 <- rbind(
   do.call(rbind, lapply(it_plc,  function(i) lod("place", i, 0.6))),
   pth("restorative", "place", t = 0.5), pth("dialogic", "place", t = 0.66),
   pth("restorative", "ctl_mean", t = 0.78), pth("dialogic", "ctl_mean", t = 0.5),
-  pth("place", "pos_should", 0.30, 0.5, "left"), pth("restorative", "pos_should", 0.10, 0.60, "left"),
-  pth("dialogic", "pos_should", -0.10, 0.36, "left"), pth("ctl_mean", "pos_should", -0.30, 0.55, "left"),
-  pth("place", "ext_should", 0.30, 0.40, "left"), pth("restorative", "ext_should", 0.10, 0.72, "left"),
-  pth("dialogic", "ext_should", -0.10, 0.62, "left"), pth("ctl_mean", "ext_should", -0.30, 0.55, "left"))
-hd <- data.frame(x = c(2.4, 7.75, 11.75), y = 7.62, label = c("MOTIVES FOR VISITING A PLACE", "CONSTRUAL OF THE PLACE", "ROLE PEOPLE WANT"))
-bd <- data.frame(x = c(2.4, 7.75, 11.75), y = c(4.4, 4.4, 3.75), w = c(4.6, 5.9, 2.4), h = c(6.4, 6.4, 3.0), fill = "#F6F7F9")
-g20 <- sem_plot(n20, e20, xlim = c(0, 13), ylim = c(0.05, 7.95), headers = hd, bands = bd, legend_at = c(0.3, 0.32),
+  pth("place", "pos_should", 0.42, 0.5, "left"), pth("restorative", "pos_should", 0.14, 0.60, "left"),
+  pth("dialogic", "pos_should", -0.14, 0.36, "left"), pth("ctl_mean", "pos_should", -0.42, 0.55, "left"),
+  pth("place", "ext_should", 0.42, 0.40, "left"), pth("restorative", "ext_should", 0.14, 0.72, "left"),
+  pth("dialogic", "ext_should", -0.14, 0.62, "left"), pth("ctl_mean", "ext_should", -0.42, 0.55, "left"),
+  pth("edu_primary", "pos_should", 0.18, 0.5, "right"), pth("edu_higher", "pos_should", -0.18, 0.5, "right"),
+  pth("edu_primary", "ext_should", 0.18, 0.5, "right"), pth("edu_higher", "ext_should", -0.18, 0.5, "right"))
+hd <- data.frame(x = c(2.4, 7.75, 11.75, 14.7), y = 7.62, label = c("MOTIVES FOR VISITING A PLACE", "CONSTRUAL OF THE PLACE", "ROLE PEOPLE WANT", "EDUCATION"))
+bd <- data.frame(x = c(2.4, 7.75, 11.75, 14.7), y = c(4.4, 4.4, 3.75, 3.75), w = c(4.6, 5.9, 2.4, 1.8), h = c(6.4, 6.4, 3.0, 3.0), fill = "#F6F7F9")
+g20 <- sem_plot(n20, e20, xlim = c(0, 15.6), ylim = c(0.05, 7.95), headers = hd, bands = bd, legend_at = c(0.3, 0.32),
   title = "How experience of a place reaches the role people want: through the agency they grant it",
   subtitle = "Standardised estimates, both motives entered together. Line width grows with the size of the path.",
-  caption = "WLSMV, n = 2,489, ordinal indicators. Position runs from Master (1) to Object (6): positive = a role further from Master. Extremity = choosing either pole.\nAge, gender, education and country are in the model and not drawn; societal control is its mean score. Source: 28_story_model.R")
-save_sem(g20, "fig20_story_model", 13, 8.6)
+  caption = "WLSMV, n = 2,489, ordinal indicators. Position runs from Master (1) to Object (6): positive = a role further from Master. Extremity = choosing either pole.\nAge, gender and country are in the model and not drawn; education is drawn for position and extremity only (it has no significant path, for the primary and higher groups, to place agency or societal control). Societal control is its mean score. Source: 28_story_model.R")
+save_sem(g20, "fig20_story_model", 15.6, 8.6)
 
 cat("Figures written to the figures/ folder", fill = TRUE)

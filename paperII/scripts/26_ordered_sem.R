@@ -60,7 +60,7 @@ cat("========== 1. Fit ==========\n")
 print(round(fitmeasures(fit, c("chisq", "df", "cfi", "tli", "rmsea", "srmr")), 3))
 
 ps_all <- standardizedSolution(fit); ps <- ps_all[ps_all$op == "~", ]
-shown <- c(lat, "age_num", "gender_bin")
+shown <- c(lat, "age_num", "gender_bin", "edu_primary", "edu_higher")
 star <- function(y, x) { r <- ps[ps$lhs == y & ps$rhs == x, ]; sprintf("%+.3f%s", r$est.std, ifelse(r$pvalue < .05, "*", " ")) }
 
 cat("\n========== 2. Standardised paths ==========\n")

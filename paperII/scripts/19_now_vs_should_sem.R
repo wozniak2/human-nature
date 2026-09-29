@@ -65,7 +65,7 @@ ps_all <- standardizedSolution(fit); ps <- ps_all[ps_all$op == "~", ]
 tab <- function(out) { d <- ps[ps$lhs == out, ]; setNames(d[, c("est.std", "pvalue")], c("beta", "p")) -> d
                        rownames(d) <- ps$rhs[ps$lhs == out]; d }
 now <- tab("master_now"); sho <- tab("master_should")
-shown <- rownames(now)[!grepl("^c_|^edu", rownames(now))]
+shown <- rownames(now)[!grepl("^c_|^edu_na", rownames(now))]
 cmp <- data.frame(predictor = shown,
                   beta_now = round(now[shown, "beta"], 3), p_now = signif(now[shown, "p"], 2),
                   beta_should = round(sho[shown, "beta"], 3), p_should = signif(sho[shown, "p"], 2))

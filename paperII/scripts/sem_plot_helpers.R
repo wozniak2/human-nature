@@ -57,9 +57,53 @@ sem_polygon <- function(nd, id) {
   }
 }
 
+# --- curved paths -------------------------------------------------------------
+# Each structural path is a quadratic Bezier curve. The bend is chosen from a short
+# list (gentle first) so that the curve stays clear of every other node and inside
+# the plot; a path that would cross a box is bent further, to the other side if need be.
+sem_inside <- function(nd, px, py, m = 0.06) {
+  if (nd$shape == "ellipse") ((px - nd$x) / (nd$w / 2 + m))^2 + ((py - nd$y) / (nd$h / 2 + m))^2 < 1
+  else abs(px - nd$x) < nd$w / 2 + m & abs(py - nd$y) < nd$h / 2 + m
+}
+sem_bezier <- function(S, C, E, n = 60) {
+  t <- seq(0, 1, length.out = n)
+  cbind(x = (1 - t)^2 * S[1] + 2 * (1 - t) * t * C[1] + t^2 * E[1],
+        y = (1 - t)^2 * S[2] + 2 * (1 - t) * t * C[2] + t^2 * E[2])
+}
+sem_curve <- function(e, nodes, xlim, ylim, n = 60) {
+  a <- nodes[e$from, ]; b <- nodes[e$to, ]
+  es <- if (is.na(e$end_side)) "auto" else e$end_side
+  ss <- if (is.na(e$start_side)) "auto" else e$start_side
+  eo <- if (is.na(e$end_off)) 0 else e$end_off; so <- if (is.na(e$start_off)) 0 else e$start_off
+  pe0 <- if (es == "auto") NULL else sem_port(b, es, eo)
+  ps0 <- if (ss == "auto") NULL else sem_port(a, ss, so)
+  others <- nodes[!(rownames(nodes) %in% c(e$from, e$to)), , drop = FALSE]
+  build <- function(bend) {
+    tgt <- if (is.null(pe0)) c(b$x, b$y) else pe0
+    src <- if (is.null(ps0)) c(a$x, a$y) else ps0
+    S0 <- if (is.null(ps0)) sem_boundary(a, tgt[1], tgt[2]) else ps0
+    E0 <- if (is.null(pe0)) sem_boundary(b, src[1], src[2]) else pe0
+    len <- sqrt(sum((E0 - S0)^2)); if (len == 0) len <- 1
+    C <- (S0 + E0) / 2 + c(-(E0[2] - S0[2]), E0[1] - S0[1]) / len * bend * len
+    S <- if (is.null(ps0)) sem_boundary(a, C[1], C[2]) else ps0
+    E <- if (is.null(pe0)) sem_boundary(b, C[1], C[2]) else pe0
+    list(S = S, E = E, pts = sem_bezier(S, C, E, n))
+  }
+  best <- NULL; bp <- Inf
+  for (bd in c(0.10, -0.10, 0.18, -0.18, 0.26, -0.26, 0.35, -0.35, 0.45, -0.45, 0.55, -0.55)) {
+    r <- build(bd); px <- r$pts[, 1]; py <- r$pts[, 2]
+    hit <- 0
+    for (j in seq_len(nrow(others))) hit <- hit + sum(sem_inside(others[j, ], px, py))
+    out <- sum(px < xlim[1] + 0.05 | px > xlim[2] - 0.05 | py < ylim[1] + 0.05 | py > ylim[2] - 0.05)
+    pen <- 100 * (hit > 0) + hit + 50 * (out > 0) + abs(bd) * 3
+    if (pen < bp) { bp <- pen; best <- r }
+  }
+  best
+}
+
 sem_plot <- function(nodes, edges, xlim, ylim, title = NULL, subtitle = NULL, caption = NULL,
                      bands = NULL, headers = NULL, texts = NULL, legend_at = NULL,
-                     arrow_mm = 2.6, base_size = 11) {
+                     arrow_mm = 2.6, base_size = 11, curved = TRUE) {
   nodes$shape <- ifelse(is.na(nodes$shape), "box", nodes$shape)
   nodes$fill   <- ifelse(is.na(nodes$fill), "#F4F4F4", nodes$fill)
   nodes$border <- ifelse(is.na(nodes$border), "#8A8A8A", nodes$border)
@@ -97,6 +141,18 @@ sem_plot <- function(nodes, edges, xlim, ylim, title = NULL, subtitle = NULL, ca
   E <- cbind(E, geo)
   E$t <- ifelse(is.na(E$t), 0.5, E$t)
   E$lx <- E$x + E$t * (E$xend - E$x); E$ly <- E$y + E$t * (E$yend - E$y)
+  curves <- NULL
+  if (curved) {                                    # structural paths become curves; loadings stay straight
+    cl <- list()
+    for (i in which(E$kind == "path")) {
+      cv <- sem_curve(E[i, ], nodes, xlim, ylim)
+      E$x[i] <- cv$S[1]; E$y[i] <- cv$S[2]; E$xend[i] <- cv$E[1]; E$yend[i] <- cv$E[2]
+      k <- max(1, min(nrow(cv$pts), round(E$t[i] * (nrow(cv$pts) - 1)) + 1))
+      E$lx[i] <- cv$pts[k, 1]; E$ly[i] <- cv$pts[k, 2]
+      cl[[length(cl) + 1]] <- data.frame(g = i, x = cv$pts[, 1], y = cv$pts[, 2])
+    }
+    if (length(cl)) curves <- do.call(rbind, cl)
+  }
   E$col <- ifelse(E$kind == "load", sem_col$load,
            ifelse(!E$sig, sem_col$ns, ifelse(E$beta < 0, sem_col$down, sem_col$up)))
   E$lwd <- ifelse(E$kind == "load", 0.45, ifelse(!E$sig, 0.5, 0.55 + 2.6 * pmin(abs(E$beta), 0.7)))
@@ -114,8 +170,15 @@ sem_plot <- function(nodes, edges, xlim, ylim, title = NULL, subtitle = NULL, ca
     g <- g + geom_text(data = headers, aes(x, y, label = label), size = 3.3, colour = sem_col$mute,
                        fontface = "bold", hjust = 0.5)
   # edges: paths first, loadings beneath
+  if (!is.null(curves)) { curves$col <- E$col[curves$g]; curves$lwd <- E$lwd[curves$g] }
   for (k in c("load", "path")) {
     Ek <- E[E$kind == k, ]
+    if (k == "path" && !is.null(curves)) {
+      g <- g + geom_path(data = curves, aes(x, y, group = g, colour = I(col), linewidth = I(lwd)),
+                         arrow = arrow(length = unit(arrow_mm, "mm"), type = "closed", angle = 22),
+                         lineend = "butt", linejoin = "mitre")
+      next
+    }
     if (nrow(Ek))
       g <- g + geom_segment(data = Ek, aes(x = x, y = y, xend = xend, yend = yend, colour = I(col),
                                            linewidth = I(lwd)),

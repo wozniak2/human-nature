@@ -28,7 +28,7 @@ for (c_ in others) dat[[paste0("c_", c_)]] <- as.integer(dat$country == c_)
 cd <- paste0("c_", others)
 lat   <- c("restorative", "dialogic", "serviced", "place", "control")
 preds <- c(lat, "age_num", "gender_bin", "edu_primary", "edu_higher", "edu_na", cd)
-shown <- c(lat, "age_num", "gender_bin")
+shown <- c(lat, "age_num", "gender_bin", "edu_primary", "edu_higher")
 eq <- function(out, tag) paste0(out, " ~ ", paste(paste0(tag, seq_along(preds), "*", preds), collapse = " + "))
 
 roles <- c(Guardian = 4, Partner = 5, Object = 6)
