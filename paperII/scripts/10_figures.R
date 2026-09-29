@@ -470,4 +470,72 @@ fig10 <- function() {
 }
 save_fig("fig10_path_diagram", fig10, 9.6, 6.4)
 
+
+# --- Fig 11: the structural model with the own-place latent, via semPlot ---
+# Drawn with semPlot from the fitted lavaan object in 18_place_relationship.R,
+# so every number is read from the model rather than retyped. The five
+# country dummies are in the model but are left out of the drawing: none
+# reaches p < .05, and they would swamp the diagram. Latent correlations
+# are also omitted (own place with restorative .36, dialogic .36,
+# serviced -.28) and given in the caption instead.
+suppressMessages(library(semPlot))
+fs  <- readRDS("hnr_place_relationship.rds")$structural
+m11 <- semPlotModel(fs)
+gone <- m11@Vars$name[grepl("^c_", m11@Vars$name)]
+p11 <- m11@Pars
+p11 <- p11[!(p11$lhs %in% gone | p11$rhs %in% gone) & p11$edge %in% c("->", "~>"), ]
+m11@Pars <- p11; m11@Vars <- m11@Vars[!(m11@Vars$name %in% gone), ]
+nm11 <- m11@Vars$name
+
+grp <- list(place = grep("^mp_", nm11, value = TRUE),
+            serviced = c("rs_struggles", "rs_comfort", "rs_photos"),
+            dialogic = c("rs_meet_animals", "rs_communicates", "rs_teaches"),
+            restorative = c("rs_relax", "rs_beauty", "rs_watch_plants",
+                            "rs_own_thoughts", "rs_quiet", "rs_active"))
+ys <- seq(1, -1, length.out = sum(lengths(grp)) + length(grp) - 1)
+pos <- list(); k <- 1
+for (gn in names(grp)) {
+  for (it in grp[[gn]]) { pos[[it]] <- c(-1, ys[k]); k <- k + 1 }
+  pos[[gn]] <- c(0, mean(vapply(grp[[gn]], function(i) pos[[i]][2], numeric(1))))
+  k <- k + 1
+}
+pos[["master_should"]] <- c(1, 0)
+pos[["age_num"]]       <- c(0.30, -1.05)
+pos[["gender_bin"]]    <- c(0.75, -1.05)
+L11 <- t(vapply(nm11, function(v) pos[[v]], numeric(2)))
+
+lab11 <- gsub("_", " ", sub("^rs_", "", sub("^mp_", "", nm11)))
+lab11[nm11 == "master_should"] <- "Wants\nmastery"
+lab11[nm11 == "age_num"] <- "Age"; lab11[nm11 == "gender_bin"] <- "Man"
+lab11[nm11 == "restorative"] <- "Restorative"; lab11[nm11 == "dialogic"] <- "Dialogic"
+lab11[nm11 == "serviced"] <- "Serviced"; lab11[nm11 == "place"] <- "Own place"
+lab_pos <- ifelse(p11$edge == "~>", 0.30, 0.55)   # structural labels near their source
+col11 <- ifelse(p11$edge == "->", MUTE, ifelse(p11$std < 0, ACCENT, BLUE))
+
+draw11 <- function() {
+  par(mar = c(0, 0, 0, 0))
+  semPaths(m11, what = "std", whatLabels = "std", layout = L11, nodeLabels = lab11,
+           nCharNodes = 0, shapeMan = "rectangle", shapeLat = "ellipse",
+           sizeMan = 15, sizeMan2 = 3.0, sizeLat = 12, sizeLat2 = 8,
+           label.cex = .62, label.scale = FALSE, edge.label.cex = .52,
+           edge.label.position = lab_pos, edge.color = col11, edge.width = 1.2,
+           weighted = FALSE, fixedStyle = c(MUTE, 1), asize = 2.6, fade = FALSE,
+           color = list(lat = "#EAF3F9", man = "#F2F2F2"), border.color = MUTE,
+           intercepts = FALSE, residuals = FALSE, thresholds = FALSE, exoCov = FALSE,
+           mar = c(5, 3, 6, 3))
+  mtext("The role people want, from motives and from how they relate to their own place",
+        side = 3, line = -1.6, adj = 0.02, cex = .95, col = INK)
+  mtext("Standardised estimates. Orange paths lower the wish for mastery, blue paths raise it; grey are loadings.",
+        side = 3, line = -3.1, adj = 0.02, cex = .7, col = MUTE)
+  mtext("WLSMV, n = 2,489, ordinal indicators. Country dummies are in the model but not drawn (none reaches p < .05). The own-place latent correlates .36 with restorative, .36 with dialogic and -.28 with serviced.",
+        side = 1, line = -2.4, adj = 0.02, cex = .55, col = MUTE)
+  mtext("Own place is the personal counterpart of the role item, so its path is partly the same construct measured twice; the motive paths shift once it is included. Source: 18_place_relationship.R",
+        side = 1, line = -1.4, adj = 0.02, cex = .55, col = MUTE)
+}
+png(file.path("figures", "fig11_semplot_place_model.png"), width = 3000, height = 2500, res = 240)
+draw11(); invisible(dev.off())
+pdf(file.path("figures", "fig11_semplot_place_model.pdf"), width = 12.5, height = 10.4)
+draw11(); invisible(dev.off())
+cat("wrote figures/fig11_semplot_place_model.png and .pdf\n")
+
 cat("Figures written to the figures/ folder", fill = TRUE)
