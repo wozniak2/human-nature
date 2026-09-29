@@ -79,6 +79,7 @@ steps <- c(
   "09_response_style_validity.R", # belief scale: construct validity + response-style controls
   "13_reasons_efa.R",          # reasons for staying: EFA in one half, CFA in the other
   "14_motives_and_roles.R",    # motives: who holds them, and do they predict the role
+  "17_scenarios_and_roles.R",  # two scenarios that state positions on the same continuum
   "16_motive_invariance.R",    # can the motives be compared across countries? (they cannot)
   "15_structural_model.R",     # one model in which every latent measure competes
   "12_agency_scale.R",         # agency of non-human beings: scale, invariance, latent change

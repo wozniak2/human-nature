@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 09:47:48.724556 
-Time difference of 0.0178659 secs
-Computation Time: 0.0178659 
+Date of Analysis: 2026-09-29 09:50:47.736999 
+Time difference of 0.01722813 secs
+Computation Time: 0.01722813 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -990,6 +990,75 @@ Saved: hnr_motives_roles.rds
 
 
 ############################################################
+##  17_scenarios_and_roles.R 
+############################################################
+========== 1. Mean agreement with each stance, by the role people want ==========
+                  Master Manager User Guardian Partner Object
+sc_not_message      3.12    3.27 3.22     3.19    3.32   3.21
+sc_tech_prevents    3.43    3.42 3.40     3.41    3.36   3.30
+sc_heed_signals     3.66    3.62 3.75     3.80    3.83   3.60
+sc_nature_partner   3.46    3.38 3.43     3.55    3.36   3.47
+sc_humans_lose      3.53    3.58 3.66     3.77    3.74   3.84
+cl_denial           2.54    2.45 2.21     2.17    2.03   2.61
+cl_tech_stops       3.19    3.03 2.97     2.89    2.83   3.11
+cl_cannot_stop      3.44    3.47 3.42     3.40    3.45   3.52
+cl_extinction       3.35    3.20 3.14     3.19    3.22   3.32
+
+eta2 of the ideal role on each stance:
+  sc_not_message     eta2 0.0023  p 0.317
+  sc_tech_prevents   eta2 0.0009  p 0.823
+  sc_heed_signals    eta2 0.0058  p 0.0126
+  sc_nature_partner  eta2 0.0024  p 0.301
+  sc_humans_lose     eta2 0.0078  p 0.00153
+  cl_denial          eta2 0.0176  p 1.79e-08
+  cl_tech_stops      eta2 0.0083  p 0.000829
+  cl_cannot_stop     eta2 0.0009  p 0.817
+  cl_extinction      eta2 0.0044  p 0.0489
+(If the typology means anything, the technological-control stances should
+ peak among those wanting Master, and the humans-are-subject stances among
+ those wanting Object.)
+
+========== 2. Do the stances add beyond the motives? (mastery as ideal) ==========
+Analysis of Deviance Table
+
+Model 1: master_should ~ restorative + dialogic + serviced + country + 
+    age_num + gender_bin
+Model 2: master_should ~ restorative + dialogic + serviced + sc_not_message + 
+    sc_tech_prevents + sc_heed_signals + sc_nature_partner + 
+    sc_humans_lose + cl_denial + cl_tech_stops + cl_cannot_stop + 
+    cl_extinction + country + age_num + gender_bin
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)  
+1      2478     2358.9                       
+2      2469     2342.6  9   16.294  0.06099 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+            stance   OR   lo   hi      p
+    sc_not_message 0.95 0.86 1.04 0.2390
+  sc_tech_prevents 1.06 0.95 1.19 0.3010
+   sc_heed_signals 1.02 0.90 1.15 0.7370
+ sc_nature_partner 1.03 0.92 1.15 0.6460
+    sc_humans_lose 0.92 0.81 1.03 0.1550
+         cl_denial 1.02 0.93 1.11 0.6880
+     cl_tech_stops 1.12 1.02 1.24 0.0205
+    cl_cannot_stop 1.03 0.93 1.15 0.5320
+     cl_extinction 1.09 0.99 1.21 0.0942
+
+========== 3. And beyond the motives for the whole typology? ==========
+Likelihood ratio tests of Multinomial Models
+
+Response: role_ideal
+                                                                                                                                                                                                                       Model
+1                                                                                                                                                         restorative + dialogic + serviced + country + age_num + gender_bin
+2 restorative + dialogic + serviced + sc_not_message + sc_tech_prevents + sc_heed_signals + sc_nature_partner + sc_humans_lose + cl_denial + cl_tech_stops + cl_cannot_stop + cl_extinction + country + age_num + gender_bin
+  Resid. df Resid. Dev   Test    Df LR stat.    Pr(Chi)
+1     12390   7970.715                                 
+2     12345   7910.568 1 vs 2    45 60.14669 0.06493291
+McFadden pseudo-R2: 0.0335 -> 0.0408
+
+Saved: hnr_scenarios.rds
+
+
+############################################################
 ##  16_motive_invariance.R 
 ############################################################
 ========== 1. Invariance across the six countries ==========
@@ -1236,4 +1305,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 

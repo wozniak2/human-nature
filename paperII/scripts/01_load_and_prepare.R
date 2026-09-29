@@ -105,6 +105,15 @@ load_one_country <- function(path, country_name) {
   agency_now    <- as.data.frame(lapply(16:27, g)); names(agency_now)    <- paste0("ag_now_", agency_labels)
   agency_future <- as.data.frame(lapply(29:40, g)); names(agency_future) <- paste0("ag_fut_", agency_labels)
 
+  # --- two scenarios that state positions on the same control continuum as
+  #     the role item: a flooded/destroyed place (Q11) and climate change
+  #     (Q15). They are mutually exclusive stances, not indicators of one
+  #     factor, so they are stored as items and never summed.
+  scen <- as.data.frame(lapply(c(60:64, 81:84), g))
+  names(scen) <- c("sc_not_message", "sc_tech_prevents", "sc_heed_signals",
+                   "sc_nature_partner", "sc_humans_lose",
+                   "cl_denial", "cl_tech_stops", "cl_cannot_stop", "cl_extinction")
+
   # --- reasons for staying in a natural place (Q13, 14 items) ---
   reason_labels <- c("relax", "beauty", "meet_people", "watch_plants", "meet_animals",
                      "own_thoughts", "quiet", "communicates", "teaches", "struggles",
@@ -136,7 +145,7 @@ load_one_country <- function(path, country_name) {
       residence_raw  = residence_raw,
       indigenous_raw = indigenous_raw
     ),
-    q1, validity, style, agency_now, agency_future, reasons
+    q1, validity, style, agency_now, agency_future, reasons, scen
   )
   out
 }
