@@ -757,4 +757,89 @@ fig19 <- function() {
     theme(axis.text.x = element_text(size = 7.5))
 }
 save_fig("fig19_cutpoints", fig19, 11, 4.4)
+
+# --- Fig 20: the whole story as one path diagram, drawn with semPlot -----------
+# From 28_story_model.R: the two motives, place agency as the mediator, and the
+# position and extremity of the wanted role, with indicators. Age, gender and the
+# country dummies are in the model and not drawn; societal control is an observed
+# mean score. Both motives are in the model together, so their paths differ from
+# the one-at-a-time decomposition in Fig 18.
+suppressMessages({ library(semPlot); library(lavaan) })
+st  <- readRDS("hnr_story_model.rds")$fit
+m20 <- semPlotModel(st)
+drop20 <- m20@Vars$name[grepl("^c_|^age_num$|^gender_bin$", m20@Vars$name)]
+p20 <- m20@Pars
+
+p20 <- p20[!(p20$lhs %in% drop20 | p20$rhs %in% drop20) & p20$edge %in% c("->", "~>"), ]
+
+m20@Pars <- p20; m20@Vars <- m20@Vars[!(m20@Vars$name %in% drop20), ]; rownames(m20@Vars) <- NULL; rownames(m20@Pars) <- NULL
+# semPaths re-sorts the nodes internally, so layout and labels must follow ITS order
+nm20 <- names(semPaths(m20, what = "std", DoNotPlot = TRUE, intercepts = FALSE, residuals = FALSE, thresholds = FALSE)$graphAttributes$Nodes$labels)
+
+it_rest <- c("rs_relax", "rs_beauty", "rs_watch_plants", "rs_own_thoughts", "rs_quiet", "rs_active")
+it_dia  <- c("rs_teaches", "rs_communicates", "rs_meet_animals")
+it_plc  <- c("mp_emancipation", "mp_dialogue", "mp_agency", "mp_learning", "mp_time")
+pos20 <- list()
+ys_r <- seq(1.0, 0.10, length.out = 6); ys_d <- c(-0.25, -0.45, -0.65)
+for (i in seq_along(it_rest)) pos20[[it_rest[i]]] <- c(-1.05, ys_r[i])
+for (i in seq_along(it_dia))  pos20[[it_dia[i]]]  <- c(-1.05, ys_d[i])
+for (i in seq_along(it_plc))  pos20[[it_plc[i]]]  <- c(seq(-0.2, 0.8, length.out = 5)[i], 1.45)
+pos20[["restorative"]] <- c(-0.45, mean(ys_r))
+pos20[["dialogic"]]    <- c(-0.45, mean(ys_d))
+pos20[["place"]]       <- c(0.30, 0.90)
+pos20[["ctl_mean"]]    <- c(0.45, -0.85)
+pos20[["pos_should"]]  <- c(1.10, 0.30)
+pos20[["ext_should"]]  <- c(1.10, -0.30)
+hid20 <- rep(FALSE, length(nm20))
+for (v in nm20[hid20]) pos20[[v]] <- c(1.35, -1.0)
+L20 <- t(vapply(nm20, function(v) pos20[[v]], numeric(2)))
+
+lab20 <- nm20
+lab20 <- gsub("_", " ", sub("^rs_", "", sub("^mp_", "", lab20))); lab20[hid20] <- ""
+lab20[nm20 == "restorative"] <- "Restorative"; lab20[nm20 == "dialogic"] <- "Dialogic"
+lab20[nm20 == "place"] <- "Place agency"; lab20[nm20 == "ctl_mean"] <- "Societal\ncontrol"
+lab20[nm20 == "pos_should"] <- "Position of\nwanted role"; lab20[nm20 == "ext_should"] <- "Extremity of\nwanted role"
+
+ps20 <- standardizedSolution(st); ps20 <- ps20[ps20$op == "~", ]
+key20 <- match(paste(p20$rhs, p20$lhs), paste(ps20$lhs, ps20$rhs))     # outcome, predictor
+b20 <- ps20$est.std[key20]; pv20 <- ps20$pvalue[key20]
+col20 <- ifelse(p20$edge == "->", MUTE, ifelse(pv20 >= .05, "#C8C8C8", ifelse(b20 < 0, ACCENT, BLUE)))
+pos_lab <- ifelse(p20$edge == "~>", 0.3, 0.5)
+pos_lab[p20$lhs == "place" & p20$rhs == "ext_should"] <- 0.56
+pos_lab[p20$lhs == "place" & p20$rhs == "pos_should"] <- 0.55
+pos_lab[p20$rhs == "ctl_mean"] <- 0.45
+pos_lab[p20$lhs == "ctl_mean" & p20$rhs == "pos_should"] <- 0.4
+pos_lab[p20$lhs == "ctl_mean" & p20$rhs == "ext_should"] <- 0.6
+pos_lab[p20$lhs == "dialogic" & p20$rhs == "place"] <- 0.62
+pos_lab[p20$lhs == "restorative" & p20$rhs == "place"] <- 0.45
+pos_lab[p20$lhs == "restorative" & p20$rhs == "pos_should"] <- 0.62
+pos_lab[p20$lhs == "restorative" & p20$rhs == "ext_should"] <- 0.75
+pos_lab[p20$lhs == "dialogic" & p20$rhs == "pos_should"] <- 0.8
+pos_lab[p20$lhs == "dialogic" & p20$rhs == "ext_should"] <- 0.45
+
+draw20 <- function() {
+  par(mar = c(0, 0, 0, 0))
+  semPaths(m20, what = "std", whatLabels = "std", layout = L20, nodeLabels = lab20,
+           nCharNodes = 0, shapeMan = "rectangle", shapeLat = "ellipse",
+           sizeMan = 8.5, sizeMan2 = 2.6, sizeLat = 11, sizeLat2 = 6.5,
+           label.cex = .55, label.scale = FALSE, edge.label.cex = .5,
+           edge.label.position = pos_lab, edge.color = col20, edge.width = 1.0,
+           weighted = FALSE, fixedStyle = c(MUTE, 1), asize = 2.2, fade = FALSE,
+           color = list(lat = "#EAF3F9", man = "#F2F2F2"), border.color = MUTE,
+           intercepts = FALSE, residuals = FALSE, thresholds = FALSE, exoCov = FALSE,
+           mar = c(6, 3, 7, 3))
+  mtext("How experience of a place reaches the role people want: through the agency they grant it",
+        side = 3, line = -1.6, adj = 0.02, cex = .95, col = INK)
+  mtext("Standardised estimates, both motives entered together. Orange lowers and blue raises the outcome; pale grey is not significant; grey lines are loadings.",
+        side = 3, line = -3.1, adj = 0.02, cex = .62, col = MUTE)
+  mtext("WLSMV, n = 2,489, ordinal indicators. Position runs from Master (1) to Object (6): positive = a role further from Master. Extremity = choosing either pole.",
+        side = 1, line = -2.4, adj = 0.02, cex = .55, col = MUTE)
+  mtext("Age, gender and country are in the model and not drawn; societal control is its mean score. Paths differ from the one-at-a-time decomposition because the motives share variance. Source: 28_story_model.R",
+        side = 1, line = -1.4, adj = 0.02, cex = .55, col = MUTE)
+}
+png(file.path("figures", "fig20_story_model.png"), width = 3600, height = 2500, res = 240)
+draw20(); invisible(dev.off())
+pdf(file.path("figures", "fig20_story_model.pdf"), width = 15, height = 10.4)
+draw20(); invisible(dev.off())
+cat("wrote figures/fig20_story_model.png and .pdf\n")
 cat("Figures written to the figures/ folder", fill = TRUE)

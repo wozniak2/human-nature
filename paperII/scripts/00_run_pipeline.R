@@ -81,6 +81,7 @@ steps <- c(
   "14_motives_and_roles.R",    # motives: who holds them, and do they predict the role
   "26_ordered_sem.R",          # ordered role and extremity: one joint SEM
   "27_ordered_mediation.R",    # do the motives act on the ordered wanted role through place agency?
+  "28_story_model.R",          # the whole story as one model, for the path diagram (fig20)
   "25_motive_measurement.R",   # item-level effects, alternative scorings, split-half noise, serviced, invariance
   "24_outcome_structure.R",    # is the role one ordered scale? position versus extremity
   "23_robustness.R",           # the attacks a critical referee would make, and the tests that answer them

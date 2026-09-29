@@ -315,14 +315,14 @@ Sweden                     3.684                         3.643
 ========== Alignment: approximate-invariance summary ==========
 -----------------------------------------------------------------
 sirt 4.2-133 (2025-09-27 12:57:51) 
-R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32 
+R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 11:23:49.90994 
-Time difference of 0.01765203 secs
-Computation Time: 0.01765203 
+Date of Analysis: 2026-09-29 12:45:54.372371 
+Time difference of 0.01862097 secs
+Computation Time: 0.01862097 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -992,7 +992,7 @@ Saved: hnr_motives_roles.rds
 ############################################################
 ##  26_ordered_sem.R 
 ############################################################
-fitted in 23 seconds
+fitted in 22 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 5100.255  563.000    0.970    0.977    0.057    0.053 
@@ -1042,7 +1042,7 @@ Saved: hnr_ordered_sem.rds
 ##  27_ordered_mediation.R 
 ############################################################
 restorative  fitted in  16 s | CFI 0.973 RMSEA 0.058 | largest standardised path 0.48
-dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.057 | largest standardised path 0.52
+dialogic     fitted in  12 s | CFI 0.975 RMSEA 0.057 | largest standardised path 0.52
 
 ========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
 -- restorative --  a: place +0.375*, control +0.070* | b (wanted): place +0.476*, control +0.127* | b (seen): place +0.349*, control +0.181*
@@ -1063,6 +1063,44 @@ dialogic       indirect via place agency +0.177 [+0.145, +0.211] | direct -0.157
  effect that does not is complete mediation; opposite signs are suppression.)
 
 Saved: hnr_ordered_mediation.rds
+
+
+############################################################
+##  28_story_model.R 
+############################################################
+fitted in 7 seconds
+========== 1. Fit ==========
+   chisq       df      cfi      tli    rmsea     srmr 
+1991.317  199.000    0.965    0.976    0.060    0.052 
+largest standardised structural path: 0.5   (inside +/-1) 
+
+========== 2. Structural paths (standardised) ==========
+    outcome   predictor   beta     p
+      place restorative  0.211 0.000
+      place    dialogic  0.224 0.000
+   ctl_mean restorative -0.023 0.450
+   ctl_mean    dialogic  0.110 0.000
+ pos_should restorative  0.061 0.045
+ pos_should    dialogic -0.216 0.000
+ pos_should       place  0.499 0.000
+ pos_should    ctl_mean  0.130 0.000
+ ext_should restorative -0.268 0.000
+ ext_should    dialogic  0.384 0.000
+ ext_should       place -0.345 0.000
+ ext_should    ctl_mean -0.115 0.000
+
+========== 3. What the motives do to the wanted position ==========
+    label est.std ci.lower ci.upper pvalue
+ ind_rest   0.105    0.073    0.137  0.000
+  ind_dia   0.112    0.077    0.147  0.000
+ tot_rest   0.166    0.107    0.224  0.000
+  tot_dia  -0.104   -0.167   -0.041  0.001
+(ind_ = the indirect effect through place agency; tot_ = direct plus indirect. Compare
+ with script 27, which fitted the motives one at a time.)
+
+R2: place agency 0.227 | position wanted 0.265 | extremity wanted 0.205
+
+Saved: hnr_story_model.rds
 
 
 ############################################################
@@ -1432,8 +1470,8 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  51 s | CFI 0.986 RMSEA 0.073 | largest standardised path 0.65
-dialogic     fitted in  45 s | CFI 0.991 RMSEA 0.062 | largest standardised path 0.78
+restorative  fitted in  52 s | CFI 0.986 RMSEA 0.073 | largest standardised path 0.65
+dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.062 | largest standardised path 0.78
 serviced     fitted in  44 s | CFI 0.987 RMSEA 0.072 | largest standardised path 1.62
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
@@ -2022,8 +2060,9 @@ wrote figures/fig16_sem_position.png and .pdf
 wrote figures/fig17_sem_extremity.png and .pdf
 wrote figures/fig18_mediation_ordered.png and .pdf
 wrote figures/fig19_cutpoints.png and .pdf
+wrote figures/fig20_story_model.png and .pdf
 Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds 
