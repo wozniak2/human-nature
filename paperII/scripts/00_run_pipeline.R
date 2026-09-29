@@ -79,6 +79,7 @@ steps <- c(
   "09_response_style_validity.R", # belief scale: construct validity + response-style controls
   "13_reasons_efa.R",          # reasons for staying: EFA in one half, CFA in the other
   "14_motives_and_roles.R",    # motives: who holds them, and do they predict the role
+  "22_geography.R",            # can geography moderate, or account for, anything? (country, residence)
   "21_mediation_sem.R",        # do the motives act on the wanted role through place agency? (slow: about 4 minutes)
   "20_opposing_roles_sem.R",    # the same model for the roles that oppose Master
   "19_now_vs_should_sem.R",    # the role people see versus the role they want, one SEM, path by path

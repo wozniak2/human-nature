@@ -38,10 +38,11 @@ Always run script files. On this Windows machine, `Rscript -e "..."` crashes whe
 | 19_now_vs_should_sem.R | One WLSMV model with the same predictors (three motives, place-agency latent, societal-control latent, age, gender, country) for the role people SEE and the role they WANT, with a Wald test of each path across the two outcomes | hnr_now_vs_should_sem.rds |
 | 20_opposing_roles_sem.R | The joint see-versus-want model of script 19 repeated for Guardian, Partner and Object, with a Wald test of every path across the two outcomes | hnr_opposing_roles_sem.rds |
 | 21_mediation_sem.R | Parallel-mediation SEM: do the motives act on wanting or seeing mastery through place agency, general agency, reciprocal beliefs or societal control? Motives entered one at a time; a three-together run is kept as a sensitivity check. Slow: about four minutes | hnr_mediation_sem.rds |
+| 22_geography.R | Geography as a possible mediator, moderator or predictor: whether the constructs account for the country differences in wanting mastery (they do not), whether country changes any relation (it does not), and whether reported urban or rural residence matters (it does not) | none |
 | 11_square_table_models.R | Loglinear models for the 6x6 perceived-vs-ideal table: independence, quasi-independence, symmetry, quasi-symmetry; marginal homogeneity as the QS-vs-S contrast; fitted per country | hnr_square_table_models.rds |
 | 10_figures.R | Figures 1-6 for the manuscript, PNG and PDF | figures/ |
 
-The pipeline runs 01, 02, 04-09, 13, 14, 21, 20, 19, 18, 17, 16, 15, 12, 11 and 10 in that order. The full run now takes roughly eight minutes, most of it script 21. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
+The pipeline runs 01, 02, 04-09, 13, 14, 22, 21, 20, 19, 18, 17, 16, 15, 12, 11 and 10 in that order. The full run now takes roughly eight minutes, most of it script 21. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
 
 ## Notes
 - Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).

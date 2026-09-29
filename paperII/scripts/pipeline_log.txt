@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 10:32:46.406676 
-Time difference of 0.01728606 secs
-Computation Time: 0.01728606 
+Date of Analysis: 2026-09-29 10:42:55.21882 
+Time difference of 0.01736116 secs
+Computation Time: 0.01736116 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -990,11 +990,88 @@ Saved: hnr_motives_roles.rds
 
 
 ############################################################
+##  22_geography.R 
+############################################################
+========== 1. Are the country differences in wanting mastery carried by the constructs? ==========
+                   chi2 df        p
+age + gender       18.2  5 0.002680
++ motives          17.6  5 0.003450
++ place agency     25.0  5 0.000141
++ societal control 24.4  5 0.000184
+(Omnibus test of country, five degrees of freedom, once each block is controlled. If the
+ constructs carried the country effect, chi2 would fall toward zero. It does not: it
+ barely moves with the motives and RISES when place agency is added.)
+
+country means: place agency (1-4) and % wanting mastery
+            place_agency wants_mastery_pct
+Canada              2.39             21.90
+Panama              2.45             18.51
+Poland              2.35             17.69
+Netherlands         2.36             15.53
+Spain               2.47             25.41
+Sweden              2.36             19.42
+(Spain has the highest place agency AND the highest wish for mastery -- the opposite of
+ the individual-level relation, so place agency acts as a suppressor of the country
+ effect, not a mediator of it.)
+
+With every construct controlled, log-odds of wanting mastery relative to Spain:
+                   Estimate Pr(>|z|)
+countryCanada        -0.432    0.015
+countryPanama        -0.619    0.001
+countryPoland        -0.746    0.000
+countryNetherlands   -0.792    0.000
+countrySweden        -0.534    0.003
+(Spain differs from every other sample. Panama reads identical Spanish wording, so this
+ is not simply a translation effect.)
+
+========== 2. Does country change how the constructs relate to wanting mastery? ==========
+  restorative  x country   chi2(5) =   9.8   p = 0.0817
+  dialogic     x country   chi2(5) =   3.2   p = 0.666
+  serviced     x country   chi2(5) =   4.9   p = 0.431
+  plcm         x country   chi2(5) =   2.3   p = 0.805
+  ctl          x country   chi2(5) =   1.9   p = 0.866
+(None reaches p < .05. The mechanism looks the same in every sample.)
+
+Can slopes be compared? Place-agency invariance across countries (MLR):
+             cfi rmsea  srmr    dCFI
+configural 0.971 0.059 0.028      NA
+metric     0.969 0.047 0.038 -0.0021
+scalar     0.932 0.059 0.051 -0.0368
+(Loadings are equivalent, so slopes can be compared across countries; intercepts are not,
+ so country MEANS on place agency cannot be.)
+
+========== 3. Urban versus rural, as reported ==========
+             
+                 0    1
+  Canada      83.5 16.5
+  Panama      74.8 25.2
+  Poland      82.5 17.5
+  Netherlands 64.6 35.4
+  Spain       86.5 13.5
+  Sweden      72.0 28.0
+
+Rural versus urban, adjusted for country, age and gender:
+       outcome   OR     p
+ wants mastery 1.00 0.974
+  sees mastery 1.07 0.544
+  restorative  rural b = -0.038  p = 0.286
+  dialogic     rural b = +0.014  p = 0.746
+  serviced     rural b = -0.072  p = 0.13
+  plcm         rural b = +0.021  p = 0.485
+  ctl          rural b = +0.036  p = 0.278
+
+rural x country interaction on wanting mastery:
+ chi2    df     p 
+3.500 5.000 0.622 
+(Residence as reported predicts nothing and does not vary by country.)
+
+
+############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  52 s | CFI 0.986 RMSEA 0.073 | largest standardised path 0.65
-dialogic     fitted in  45 s | CFI 0.991 RMSEA 0.062 | largest standardised path 0.78
-serviced     fitted in  46 s | CFI 0.987 RMSEA 0.072 | largest standardised path 1.62
+restorative  fitted in  51 s | CFI 0.986 RMSEA 0.073 | largest standardised path 0.65
+dialogic     fitted in  44 s | CFI 0.991 RMSEA 0.062 | largest standardised path 0.78
+serviced     fitted in  44 s | CFI 0.987 RMSEA 0.072 | largest standardised path 1.62
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -1045,7 +1122,7 @@ serviced     fitted in  46 s | CFI 0.987 RMSEA 0.072 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 71 s | largest standardised path 1.43
+fitted in 69 s | largest standardised path 1.43
       motive  direct via_place total_indirect   total
  restorative -0.762*   +0.438*        +0.502* -0.260*
     dialogic +1.431*   -1.137*        -1.250* +0.181*
@@ -1403,7 +1480,7 @@ Saved: hnr_motive_invariance.rds
        c_Spain  0.068 0.036 6.20e-02  
       c_Sweden -0.007 0.037 8.58e-01  
 
-Country: none of the five dummies reaches p < .05 once the motives and
+Country: none of the five dummies differs significantly from Canada once the motives and
 demographics are in the model (smallest p = 0.062 ).
 
 ========== 3. What the two attitude scales add ==========

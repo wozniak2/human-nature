@@ -463,7 +463,7 @@ fig10 <- function() {
     labs(x = NULL, y = NULL,
          title = "When every measure competes, the motives carry the prediction",
          subtitle = "Standardised paths to wanting mastery; latent variables are rounded, with their indicator counts",
-         caption = "WLSMV, n = 2,489. Dashed grey paths do not reach p < .05. Adding the agency and belief scales to the motives raises R-squared from\n.1006 to .1012; no country dummy survives. The absorbed scales correlate .59 (belief with restorative) and .50 (agency with dialogic).\nSource: 15_structural_model.R") +
+         caption = "WLSMV, n = 2,489. Dashed grey paths do not reach p < .05. Adding the agency and belief scales to the motives raises R-squared from\n.1006 to .1012; no country differs significantly from Canada (the country effect as a whole is tested in 22_geography.R). The absorbed scales correlate .59 (belief with restorative) and .50 (agency with dialogic).\nSource: 15_structural_model.R") +
     hnr_theme() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           axis.text = element_blank(), axis.ticks = element_blank())
@@ -527,7 +527,7 @@ draw11 <- function() {
         side = 3, line = -1.6, adj = 0.02, cex = .95, col = INK)
   mtext("Standardised estimates. Orange paths lower the wish for mastery, blue paths raise it; grey are loadings. Place agency: higher = the place is granted more independence and influence.",
         side = 3, line = -3.1, adj = 0.02, cex = .7, col = MUTE)
-  mtext("WLSMV, n = 2,489, ordinal indicators. Country dummies are in the model but not drawn (none reaches p < .05). The place-agency latent correlates .36 with restorative, .36 with dialogic and -.28 with serviced.",
+  mtext("WLSMV, n = 2,489, ordinal indicators. Country dummies are in the model but not drawn (none differs significantly from Canada). The place-agency latent correlates .36 with restorative, .36 with dialogic and -.28 with serviced.",
         side = 1, line = -2.4, adj = 0.02, cex = .55, col = MUTE)
   mtext("Place agency is the personal counterpart of the role item, so its path is partly the same construct measured twice; the motive paths shift once it is included. Source: 18_place_relationship.R",
         side = 1, line = -1.4, adj = 0.02, cex = .55, col = MUTE)

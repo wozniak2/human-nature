@@ -59,7 +59,7 @@ ps$sig <- ifelse(ps$pvalue < .05, "*", "")
 print(data.frame(predictor = ps$rhs, beta = round(ps$est.std, 3),
                  se = round(ps$se, 3), p = signif(ps$pvalue, 3), s = ps$sig),
       row.names = FALSE)
-cat("\nCountry: none of the five dummies reaches p < .05 once the motives and\n")
+cat("\nCountry: none of the five dummies differs significantly from Canada once the motives and\n")
 cat("demographics are in the model (smallest p =",
     signif(min(ps$pvalue[grepl("^c_", ps$rhs)]), 3), ").\n")
 
