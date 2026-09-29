@@ -96,6 +96,15 @@ load_one_country <- function(path, country_name) {
     q12_cheap        = g(79)
   )
 
+  # --- agency of non-human beings (Q2 now, Q3 future): the same 12 targets
+  #     rated twice, so this block supports a latent change model that the
+  #     single-item role question cannot. Item 13 of each block (another
+  #     human) is kept apart as a discriminant anchor, not as an indicator.
+  agency_labels <- c("wild_animals", "pets", "plants", "forces", "river", "dunes",
+                     "forest", "lake", "sea", "soil", "mountain", "place")
+  agency_now    <- as.data.frame(lapply(16:27, g)); names(agency_now)    <- paste0("ag_now_", agency_labels)
+  agency_future <- as.data.frame(lapply(29:40, g)); names(agency_future) <- paste0("ag_fut_", agency_labels)
+
   # --- response-style indices from 10 agree/disagree items with opposing content:
   #     Q14 (3 pro- and 3 anti-tourism), Q10 "normal event" vs "message from nature",
   #     Q13 "can be stopped" vs "cannot be stopped" (Billiet & McClendon, 2000 logic) ---
@@ -121,7 +130,7 @@ load_one_country <- function(path, country_name) {
       residence_raw  = residence_raw,
       indigenous_raw = indigenous_raw
     ),
-    q1, validity, style
+    q1, validity, style, agency_now, agency_future
   )
   out
 }

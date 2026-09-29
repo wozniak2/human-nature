@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-28 17:11:27.940585 
-Time difference of 0.01765895 secs
-Computation Time: 0.01765895 
+Date of Analysis: 2026-09-29 09:09:20.2999 
+Time difference of 0.01722002 secs
+Computation Time: 0.01722002 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -810,6 +810,80 @@ Saved: hnr_style_validity.rds
 
 
 ############################################################
+##  12_agency_scale.R 
+############################################################
+========== 1. Items and descriptives (now) ==========
+         item mean   sd agree_pct
+         pets 3.78 1.13      69.0
+ wild_animals 2.98 1.22      36.8
+       plants 2.84 1.27      33.6
+        place 2.79 1.32      33.7
+       forest 2.70 1.32      31.4
+          sea 2.64 1.33      29.4
+         soil 2.64 1.32      29.2
+       forces 2.57 1.28      25.7
+        river 2.54 1.29      25.1
+         lake 2.54 1.30      25.4
+     mountain 2.54 1.30      25.5
+        dunes 2.40 1.22      19.1
+
+alpha now: 0.96  future: 0.966 
+Discriminant anchor -- dialogue with another human: mean 4.24 | correlation with the scale: 0.022 
+(The anchor should sit well above the non-human items and correlate only
+ moderately with them; a high correlation would suggest the scale measures
+ willingness to say yes rather than beliefs about non-human agency.)
+
+========== 2. Dimensionality: are living and non-living targets distinct? ==========
+              chisq df   cfi   tli rmsea  srmr
+one_factor 1565.520 54 0.953 0.942 0.106 0.046
+two_factor 1263.645 53 0.962 0.953 0.095 0.039
+correlation between the two factors: 0.858 
+(A correlation near 1 means the split is not worth keeping; report the
+ two-factor model as a sensitivity check and treat the scale as one.)
+
+========== 3. Measurement invariance across the six countries ==========
+              chisq  df   cfi rmsea  srmr    dCFI
+configural 2275.213 324 0.940 0.120 0.047      NA
+metric     2365.999 379 0.939 0.112 0.061 -0.0011
+scalar     2655.700 434 0.931 0.111 0.065 -0.0073
+(Chen 2007: a drop in CFI larger than .010 counts against invariance.)
+
+Latent means by country, scalar model (Canada = 0):
+     country    est        p
+      Canada  0.000       NA
+      Panama -0.210 1.54e-05
+      Poland -0.055 2.31e-01
+ Netherlands -0.267 8.97e-09
+       Spain -0.236 7.06e-07
+      Sweden -0.248 1.17e-07
+
+========== 4. Now vs future: a latent change model ==========
+   chisq       df      cfi      tli    rmsea     srmr 
+3264.000  261.000    0.960    0.958    0.068    0.044 
+
+Latent change, future minus now (Now fixed at 0):
+  estimate +0.002  SE 0.007  z 0.29  p 0.775
+(Positive would mean respondents expect dialogue to become more possible.
+ This is the comparison the role item cannot support, because one nominal
+ indicator per occasion does not identify a latent change model.)
+
+Observed means for comparison: now 2.747  future 2.742 
+
+========== 5. Validity against what is already in the paper ==========
+correlation with the six-item relational scale: 0.198 
+correlation with the 12-item control battery (1 exploit .. 4 subject): 0.096 
+correlation with acquiescence (ARS): 0.205 | midpoint (MRS): -0.076 
+
+Agency by IDEAL role:
+  Master  Manager     User Guardian  Partner   Object 
+   2.754    2.674    2.662    2.879    2.832    3.041 
+eta2 = 0.0094  F = 4.78  p = 0.000236 
+(For reference, the relational scale reaches eta2 = .011 on the same outcome.)
+
+Saved: hnr_agency_scale.rds
+
+
+############################################################
 ##  11_square_table_models.R 
 ############################################################
 ========== 1. Fit of the nested family ==========
@@ -888,4 +962,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_qc_robustness_fits.rds, hnr_square_table_models.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_qc_robustness_fits.rds, hnr_square_table_models.rds, hnr_style_validity.rds 
