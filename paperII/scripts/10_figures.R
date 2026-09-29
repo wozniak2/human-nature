@@ -331,4 +331,48 @@ fig7 <- function() {
 }
 save_fig("fig7_loglinear_parameters", fig7, 10, 4.2)
 
+
+# --- Fig 8: what people go to a natural place for --------------------------
+# Loadings from 13_reasons_efa.R. Factors are named by the item that defines
+# them rather than by ML number, so the labels survive a re-run.
+re <- readRDS("hnr_reasons_efa.rds")
+Lm <- unclass(re$efa$loadings)
+nm <- function(j) {
+  top <- rownames(Lm)[which.max(abs(Lm[, j]))]
+  c(rs_relax = "Restorative", rs_teaches = "Dialogic", rs_comfort = "Serviced")[top]
+}
+colnames(Lm) <- vapply(seq_len(ncol(Lm)), nm, character(1))
+d8 <- expand.grid(item = rownames(Lm), factor = colnames(Lm), stringsAsFactors = FALSE)
+d8$loading <- as.vector(Lm)
+d8$item <- sub("^rs_", "", d8$item)
+d8$shown <- ifelse(abs(d8$loading) >= 0.30, sprintf("%.2f", d8$loading), "")
+assign_to <- colnames(Lm)[apply(abs(Lm), 1, which.max)]
+ord <- rownames(Lm)[order(match(assign_to, c("Restorative", "Dialogic", "Serviced")),
+                          -apply(abs(Lm), 1, max))]
+d8$item <- factor(d8$item, levels = rev(sub("^rs_", "", ord)))
+d8$factor <- factor(d8$factor, levels = c("Restorative", "Dialogic", "Serviced"))
+dropped <- c("meet_people", "cheap")
+d8$item_lab <- ifelse(as.character(d8$item) %in% dropped,
+                      paste0(as.character(d8$item), " *"), as.character(d8$item))
+
+fig8 <- function() {
+  ggplot(d8, aes(factor, item, fill = loading)) +
+    geom_tile(colour = BG, linewidth = .8) +
+    geom_text(aes(label = shown, colour = abs(loading) > .55), size = 3.2) +
+    scale_fill_gradient2(low = BLUE, mid = "#F7F7F7", high = ACCENT,
+                         midpoint = 0, limits = c(-.4, .9), name = "loading") +
+    scale_colour_manual(values = c("TRUE" = "white", "FALSE" = INK), guide = "none") +
+    scale_y_discrete(labels = function(x) ifelse(x %in% dropped, paste0(x, " *"), x)) +
+    labs(x = NULL, y = NULL,
+         title = "What people go to a natural place for",
+         subtitle = "Factor loadings from the exploratory half; values below .30 are left blank",
+         caption = "Oblimin rotation, n = 1,255; * dropped for weak or split loadings.
+Restorative and Serviced are uncorrelated (r = -.01). Source: 13_reasons_efa.R") +
+    hnr_theme() +
+    theme(panel.grid = element_blank(), legend.position = "right",
+          legend.title = element_text(colour = MUTE, size = 9),
+          axis.text.x = element_text(colour = INK, size = 11))
+}
+save_fig("fig8_reasons_loadings", fig8, 7.6, 5.4)
+
 cat("Figures written to the figures/ folder", fill = TRUE)
