@@ -615,4 +615,47 @@ pair_sem_fig(op$Guardian$fit, "out_now", "out_should", dd("Guardian"), "Guardian
   "Guardian is barely predictable from these measures: only place agency and gender reach significance",
   "fig14_sem_guardian", "20_opposing_roles_sem.R")
 
+
+# --- Fig 15: how the motives act on wanting mastery, by pathway ------------
+# From 21_mediation_sem.R. Each motive is fitted on its own (entered together
+# they suppress one another and the paths exceed 1). The serviced run is
+# unstable (largest standardised path 1.62, negative variances) and is left
+# out; the omission is stated on the figure.
+md <- readRDS("hnr_mediation_sem.rds")
+one_motive <- function(x) {
+  r <- md$runs[[x]]; ps <- r$ps; g_ <- r$grid; t_ <- r$tg
+  i <- which(t_$y == "master_should" & t_$x == x)
+  ids <- g_$name[g_$y == "master_should" & g_$x == x]; mm <- g_$m[g_$y == "master_should" & g_$x == x]
+  lab <- c(paste0("tot", i), paste0("d_master_should_", x), paste0("tind", i), ids)
+  nice <- c("Total effect", "Direct effect", "All indirect",
+            paste0("via ", c(place = "place agency", agency = "general agency",
+                             relational_f = "reciprocal belief", control = "societal control")[mm]))
+  k <- match(lab, ps$label)
+  data.frame(motive = x, pathway = nice, est = ps$est.std[k], lo = ps$ci.lower[k], hi = ps$ci.upper[k])
+}
+d15 <- rbind(one_motive("restorative"), one_motive("dialogic"))
+d15$pathway <- factor(d15$pathway, levels = rev(c("Total effect", "Direct effect", "All indirect",
+                      "via place agency", "via societal control", "via general agency",
+                      "via reciprocal belief")))
+d15$motive <- factor(d15$motive, levels = c("restorative", "dialogic"),
+                     labels = c("Restorative motive", "Dialogic motive"))
+d15$sig <- d15$lo > 0 | d15$hi < 0
+d15$kind <- ifelse(d15$pathway == "Total effect", "total", ifelse(d15$sig, "sig", "ns"))
+
+fig15 <- function() {
+  ggplot(d15, aes(est, pathway, colour = kind)) +
+    geom_vline(xintercept = 0, linetype = 2, colour = MUTE, linewidth = .4) +
+    geom_linerange(aes(xmin = lo, xmax = hi), linewidth = 1) +
+    geom_point(aes(shape = kind), size = 2.4, fill = BG) +
+    facet_wrap(~motive, nrow = 1) +
+    scale_colour_manual(values = c(total = INK, sig = BLUE, ns = MUTE), guide = "none") +
+    scale_shape_manual(values = c(total = 18, sig = 19, ns = 1), guide = "none") +
+    labs(x = "Standardised effect on wanting mastery, with 95% confidence interval", y = NULL,
+         title = "Place agency carries almost all of the indirect effect of the motives",
+         subtitle = "Restorative acts almost entirely through place agency; the dialogic motive raises the wish directly and lowers it through place agency, netting to about zero. Other mediators add +/-.04 at most",
+         caption = "One motive per model (together they suppress one another). The serviced motive is omitted: its model is unstable (largest standardised path 1.62).\nCross-sectional data: these are decompositions consistent with mediation, not evidence of causal order. Delta-method intervals. Source: 21_mediation_sem.R") +
+    hnr_theme()
+}
+save_fig("fig15_mediation", fig15, 11, 4.6)
+
 cat("Figures written to the figures/ folder", fill = TRUE)

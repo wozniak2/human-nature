@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 10:20:07.074968 
-Time difference of 0.01698017 secs
-Computation Time: 0.01698017 
+Date of Analysis: 2026-09-29 10:32:46.406676 
+Time difference of 0.01728606 secs
+Computation Time: 0.01728606 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -990,6 +990,73 @@ Saved: hnr_motives_roles.rds
 
 
 ############################################################
+##  21_mediation_sem.R 
+############################################################
+restorative  fitted in  52 s | CFI 0.986 RMSEA 0.073 | largest standardised path 0.65
+dialogic     fitted in  45 s | CFI 0.991 RMSEA 0.062 | largest standardised path 0.78
+serviced     fitted in  46 s | CFI 0.987 RMSEA 0.072 | largest standardised path 1.62
+
+(Every standardised path should sit inside +/-1. Values beyond that mark an
+ unstable model; the single-motive runs are the ones to read.)
+
+========== 1. Mediator -> outcome paths (b), across the three runs ==========
+       outcome     mediator restorative dialogic serviced
+ master_should        place      -0.559   -0.782   -1.204
+ master_should       agency       0.063   -0.005   -0.480
+ master_should relational_f       0.060   -0.099   -0.273
+ master_should      control      -0.189   -0.208   -0.277
+    master_now        place      -0.348   -0.398   -0.508
+    master_now       agency      -0.026   -0.029   -0.157
+    master_now relational_f       0.125    0.064    0.010
+    master_now      control      -0.208   -0.210   -0.229
+(If the effect of a mediator on the outcome is stable across runs, it does not
+ depend on which motive is examined; large differences would be a further sign
+ of instability.)
+
+========== 2. Motive -> mediator paths (a) ==========
+      motive beta.place beta.agency beta.relational_f beta.control
+ restorative    +0.502*     +0.268*           +0.647*      +0.094*
+    dialogic    +0.594*     +0.538*           +0.400*      +0.124*
+    serviced    +0.586*     +0.609*           +0.337*      +0.144*
+
+========== 3. Decomposition for WANTING mastery (one motive at a time) ==========
+      motive   total  direct via_place via_agency via_relational via_control
+ restorative -0.144* +0.098    -0.280*    +0.017*        +0.039      -0.018*
+    dialogic +0.038  +0.571*   -0.464*    -0.003         -0.040*     -0.026*
+    serviced +0.487* +1.616*   -0.705*    -0.292*        -0.092*     -0.040*
+ total_indirect               stable     share_mediated
+        -0.242*                  yes               168%
+        -0.532*                  yes n/a (total near 0)
+        -1.129* NO: do not interpret              -232%
+
+========== 4. Decomposition for SEEING mastery ==========
+      motive   total  direct via_place via_agency via_relational via_control
+ restorative -0.038  +0.082    -0.174*    -0.007         +0.081*     -0.020*
+    dialogic -0.026  +0.226*   -0.236*    -0.016         +0.026      -0.026*
+    serviced +0.096  +0.518*   -0.297*    -0.096         +0.003      -0.033*
+ total_indirect               stable     share_mediated
+        -0.120*                  yes n/a (total near 0)
+        -0.252*                  yes n/a (total near 0)
+        -0.423* NO: do not interpret              -442%
+
+(* = p < .05, delta-method SE. Standardised on the latent-response scale for the
+ binary outcome. share_mediated = total indirect / total, reported only when the
+ total effect is not near zero. A bootstrap would be the check before publication
+ but is impractical under WLSMV at this size.)
+
+========== 5. Sensitivity: the three motives entered together ==========
+fitted in 71 s | largest standardised path 1.43
+      motive  direct via_place total_indirect   total
+ restorative -0.762*   +0.438*        +0.502* -0.260*
+    dialogic +1.431*   -1.137*        -1.250* +0.181*
+    serviced -0.770*   +0.800*        +0.830* +0.060 
+(Compare the direct and indirect columns with section 3: where they are large and
+ nearly cancel, the decomposition is a suppression artefact of correlated motives.)
+
+Saved: hnr_mediation_sem.rds
+
+
+############################################################
 ##  20_opposing_roles_sem.R 
 ############################################################
 Respondents seeing / wanting each role:
@@ -1510,8 +1577,9 @@ wrote figures/fig11_semplot_place_model.png and .pdf
 wrote figures/fig12_sem_now_vs_should.png and .pdf
 wrote figures/fig13_sem_object.png and .pdf
 wrote figures/fig14_sem_guardian.png and .pdf
+wrote figures/fig15_mediation.png and .pdf
 Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 
