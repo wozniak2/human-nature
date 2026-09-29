@@ -122,6 +122,13 @@ load_one_country <- function(path, country_name) {
   meplace <- as.data.frame(lapply(c(56:59, 65), g))
   names(meplace) <- c("mp_emancipation", "mp_dialogue", "mp_agency", "mp_learning", "mp_time")
 
+  # --- societal control battery (Q4): for twelve entities, how far do humans
+  #     exploit / manage / coexist with / are subject to them. Ordinal 1-4.
+  #     This is the SOCIETAL counterpart of the personal me-place stances.
+  ctl_labels <- c("wild_animals", "pets", "plants", "forces", "river", "dunes",
+                  "forest", "lake", "sea", "soil", "mountain", "place")
+  control <- as.data.frame(lapply(42:53, g)); names(control) <- paste0("ctl_", ctl_labels)
+
   # --- reasons for staying in a natural place (Q13, 14 items) ---
   reason_labels <- c("relax", "beauty", "meet_people", "watch_plants", "meet_animals",
                      "own_thoughts", "quiet", "communicates", "teaches", "struggles",
@@ -153,7 +160,7 @@ load_one_country <- function(path, country_name) {
       residence_raw  = residence_raw,
       indigenous_raw = indigenous_raw
     ),
-    q1, validity, style, agency_now, agency_future, reasons, scen, meplace
+    q1, validity, style, agency_now, agency_future, reasons, scen, meplace, control
   )
   out
 }

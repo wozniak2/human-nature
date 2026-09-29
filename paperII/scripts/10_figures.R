@@ -538,4 +538,65 @@ pdf(file.path("figures", "fig11_semplot_place_model.pdf"), width = 12.5, height 
 draw11(); invisible(dev.off())
 cat("wrote figures/fig11_semplot_place_model.png and .pdf\n")
 
+
+# --- Fig 12: the role people SEE and the role people WANT, side by side -----
+# One fitted model (19_now_vs_should_sem.R) with the same predictors for both
+# outcomes, drawn as two panels so the eye can compare path by path. Only the
+# structural part is shown (the measurement model is in Fig 11). A path is
+# drawn in colour when p < .05 and in pale grey otherwise; an asterisk on the
+# label marks a path whose size differs between the two panels (Wald p < .05).
+ns <- readRDS("hnr_now_vs_should_sem.rds")
+psn <- standardizedSolution(ns$fit); psn <- psn[psn$op == "~", ]
+show <- c("place", "control", "serviced", "dialogic", "restorative", "age_num", "gender_bin")
+differs <- setNames(ns$wald$differs == "yes", ns$wald$predictor)
+n_ind <- c(place = 5, control = 12, serviced = 3, dialogic = 3, restorative = 6)
+lab12 <- c(place = "Own place", control = "Societal control", serviced = "Serviced",
+           dialogic = "Dialogic", restorative = "Restorative", age_num = "Age",
+           gender_bin = "Man")
+lab12[names(n_ind)] <- paste0(lab12[names(n_ind)], "  (", n_ind, ")")
+
+panel12 <- function(outcome, out_label, ttl) {
+  m <- semPlotModel(ns$fit)
+  p <- m@Pars
+  p <- p[p$edge == "~>" & p$rhs == outcome & p$lhs %in% show, ]
+  p <- p[match(show, p$lhs), ]                       # fixed order, top to bottom
+  m@Pars <- p
+  keep <- m@Vars$name %in% c(show, outcome)
+  m@Vars <- m@Vars[keep, ]
+  nm <- m@Vars$name
+  ys <- seq(1, -1, length.out = length(show))
+  L <- t(vapply(nm, function(v) if (v == outcome) c(1, 0) else c(-0.84, ys[match(v, show)]),
+                numeric(2)))
+  lab <- ifelse(nm == outcome, out_label, lab12[nm])
+  pv  <- psn$pvalue[match(paste(outcome, p$lhs), paste(psn$lhs, psn$rhs))]
+  b   <- psn$est.std[match(paste(outcome, p$lhs), paste(psn$lhs, psn$rhs))]
+  col <- ifelse(pv >= .05, "#C8C8C8", ifelse(b < 0, ACCENT, BLUE))
+  el  <- paste0(sprintf("%.2f", b), ifelse(differs[p$lhs], "*", ""))
+  semPaths(m, what = "std", whatLabels = "std", edgeLabels = el, layout = L,
+           nodeLabels = lab, nCharNodes = 0, shapeMan = "rectangle", shapeLat = "ellipse",
+           sizeMan = 15, sizeMan2 = 4.2, sizeLat = 17, sizeLat2 = 7,
+           label.cex = .7, label.scale = FALSE, edge.label.cex = .8,
+           edge.label.position = rep(.34, nrow(p)), edge.color = col, edge.width = 1.6,
+           weighted = FALSE, asize = 3, fade = FALSE, color = list(lat = "#EAF3F9", man = "#F2F2F2"),
+           border.color = MUTE, intercepts = FALSE, residuals = FALSE, thresholds = FALSE,
+           exoCov = FALSE, structural = FALSE, mar = c(3, 8, 6, 3))
+  mtext(ttl, side = 3, line = 1.4, cex = .95, col = INK)
+}
+draw12 <- function() {
+  par(mfrow = c(1, 2), oma = c(4, 0, 2, 0))
+  panel12("master_now", "Sees mastery\nnow", "The role people SEE  (R-squared .16)")
+  panel12("master_should", "Wants\nmastery", "The role people WANT  (R-squared .36)")
+  mtext("Same model, two outcomes: the personal relationship to a place matters far more for wanting mastery than for seeing it",
+        outer = TRUE, side = 3, line = 0, cex = 1, col = INK, adj = 0.02)
+  mtext("Standardised paths. Coloured = p < .05 (orange lowers, blue raises); grey = not significant. * = the path differs between the two panels (Wald p < .05). Latent variables show their indicator counts.",
+        outer = TRUE, side = 1, line = 2.2, cex = .6, col = MUTE, adj = 0.02)
+  mtext("WLSMV, n = 2,489; country dummies are in the model, not drawn. The two outcomes keep a residual correlation of .43. Source: 19_now_vs_should_sem.R",
+        outer = TRUE, side = 1, line = 3.1, cex = .6, col = MUTE, adj = 0.02)
+}
+png(file.path("figures", "fig12_sem_now_vs_should.png"), width = 3600, height = 1900, res = 240)
+draw12(); invisible(dev.off())
+pdf(file.path("figures", "fig12_sem_now_vs_should.pdf"), width = 15, height = 7.9)
+draw12(); invisible(dev.off())
+cat("wrote figures/fig12_sem_now_vs_should.png and .pdf\n")
+
 cat("Figures written to the figures/ folder", fill = TRUE)
