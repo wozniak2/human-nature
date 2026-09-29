@@ -79,6 +79,10 @@ steps <- c(
   "09_response_style_validity.R", # belief scale: construct validity + response-style controls
   "13_reasons_efa.R",          # reasons for staying: EFA in one half, CFA in the other
   "14_motives_and_roles.R",    # motives: who holds them, and do they predict the role
+  "26_ordered_sem.R",          # ordered role and extremity: one joint SEM
+  "27_ordered_mediation.R",    # do the motives act on the ordered wanted role through place agency?
+  "25_motive_measurement.R",   # item-level effects, alternative scorings, split-half noise, serviced, invariance
+  "24_outcome_structure.R",    # is the role one ordered scale? position versus extremity
   "23_robustness.R",           # the attacks a critical referee would make, and the tests that answer them
   "22_geography.R",            # can geography moderate, or account for, anything? (country, residence)
   "21_mediation_sem.R",        # do the motives act on the wanted role through place agency? (slow: about 4 minutes)

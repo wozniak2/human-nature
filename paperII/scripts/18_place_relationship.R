@@ -34,7 +34,7 @@ print(round(sapply(mp, function(v) 100 * prop.table(table(factor(dat[[v]], 1:4))
 pc <- polychoric(dat[, mp])$rho
 cat("\nPolychoric correlations:\n"); print(round(pc, 2))
 cat("\nalpha (ordinal, from polychoric):",
-    round(alpha(pc, check.keys = FALSE)$total$raw_alpha, 3), "\n")
+    round(psych::alpha(pc, check.keys = FALSE)$total$raw_alpha, 3), "\n")
 fa1 <- fa(pc, nfactors = 1, n.obs = nrow(dat), fm = "ml")
 cat("one-factor loadings:", paste(mp, round(fa1$loadings[, 1], 2), collapse = "  "), "\n")
 cat("parallel analysis (polychoric) suggests:",

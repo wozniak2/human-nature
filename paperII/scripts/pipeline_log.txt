@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 10:54:14.146218 
-Time difference of 0.0179131 secs
-Computation Time: 0.0179131 
+Date of Analysis: 2026-09-29 11:23:49.90994 
+Time difference of 0.01765203 secs
+Computation Time: 0.01765203 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -990,6 +990,269 @@ Saved: hnr_motives_roles.rds
 
 
 ############################################################
+##  26_ordered_sem.R 
+############################################################
+fitted in 23 seconds
+========== 1. Fit ==========
+   chisq       df      cfi      tli    rmsea     srmr 
+5100.255  563.000    0.970    0.977    0.057    0.053 
+
+========== 2. Standardised paths ==========
+position: positive = a role further from Master. extremity: positive = more likely at either pole.
+   predictor position_now position_wanted extremity_now extremity_wanted
+ restorative      -0.044          +0.055        -0.075           -0.265*
+    dialogic      -0.053          -0.192*       +0.116*          +0.364*
+       place      +0.316*         +0.466*       -0.151*          -0.314*
+     control      +0.135*         +0.066*       -0.116*          -0.074*
+     age_num      +0.045*         +0.115*       -0.056*          -0.107*
+  gender_bin      -0.081*         -0.136*       +0.045           +0.099*
+
+========== 3. Does each path differ between seeing and wanting? (Wald) ==========
+   outcome   predictor  chi2        p differs
+  position restorative  7.81 5.21e-03     yes
+  position    dialogic 13.97 1.86e-04     yes
+  position       place 28.83 7.91e-08     yes
+  position     control 10.05 1.52e-03     yes
+  position     age_num  7.97 4.75e-03     yes
+  position  gender_bin  5.51 1.89e-02     yes
+ extremity restorative 15.51 8.19e-05     yes
+ extremity    dialogic 24.84 6.22e-07     yes
+ extremity       place 15.76 7.20e-05     yes
+ extremity     control  2.21 1.37e-01      no
+ extremity     age_num  2.31 1.29e-01      no
+ extremity  gender_bin  2.83 9.25e-02      no
+
+========== 4. Variance explained and residual associations ==========
+R2  position now 0.146 | position wanted 0.251 | extremity now 0.088 | extremity wanted 0.194
+                     pair      r
+    pos_now ~~ pos_should  0.295
+       pos_now ~~ ext_now -0.530
+    pos_now ~~ ext_should -0.067
+    pos_should ~~ ext_now -0.139
+ pos_should ~~ ext_should -0.349
+    ext_now ~~ ext_should  0.456
+(Position wanted and position seen share a large residual association: what people
+ see and what they want move together beyond every predictor. That is the answer-
+ consistency question raised by the survey order; it cannot be settled here.)
+
+Saved: hnr_ordered_sem.rds
+
+
+############################################################
+##  27_ordered_mediation.R 
+############################################################
+restorative  fitted in  16 s | CFI 0.973 RMSEA 0.058 | largest standardised path 0.48
+dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.057 | largest standardised path 0.52
+
+========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
+-- restorative --  a: place +0.375*, control +0.070* | b (wanted): place +0.476*, control +0.127* | b (seen): place +0.349*, control +0.181*
+-- dialogic --  a: place +0.401*, control +0.111* | b (wanted): place +0.525*, control +0.134* | b (seen): place +0.358*, control +0.181*
+
+========== 2. Decomposition of the effect on position ==========
+(positive = a role further from Master; * = p < .05)
+      motive outcome   total  direct via_place via_control total_indirect
+ restorative  wanted +0.106* -0.082*   +0.178*     +0.009*        +0.187*
+ restorative    seen +0.045* -0.099*   +0.131*     +0.013*        +0.144*
+    dialogic  wanted +0.016  -0.209*   +0.210*     +0.015*        +0.225*
+    dialogic    seen +0.043  -0.120*   +0.143*     +0.020*        +0.163*
+
+========== 3. Bootstrap cross-check (observed composites, ordered logit, 500 resamples) ==========
+restorative    indirect via place agency +0.181 [+0.149, +0.220] | direct +0.024 [-0.053, +0.109]   (log-odds per SD, wanted position)
+dialogic       indirect via place agency +0.177 [+0.145, +0.211] | direct -0.157 [-0.233, -0.074]   (log-odds per SD, wanted position)
+(Percentile intervals. An indirect effect whose interval excludes zero alongside a direct
+ effect that does not is complete mediation; opposite signs are suppression.)
+
+Saved: hnr_ordered_mediation.rds
+
+
+############################################################
+##  25_motive_measurement.R 
+############################################################
+========== 1. Item level: which items carry the effects? ==========
+         item      factor position_OR extremity_OR
+        relax restorative       1.07         0.85*
+        quiet restorative       1.03         0.85*
+ own_thoughts restorative       1.00         0.89*
+       beauty restorative       1.02         0.92 
+ watch_plants restorative       1.00         0.90*
+       active restorative       0.99         0.95 
+      teaches    dialogic       0.85*        1.28*
+ communicates    dialogic       0.88*        1.20*
+ meet_animals    dialogic       0.93*        1.09 
+      comfort    serviced       0.88*        1.14*
+       photos    serviced       0.92*        1.03 
+    struggles    serviced       0.91*        1.15*
+  meet_people     dropped       0.87*        1.09 
+        cheap     dropped       0.94         0.94 
+(Each item alone, with place agency and demographics held constant. Position: odds ratio
+ per SD of wanting a role further from Master. Extremity: odds of wanting either pole.)
+
+========== 2. Alternative scorings ==========
+                          scoring items alpha position_OR extremity_OR
+       restorative, all six items     6  0.84       1.13*        0.70*
+           restorative, core four     4  0.82       1.13*        0.72*
+       restorative, relax + quiet     2  0.76       1.13*        0.74*
+      restorative, without active     5  0.84       1.13*        0.70*
+        dialogic, all three items     3  0.75       0.81*        1.49*
+ dialogic, teaches + communicates     2  0.78       0.82*        1.47*
+(The other motive and place agency are held constant in each row.)
+
+========== 3. Is the split-half instability sampling noise? (300 random splits) ==========
+share of random half-samples (n about 1,245) in which the effect on position is significant:
+ restorative     dialogic place agency 
+        0.51         0.99         1.00 
+median p-value:
+ restorative     dialogic place agency 
+     4.9e-02      6.1e-04      1.5e-36 
+
+full-sample odds ratios: restorative 1.13, dialogic 0.81, place agency 2.11
+(A true effect of this size should be significant in most half-samples if power is
+ adequate. A share near one half means a half is simply too small to detect it reliably,
+ and one non-significant half is then not evidence against the effect.)
+
+========== 4. What is the serviced factor made of? ==========
+correlations among the three items, and with the other motives and place agency:
+             rs_comfort rs_photos rs_struggles restorative dialogic
+rs_comfort         1.00      0.39         0.47       -0.02     0.16
+rs_photos          0.39      1.00         0.33        0.18     0.23
+rs_struggles       0.47      0.33         1.00       -0.10     0.22
+restorative       -0.02      0.18        -0.10        1.00     0.51
+dialogic           0.16      0.23         0.22        0.51     1.00
+place_agency      -0.18     -0.10        -0.19        0.28     0.25
+             place_agency
+rs_comfort          -0.18
+rs_photos           -0.10
+rs_struggles        -0.19
+restorative          0.28
+dialogic             0.25
+place_agency         1.00
+
+alpha: all three 0.66 | comfort + photos 0.56
+                      score position_OR extremity_OR
+        serviced, all three       0.92*        1.06 
+ amenity (comfort + photos)       0.91*        1.06 
+       nuisance (struggles)       0.97         1.03 
+(If amenity and nuisance behave differently, the serviced factor is two things and its
+ instability in the structural models is unsurprising.)
+
+========== 5. Which motives can be compared across countries? ==========
+restorative + dialogic only (serviced left out):
+             cfi rmsea  srmr    dCFI
+configural 0.948 0.082 0.056      NA
+metric     0.943 0.077 0.064 -0.0046
+scalar     0.921 0.083 0.073 -0.0218
+
+all three motives, for comparison:
+             cfi rmsea  srmr    dCFI
+configural 0.915 0.083 0.076      NA
+metric     0.904 0.082 0.081 -0.0108
+scalar     0.882 0.086 0.087 -0.0225
+(Chen 2007: a CFI drop beyond .010 counts against invariance. Without the serviced factor
+ the loadings are equivalent across countries (metric holds), so the RELATIONS of the
+ restorative and dialogic motives to other variables can be compared. Scalar invariance
+ still fails, so country MEANS on any of the motives cannot.)
+
+Saved: hnr_motive_measurement.rds
+
+
+############################################################
+##  24_outcome_structure.R 
+############################################################
+========== 1. Do the predictors line up with the ordering? (means by role) ==========
+-- role people WANT --
+            Master Manager User Guardian Partner Object
+plc           2.04    2.29 2.51     2.61    2.63   2.78
+restorative   3.79    3.94 4.01     4.08    4.13   3.82
+dialogic      3.51    3.46 3.43     3.55    3.47   3.64
+serviced      3.18    3.09 2.89     2.84    2.64   3.01
+ctl           2.20    2.37 2.44     2.42    2.32   2.62
+-- role people SEE --
+            Master Manager User Guardian Partner Object
+plc           2.25    2.28 2.54     2.52    2.57   2.70
+restorative   3.93    3.85 4.11     3.98    4.05   3.84
+dialogic      3.47    3.46 3.47     3.60    3.50   3.63
+serviced      3.03    3.05 2.84     3.07    2.79   3.21
+ctl           2.21    2.39 2.43     2.45    2.48   2.62
+
+eta-squared of role on each predictor (wanted / seen):
+            wanted  seen
+plc          0.129 0.062
+restorative  0.022 0.019
+dialogic     0.004 0.003
+serviced     0.030 0.014
+ctl          0.024 0.034
+(Place agency climbs from Master to Object; restorative rises toward Partner; dialogic
+ is U-shaped, high at both ends. That is the pattern to explain.)
+
+========== 2. One ordered scale? Slope of each predictor at each cut point ==========
+-- wanted role: odds ratio per SD of being at a HIGHER role than the cut (* p < .05) --
+                  cut   plc restorative dialogic   ctl
+   Master | Manager + 2.13*       1.27*    0.70* 1.33*
+     Manager | User + 2.01*       1.15*    0.78* 1.17*
+    User | Guardian + 1.80*       1.07     0.90  1.06 
+ Guardian | Partner + 1.78*       0.99     0.93  1.04 
+   Partner | Object + 1.98*       0.57*    1.46* 1.33*
+
+-- seen role --
+                  cut   plc restorative dialogic   ctl
+   Master | Manager + 1.42*       0.99     0.96  1.40*
+     Manager | User + 1.65*       1.16*    0.85* 1.27*
+    User | Guardian + 1.50*       0.86*    1.09  1.24*
+ Guardian | Partner + 1.59*       0.87     1.04  1.28*
+   Partner | Object + 1.71*       0.61*    1.35* 1.42*
+(If one ordered scale held, each column would show roughly one odds ratio all the way
+ down. Place agency does. Dialogic reverses sign across the cuts, so it is not
+ describing position on the scale.)
+
+Proportional-odds model, wanted role (odds ratio per SD, higher = a role further from Master):
+   predictor   OR        p
+         plc 2.08 1.25e-67
+ restorative 1.13 5.35e-03
+    dialogic 0.81 6.00e-07
+         ctl 1.17 1.72e-05
+
+BIC: ordered logit 7896 | multinomial 8143 (lower is better; the multinomial is far more flexible)
+
+========== 3. Does the ordering of the middle roles matter? ==========
+best five of the 24 orderings of the four middle roles (Master first, Object last):
+                                                 order    BIC rank
+ Master > Manager > User > Guardian > Partner > Object 7895.6    1
+ Master > Manager > User > Partner > Guardian > Object 7904.2    2
+ Master > Manager > Guardian > User > Partner > Object 7935.7    3
+ Master > Manager > Partner > User > Guardian > Object 7940.7    4
+ Master > Manager > Guardian > Partner > User > Object 7971.9    5
+
+the theoretical ordering ranks 1 of 24 (BIC 7895.6, best 7895.6)
+(Ordering by fit is data-driven and partly circular, since place agency defines much of
+ the fit. It shows whether the reading of the text is contradicted, not that it is right.)
+
+========== 4. Two dimensions: extremity and direction ==========
+
+-- wanted role --  extremity: either pole (n = 618) versus the middle | direction: Object versus Master (n = 618)
+   predictor extremity_OR direction_OR
+         plc        0.67*        2.52*
+ restorative        0.70*        0.73*
+    dialogic        1.50*        1.08 
+         ctl        0.86*        1.51*
+
+-- seen role --  extremity: either pole (n = 924) versus the middle | direction: Object versus Master (n = 924)
+   predictor extremity_OR direction_OR
+         plc        0.84*        1.79*
+ restorative        0.89*        0.64*
+    dialogic        1.11*        1.29*
+         ctl        0.81*        1.62*
+
+(Reading: place agency separates Object from Master (direction), while the dialogic
+ motive predicts being at EITHER pole (extremity) and not which one, and the restorative
+ motive lowers extremity. A single ordered scale cannot hold both; place agency is the
+ dominance dimension and the motives modulate how polarised a person is. Caution: the
+ extremity odds ratio for place agency (below 1) is partly an artefact of unequal pole
+ sizes, since far more people want Master than Object.)
+
+Saved: hnr_outcome_structure.rds
+
+
+############################################################
 ##  23_robustness.R 
 ############################################################
 ========== 0. Reference: the pooled model ==========
@@ -1170,7 +1433,7 @@ rural x country interaction on wanting mastery:
 ##  21_mediation_sem.R 
 ############################################################
 restorative  fitted in  51 s | CFI 0.986 RMSEA 0.073 | largest standardised path 0.65
-dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.062 | largest standardised path 0.78
+dialogic     fitted in  45 s | CFI 0.991 RMSEA 0.062 | largest standardised path 0.78
 serviced     fitted in  44 s | CFI 0.987 RMSEA 0.072 | largest standardised path 1.62
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
@@ -1222,7 +1485,7 @@ serviced     fitted in  44 s | CFI 0.987 RMSEA 0.072 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 69 s | largest standardised path 1.43
+fitted in 70 s | largest standardised path 1.43
       motive  direct via_place total_indirect   total
  restorative -0.762*   +0.438*        +0.502* -0.260*
     dialogic +1.431*   -1.137*        -1.250* +0.181*
@@ -1755,8 +2018,12 @@ wrote figures/fig12_sem_now_vs_should.png and .pdf
 wrote figures/fig13_sem_object.png and .pdf
 wrote figures/fig14_sem_guardian.png and .pdf
 wrote figures/fig15_mediation.png and .pdf
+wrote figures/fig16_sem_position.png and .pdf
+wrote figures/fig17_sem_extremity.png and .pdf
+wrote figures/fig18_mediation_ordered.png and .pdf
+wrote figures/fig19_cutpoints.png and .pdf
 Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 

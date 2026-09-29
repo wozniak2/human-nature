@@ -25,7 +25,7 @@ lab <- c("wild_animals", "pets", "plants", "forces", "river", "dunes",
 now <- paste0("ag_now_", lab)
 fut <- paste0("ag_fut_", lab)
 
-alpha <- function(m) { m <- m[complete.cases(m), , drop = FALSE]; k <- ncol(m)
+cronbach <- function(m) { m <- m[complete.cases(m), , drop = FALSE]; k <- ncol(m)
   (k / (k - 1)) * (1 - sum(apply(m, 2, var)) / var(rowSums(m))) }
 
 cat("========== 1. Items and descriptives (now) ==========\n")
@@ -34,8 +34,8 @@ desc <- data.frame(item = lab,
                    sd   = round(apply(dat[, now], 2, sd, na.rm = TRUE), 2),
                    agree_pct = round(100 * colMeans(dat[, now] >= 4, na.rm = TRUE), 1))
 print(desc[order(-desc$mean), ], row.names = FALSE)
-cat("\nalpha now:", round(alpha(dat[, now]), 3),
-    " future:", round(alpha(dat[, fut]), 3), "\n")
+cat("\nalpha now:", round(cronbach(dat[, now]), 3),
+    " future:", round(cronbach(dat[, fut]), 3), "\n")
 cat("Discriminant anchor -- dialogue with another human: mean",
     round(mean(dat$dial_human, na.rm = TRUE), 2),
     "| correlation with the scale:",
@@ -127,6 +127,6 @@ cat("eta2 =", round(a[1, "Sum Sq"] / sum(a[, "Sum Sq"]), 4),
 cat("(For reference, the relational scale reaches eta2 = .011 on the same outcome.)\n")
 
 saveRDS(list(fits = list(one = f1, two = f2, invariance = inv, longitudinal = f_long),
-             desc = desc, alpha_now = alpha(dat[, now]), alpha_fut = alpha(dat[, fut])),
+             desc = desc, alpha_now = cronbach(dat[, now]), alpha_fut = cronbach(dat[, fut])),
         "hnr_agency_scale.rds")
 cat("\nSaved: hnr_agency_scale.rds\n")

@@ -552,18 +552,18 @@ lab12 <- c(place = "Place agency", control = "Societal control", serviced = "Ser
            gender_bin = "Man")
 lab12[names(n_ind)] <- paste0(lab12[names(n_ind)], "  (", n_ind, ")")
 
-pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file, src) {
+pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file, src, vars = show, lab_now = NULL, lab_should = NULL, note = "") {
   psn <- standardizedSolution(fit); pall <- psn; psn <- psn[psn$op == "~", ]
   r2 <- inspect(fit, "r2")
   rc <- pall[pall$op == "~~" & pall$lhs == out_now & pall$rhs == out_should, "est.std"]
   panel <- function(outcome, out_label, ttl) {
     m <- semPlotModel(fit); p <- m@Pars
-    p <- p[p$edge == "~>" & p$rhs == outcome & p$lhs %in% show, ]
-    p <- p[match(show, p$lhs), ]
-    m@Pars <- p; m@Vars <- m@Vars[m@Vars$name %in% c(show, outcome), ]
+    p <- p[p$edge == "~>" & p$rhs == outcome & p$lhs %in% vars, ]
+    p <- p[match(vars, p$lhs), ]
+    m@Pars <- p; m@Vars <- m@Vars[m@Vars$name %in% c(vars, outcome), ]
     nm <- m@Vars$name
-    ys <- seq(1, -1, length.out = length(show))
-    L <- t(vapply(nm, function(v) if (v == outcome) c(1, 0) else c(-0.84, ys[match(v, show)]),
+    ys <- seq(1, -1, length.out = length(vars))
+    L <- t(vapply(nm, function(v) if (v == outcome) c(1, 0) else c(-0.84, ys[match(v, vars)]),
                   numeric(2)))
     lab <- ifelse(nm == outcome, out_label, lab12[nm])
     key <- match(paste(outcome, p$lhs), paste(psn$lhs, psn$rhs))
@@ -582,16 +582,17 @@ pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file
     mtext(ttl, side = 3, line = 1.4, cex = .95, col = INK)
   }
   draw <- function() {
-    par(mfrow = c(1, 2), oma = c(4, 0, 2, 0))
-    panel(out_now, paste0("Sees ", tolower(role), "\nnow"),
+    par(mfrow = c(1, 2), oma = c(5.2, 0, 2, 0))
+    panel(out_now, if (is.null(lab_now)) paste0("Sees ", tolower(role), "\nnow") else lab_now,
           sprintf("The role people SEE  (R-squared %.2f)", r2[[out_now]]))
-    panel(out_should, paste0("Wants\n", tolower(role)),
+    panel(out_should, if (is.null(lab_should)) paste0("Wants\n", tolower(role)) else lab_should,
           sprintf("The role people WANT  (R-squared %.2f)", r2[[out_should]]))
     mtext(headline, outer = TRUE, side = 3, line = 0, cex = 1, col = INK, adj = 0.02)
-    mtext("Standardised paths. Coloured = p < .05 (orange lowers, blue raises); grey = not significant. * = the path differs between the two panels (Wald p < .05). Latent variables show their indicator counts.",
+    mtext(paste0("Standardised paths. Coloured = p < .05 (orange lowers, blue raises); grey = not significant. * = the path differs between the two panels (Wald p < .05). Latent variables show their indicator counts."),
           outer = TRUE, side = 1, line = 2.2, cex = .6, col = MUTE, adj = 0.02)
     mtext(sprintf("WLSMV, n = 2,489; country dummies are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
           outer = TRUE, side = 1, line = 3.1, cex = .6, col = MUTE, adj = 0.02)
+    if (nzchar(note)) mtext(note, outer = TRUE, side = 1, line = 4.1, cex = .6, col = MUTE, adj = 0.02)
   }
   png(file.path("figures", paste0(file, ".png")), width = 3600, height = 1900, res = 240)
   draw(); invisible(dev.off())
@@ -658,4 +659,102 @@ fig15 <- function() {
 }
 save_fig("fig15_mediation", fig15, 11, 4.6)
 
+
+# --- Figs 16-18: the ordered outcome, extremity, and mediation on position ---
+# From 26_ordered_sem.R and 27_ordered_mediation.R, after script 24 showed the
+# wanted role is one ordered dominance scale plus a second dimension, extremity.
+so <- readRDS("hnr_ordered_sem.rds")
+show2 <- c("place", "control", "dialogic", "restorative", "age_num", "gender_bin")
+wd <- function(o) { w <- so$wald[so$wald$outcome == o, ]; setNames(w$differs == "yes", w$predictor) }
+pair_sem_fig(so$fit, "pos_now", "pos_should", wd("position"), "position",
+  "The wanted role sits further from Master the more agency a person grants a place, and that link is stronger for wanting than for seeing",
+  "fig16_sem_position", "26_ordered_sem.R", vars = show2,
+  lab_now = "Position\nseen now", lab_should = "Position\nwanted",
+  note = "Position runs from Master (1) to Object (6): positive = a role further from Master.")
+pair_sem_fig(so$fit, "ext_now", "ext_should", wd("extremity"), "extremity",
+  "The motives act on how polarised the wanted role is: restorative experience lowers it, dialogic experience raises it",
+  "fig17_sem_extremity", "26_ordered_sem.R", vars = show2,
+  lab_now = "Extremity\nseen now", lab_should = "Extremity\nwanted",
+  note = "Extremity = choosing either Master or Object. The place-agency and control paths are not interpretable (unequal pole sizes); read the motive paths.")
+
+om <- readRDS("hnr_ordered_mediation.rds")
+one_ord <- function(x) {
+  ps <- om$runs[[x]]$ps
+  lab <- c("tot_pos_should", "d_pos_should", "tind_pos_should", "ind_pos_should_place", "ind_pos_should_control")
+  nice <- c("Total effect", "Direct effect", "All indirect", "via place agency", "via societal control")
+  k <- match(lab, ps$label)
+  data.frame(motive = x, pathway = nice, est = ps$est.std[k], lo = ps$ci.lower[k], hi = ps$ci.upper[k])
+}
+d18 <- rbind(one_ord("restorative"), one_ord("dialogic"))
+d18$pathway <- factor(d18$pathway, levels = rev(c("Total effect", "Direct effect", "All indirect",
+                      "via place agency", "via societal control")))
+d18$motive <- factor(d18$motive, levels = c("restorative", "dialogic"),
+                     labels = c("Restorative motive", "Dialogic motive"))
+d18$sig <- d18$lo > 0 | d18$hi < 0
+d18$kind <- ifelse(d18$pathway == "Total effect", "total", ifelse(d18$sig, "sig", "ns"))
+
+fig18 <- function() {
+  ggplot(d18, aes(est, pathway, colour = kind)) +
+    geom_vline(xintercept = 0, linetype = 2, colour = MUTE, linewidth = .4) +
+    geom_linerange(aes(xmin = lo, xmax = hi), linewidth = 1) +
+    geom_point(aes(shape = kind), size = 2.4, fill = BG) +
+    facet_wrap(~motive, nrow = 1) +
+    scale_colour_manual(values = c(total = INK, sig = BLUE, ns = MUTE), guide = "none") +
+    scale_shape_manual(values = c(total = 18, sig = 19, ns = 1), guide = "none") +
+    labs(x = "Standardised effect on the position of the wanted role (positive = further from Master)", y = NULL,
+         title = "Both motives move the wanted role away from Master through place agency",
+         subtitle = "For the dialogic motive a direct effect pulls the other way and the two nearly cancel; for the restorative motive the direct effect is small",
+         caption = "One motive per model. Serviced is omitted (weak, low reliability) and extremity is not decomposed (no clean place-agency path).\nCross-sectional data, and the place-agency items were asked after the role question: consistent with mediation, not evidence of it. Source: 27_ordered_mediation.R") +
+    hnr_theme()
+}
+save_fig("fig18_mediation_ordered", fig18, 11, 4.4)
+
+# --- Fig 19: one ordered scale? Odds ratio at each cut point of the wanted role ---
+# From the analysis in 24_outcome_structure.R, recomputed here with confidence
+# intervals. Each cut asks: what predicts wanting a role ABOVE this point on the
+# ordered scale (Master, Manager, User, Guardian, Partner, Object)? If one ordered
+# scale describes the role, a predictor has the same odds ratio at every cut.
+cp <- local({
+  d <- readRDS("hnr_data.rds"); re <- readRDS("hnr_reasons_efa.rds")
+  nm <- c(rs_relax = "restorative", rs_teaches = "dialogic", rs_comfort = "serviced")
+  gg <- re$groups
+  names(gg) <- vapply(gg, function(v) { L <- unclass(re$efa$loadings)[v, , drop = FALSE]
+    unname(nm[rownames(L)[which.max(apply(abs(L), 1, max))]]) }, character(1))
+  mp <- c("mp_emancipation", "mp_dialogue", "mp_agency", "mp_learning", "mp_time")
+  z <- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+  d$Restorative <- z(rowMeans(d[, gg$restorative])); d$Dialogic <- z(rowMeans(d[, gg$dialogic]))
+  d$PlaceAgency <- z(rowMeans(d[, mp])); d$Control <- z(d$control_mean)
+  d <- d[complete.cases(d[, c("typ_should", "age_num", "gender_bin")]), ]
+  cuts <- c("Master | Manager", "Manager | User", "User | Guardian", "Guardian | Partner", "Partner | Object")
+  do.call(rbind, lapply(1:5, function(k) {
+    d$y <- as.integer(d$typ_should > k)
+    m <- glm(y ~ PlaceAgency + Restorative + Dialogic + Control + age_num + gender_bin + country, binomial, d)
+    s <- summary(m)$coefficients[c("PlaceAgency", "Restorative", "Dialogic", "Control"), , drop = FALSE]
+    data.frame(cut = cuts[k],
+               predictor = c("Place agency", "Restorative motive", "Dialogic motive", "Societal control"),
+               or = exp(s[, 1]), lo = exp(s[, 1] - 1.96 * s[, 2]), hi = exp(s[, 1] + 1.96 * s[, 2]))
+  }))
+})
+cp$cut <- factor(cp$cut, levels = unique(cp$cut))
+cp$predictor <- factor(cp$predictor, levels = c("Place agency", "Restorative motive", "Dialogic motive", "Societal control"))
+cols19 <- c("Place agency" = BLUE, "Restorative motive" = GREEN, "Dialogic motive" = ACCENT, "Societal control" = MUTE)
+
+fig19 <- function() {
+  ggplot(cp, aes(cut, or, group = predictor, colour = predictor)) +
+    geom_hline(yintercept = 1, linetype = 2, colour = MUTE, linewidth = .4) +
+    geom_ribbon(aes(ymin = lo, ymax = hi, fill = predictor), alpha = .15, colour = NA) +
+    geom_line(linewidth = 1) + geom_point(size = 2) +
+    facet_wrap(~predictor, nrow = 1) +
+    scale_y_log10(breaks = c(.5, .7, 1, 1.5, 2, 3)) +
+    scale_colour_manual(values = cols19, guide = "none") +
+    scale_fill_manual(values = cols19, guide = "none") +
+    scale_x_discrete(labels = function(x) gsub(" | ", " |\n", x, fixed = TRUE)) +
+    labs(x = "Cut point on the ordered scale (wanting a role above it)", y = "Odds ratio per standard deviation",
+         title = "One ordered scale: place agency acts alike at every cut, while both motives reverse between the two ends",
+         subtitle = "Odds ratio of wanting a role above each cut point, adjusted for the other predictors, age, gender and country",
+         caption = "A flat line means one ordered scale describes the role. The restorative motive falls from above 1 to below 1 and the dialogic motive rises from below 1 to above 1, so neither describes position. Source: 24_outcome_structure.R") +
+    hnr_theme() +
+    theme(axis.text.x = element_text(size = 7.5))
+}
+save_fig("fig19_cutpoints", fig19, 11, 4.4)
 cat("Figures written to the figures/ folder", fill = TRUE)
