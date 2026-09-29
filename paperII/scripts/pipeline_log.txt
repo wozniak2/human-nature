@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 13:56:55.921279 
-Time difference of 0.02121806 secs
-Computation Time: 0.02121806 
+Date of Analysis: 2026-09-29 14:20:17.093042 
+Time difference of 0.0178299 secs
+Computation Time: 0.0178299 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1066,7 +1066,7 @@ Saved: hnr_ordered_sem.rds
 ############################################################
 ##  27_ordered_mediation.R 
 ############################################################
-restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
+restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
 dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.053 | largest standardised path 0.53
 
 ========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
@@ -1093,7 +1093,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 7 seconds
+fitted in 8 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1478,6 +1478,107 @@ Saved: hnr_education_check.rds
 
 
 ############################################################
+##  30_indicator_connections.R 
+############################################################
+respondents: 2513 | Q14 answered: 2513 | Q16 answered: 2513 
+Q14 choices (1 shared, 2 sometimes useful, 3 myth): 1 1159 | 2 1009 | 3 345 
+
+========== 1. Each indicator against the role seen, wanted, the shift and extremity ==========
+(Spearman rho after removing country differences; * = p < .001, + = p < .05)
+ indicator                                  seen   wanted shift  extreme_wanted
+ Q1 Relational entanglement                 +0.00  +0.10* +0.08* -0.02         
+ Q2 Agency of non-humans, now               +0.07* +0.05+ -0.03  +0.03         
+ Q3 Agency of non-humans, should            +0.06+ +0.07* -0.01  +0.00         
+ Q4 Societal control                        +0.16* +0.11* -0.04  -0.07*        
+ Q7-12 Place agency                         +0.23* +0.35* +0.10* -0.14*        
+ Q11 Not a message (destroyed place)        +0.01  +0.02  +0.00  -0.02         
+ Q11 Technology prevents it                 +0.02  +0.00  -0.04+ -0.06+        
+ Q11 Heed its signals                       -0.00  +0.06+ +0.06+ -0.03         
+ Q11 Nature is a partner                    +0.02  +0.03  -0.00  +0.02         
+ Q11 Humans always lose                     +0.05+ +0.09* +0.03  -0.04+        
+ Q13 Restful motive                         +0.06+ +0.12* +0.05+ -0.05+        
+ Q13 Dialogic motive                        +0.04+ +0.02  -0.02  +0.02         
+ Q13 Serviced motive                        -0.04  -0.15* -0.10* +0.09*        
+ Q14 Indigenous knowledge: should be shared -0.07* +0.01  +0.03  -0.07*        
+ Q14 Indigenous knowledge: mostly myth      +0.10* +0.05+ -0.02  +0.21*        
+ Q15 Climate: denial                        +0.02  -0.10* -0.08* +0.06+        
+ Q15 Climate: technology can stop it        -0.02  -0.07* -0.04+ +0.08*        
+ Q15 Climate: cannot be stopped             -0.01  -0.01  -0.00  -0.01         
+ Q15 Climate: will end humanity             -0.01  -0.03  -0.02  +0.12*        
+ Q16 Tourism: favourable (3 items)          +0.04  +0.01  -0.03  -0.01         
+ Q16 Tourism: critical (3 items)            -0.02  -0.02  -0.01  +0.02         
+
+Strongest links to the role WANTED:
+                  indicator   rho
+         Q7-12 Place agency  0.35
+        Q13 Serviced motive -0.15
+         Q13 Restful motive  0.12
+        Q4 Societal control  0.11
+        Q15 Climate: denial -0.10
+ Q1 Relational entanglement  0.10
+
+Strongest links to the role SEEN:
+                                  indicator   rho
+                         Q7-12 Place agency  0.23
+                        Q4 Societal control  0.16
+      Q14 Indigenous knowledge: mostly myth  0.10
+               Q2 Agency of non-humans, now  0.07
+ Q14 Indigenous knowledge: should be shared -0.07
+                         Q13 Restful motive  0.06
+
+========== 2. Q14: which statement about Indigenous knowledge, by the role wanted ==========
+           statement
+role_wanted should be shared sometimes useful mostly myth
+   Master               0.52             0.37        0.11
+   Manager              0.40             0.46        0.14
+   User                 0.43             0.42        0.14
+   Guardian             0.48             0.39        0.13
+   Partner              0.57             0.33        0.10
+   Object               0.45             0.30        0.25
+chi-squared = 46.0, df = 10, p = 1.41e-06
+
+========== 3. How the indicators relate to each other (country-adjusted Pearson) ==========
+                   1 relational 2 agency now 3 agency should 4 control
+Q1 relational              1.00         0.18            0.19      0.02
+Q2 agency now              0.18         1.00            0.88      0.09
+Q3 agency should           0.19         0.88            1.00      0.09
+Q4 control                 0.02         0.09            0.09      1.00
+Q7-12 place agency         0.20         0.27            0.28      0.13
+Q13 restful                0.51         0.15            0.17      0.03
+Q13 dialogic               0.30         0.43            0.40      0.06
+Q13 serviced               0.01         0.12            0.11      0.10
+Q15 denial                -0.11         0.15            0.12      0.11
+Q16 favourable             0.26         0.13            0.14      0.08
+Q16 critical               0.17         0.18            0.18      0.04
+                   7-12 place agency 13 restful 13 dialogic 13 serviced
+Q1 relational                   0.20       0.51        0.30        0.01
+Q2 agency now                   0.27       0.15        0.43        0.12
+Q3 agency should                0.28       0.17        0.40        0.11
+Q4 control                      0.13       0.03        0.06        0.10
+Q7-12 place agency              1.00       0.28        0.25       -0.20
+Q13 restful                     0.28       1.00        0.50        0.01
+Q13 dialogic                    0.25       0.50        1.00        0.26
+Q13 serviced                   -0.20       0.01        0.26        1.00
+Q15 denial                     -0.14      -0.15        0.10        0.32
+Q16 favourable                  0.10       0.37        0.29        0.22
+Q16 critical                    0.02       0.17        0.27        0.27
+                   15 denial 16 favourable 16 critical
+Q1 relational          -0.11          0.26        0.17
+Q2 agency now           0.15          0.13        0.18
+Q3 agency should        0.12          0.14        0.18
+Q4 control              0.11          0.08        0.04
+Q7-12 place agency     -0.14          0.10        0.02
+Q13 restful            -0.15          0.37        0.17
+Q13 dialogic            0.10          0.29        0.27
+Q13 serviced            0.32          0.22        0.27
+Q15 denial              1.00          0.08        0.17
+Q16 favourable          0.08          1.00        0.03
+Q16 critical            0.17          0.03        1.00
+
+Saved: hnr_indicator_connections.rds
+
+
+############################################################
 ##  22_geography.R 
 ############################################################
 ========== 1. Are the country differences in wanting mastery carried by the constructs? ==========
@@ -1557,9 +1658,9 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  53 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
-dialogic     fitted in  48 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
-serviced     fitted in  49 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
+restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+dialogic     fitted in  47 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
+serviced     fitted in  47 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -1610,7 +1711,7 @@ serviced     fitted in  49 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 76 s | largest standardised path 1.42
+fitted in 74 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*
@@ -2156,4 +2257,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_education_check.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_education_check.rds, hnr_fielding_dates.rds, hnr_indicator_connections.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds 

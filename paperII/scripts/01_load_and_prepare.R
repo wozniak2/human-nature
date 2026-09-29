@@ -116,6 +116,14 @@ load_one_country <- function(path, country_name) {
                    "sc_nature_partner", "sc_humans_lose",
                    "cl_denial", "cl_tech_stops", "cl_cannot_stop", "cl_extinction")
 
+  # --- two more indicators, kept for the connections check (30): Q14, which statement about
+  #     Indigenous knowledge of natural places resonates most (1 = exceptional, should be shared;
+  #     2 = sometimes useful; 3 = legends with little truth), and Q16, six statements on tourism
+  #     and Indigenous communities (85-87 favourable, 88-90 critical). Q16 is also used in the
+  #     response-style indices below. ---
+  indk <- data.frame(ik_choice = g(80), tour_respect = g(85), tour_benefit = g(86), tour_educates = g(87),
+                     tour_ban = g(88), tour_money = g(89), tour_destroys = g(90))
+
   # --- relationship to one's OWN favourite place: four ordered stances, each
   #     a sub-indicator of the integrated Me-Place indicator (Q7 emancipation,
   #     Q8 dialogue, Q9 agency, Q10 learning), plus Q12 (does the place change,
@@ -162,7 +170,7 @@ load_one_country <- function(path, country_name) {
       residence_raw  = residence_raw,
       indigenous_raw = indigenous_raw
     ),
-    q1, validity, style, agency_now, agency_future, reasons, scen, meplace, control
+    q1, validity, style, agency_now, agency_future, reasons, scen, indk, meplace, control
   )
   out
 }
