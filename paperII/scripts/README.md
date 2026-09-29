@@ -1,9 +1,9 @@
 # Paper II — replication scripts
 
-Analysis pipeline for *It's Complicated: Human–Nature Relationships Across Six Countries* (outline: `../PaperII_Outline_v4.docx`).
+Analysis pipeline for *Seeing Mastery, Wanting Less: Place Agency and the Role of Humans in Nature* (working title, Paper II). The repository front page is `../../README.md`.
 
 ## Requirements
-- R 4.4.1 (tested). Packages: readxl, lavaan, nnet, sirt — install with `source("00_setup.R")`.
+- R 4.4.1 (tested). Packages: readxl, lavaan, nnet, sirt, psych, GPArotation, ggplot2, ggalluvial (and MASS, which ships with R) — install with `source("00_setup.R")`.
 - Raw survey exports (SurveyMonkey xlsx, one per country) in `../data/`:
   Canada, Panama, Poland, Netherlands, Spain, Sweden (file names are set in `01_load_and_prepare.R`).
 
@@ -13,7 +13,7 @@ From this folder:
 Rscript 00_setup.R
 Rscript 00_run_pipeline.R
 ```
-or open `00_run_pipeline.R` in RStudio and Source it. It deletes old `hnr_*.rds` outputs, runs every step, and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Runtime: about 1–2 minutes.
+or open `00_run_pipeline.R` in RStudio and Source it. It deletes old `hnr_*.rds` outputs, runs every step, and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Runtime: about ten minutes (script 21 alone takes about four).
 
 Always run script files. On this Windows machine, `Rscript -e "..."` crashes when reading xlsx.
 
@@ -54,5 +54,5 @@ The pipeline runs 01, 02, 04-09, 13, 14, 23, 29, 30, 24, 26, 27, 28, 25, 22, 21,
 
 ## Notes
 - Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).
-- Education is not comparable across countries (different scales) and is not used in the models.
-- Every number in the outline comes from `pipeline_log.txt`.
+- Education answer options differ by questionnaire (9, 8 and 7 codes). `04_mimic_model.R` harmonises them to three levels (primary, high school, higher) plus a not-stated flag, and every model of the role uses them as covariates (`29_education_check.R` shows what they change).
+- Every number in the working outline comes from `pipeline_log.txt`; the outline itself is kept outside the repository.
