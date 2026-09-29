@@ -32,10 +32,11 @@ Always run script files. On this Windows machine, `Rscript -e "..."` crashes whe
 | 13_reasons_efa.R | Reasons for staying (Q13, 14 items): factorability, parallel analysis, EFA in a country-stratified half, CFA in the held-out half, subscale reliability and relation to the role item | hnr_reasons_efa.rds |
 | 14_motives_and_roles.R | The three motives as outcomes (country, age, gender) and as predictors of the ideal role: multinomial logit against a Manager reference, plus mastery-as-ideal and rejection-of-perceived-mastery contrasts | hnr_motives_roles.rds |
 | 15_structural_model.R | One WLSMV model in which the three motives, the agency scale and the belief scale all predict mastery as the ideal, alongside age, gender and country; standardised paths and latent correlations | hnr_structural_model.rds |
+| 16_motive_invariance.R | Multi-group CFA of the three-factor motive model across the six countries: metric invariance is borderline and scalar invariance fails, so motive levels cannot be compared between countries | hnr_motive_invariance.rds |
 | 11_square_table_models.R | Loglinear models for the 6x6 perceived-vs-ideal table: independence, quasi-independence, symmetry, quasi-symmetry; marginal homogeneity as the QS-vs-S contrast; fitted per country | hnr_square_table_models.rds |
 | 10_figures.R | Figures 1-6 for the manuscript, PNG and PDF | figures/ |
 
-The pipeline runs 01, 02, 04-09, 13, 14, 15, 12, 11 and 10 in that order. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
+The pipeline runs 01, 02, 04-09, 13, 14, 16, 15, 12, 11 and 10 in that order. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
 
 ## Notes
 - Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).

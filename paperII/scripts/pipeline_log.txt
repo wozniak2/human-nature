@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 09:39:13.425448 
-Time difference of 0.017313 secs
-Computation Time: 0.017313 
+Date of Analysis: 2026-09-29 09:47:48.724556 
+Time difference of 0.0178659 secs
+Computation Time: 0.0178659 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -990,6 +990,55 @@ Saved: hnr_motives_roles.rds
 
 
 ############################################################
+##  16_motive_invariance.R 
+############################################################
+========== 1. Invariance across the six countries ==========
+              chisq  df   cfi rmsea  srmr    dCFI
+configural 1176.680 306 0.915 0.082 0.075      NA
+metric     1328.703 351 0.905 0.082 0.081 -0.0104
+scalar     1599.950 396 0.883 0.085 0.086 -0.0221
+(Chen 2007: a CFI drop beyond .010 counts against invariance. Metric is
+ borderline and scalar fails, so the means below are diagnostic only.)
+
+========== 2. Latent means by country, scalar model (Canada = 0) ==========
+            restorative dialogic serviced
+Canada            0.000    0.000    0.000
+Panama            0.207    0.066   -0.109
+Poland            0.012    0.006   -0.132
+Netherlands      -0.214   -0.282   -0.208
+Spain             0.030   -0.019   -0.008
+Sweden           -0.169   -0.207   -0.215
+
+p-values:
+            restorative dialogic serviced
+Canada               NA       NA       NA
+Panama          0.00023  1.5e-01   0.1400
+Poland          0.84000  9.0e-01   0.0730
+Netherlands     0.00017  2.1e-08   0.0022
+Spain           0.57000  7.0e-01   0.9000
+Sweden          0.00340  3.6e-05   0.0014
+
+DO NOT report these as country differences in motive: the measurement
+model that would license the comparison does not hold. What they show is
+where non-invariance is concentrated -- the Netherlands and Sweden sit
+lowest on all three, which is the same pattern those two samples show on
+every scale in the survey and is bound up with the English version.
+
+========== 3. Which items carry the non-invariance? ==========
+largest loading constraints by score test:
+  X2 =   52.9  serviced =~ rs_comfort (group 1)
+  X2 =   15.3  serviced =~ rs_comfort (group 1)
+  X2 =   10.8  serviced =~ rs_photos (group 1)
+  X2 =   10.1  restorative =~ rs_watch_plants (group 1)
+  X2 =    8.7  restorative =~ rs_active (group 1)
+  X2 =    6.0  restorative =~ rs_watch_plants (group 1)
+  X2 =    5.9  restorative =~ rs_beauty (group 1)
+  X2 =    5.1  restorative =~ rs_active (group 1)
+
+Saved: hnr_motive_invariance.rds
+
+
+############################################################
 ##  15_structural_model.R 
 ############################################################
 ========== 1. Fit ==========
@@ -1187,4 +1236,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motives_roles.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motives_roles.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_square_table_models.rds, hnr_structural_model.rds, hnr_style_validity.rds 
