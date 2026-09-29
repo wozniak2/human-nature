@@ -407,4 +407,67 @@ fig9 <- function() {
 }
 save_fig("fig9_motive_rrr", fig9, 10, 4.2)
 
+
+# --- Fig 10: path diagram for the structural model -------------------------
+# Latents are drawn with rounded corners, observed covariates square. Only
+# the structural paths are shown; indicator counts stand in for the
+# measurement model, which would otherwise need thirty more boxes.
+sm <- readRDS("hnr_structural_model.rds")
+pp <- sm$paths; ni <- sm$n_items
+lab10 <- c(restorative = "Restorative", dialogic = "Dialogic", serviced = "Serviced",
+           agency = "Agency of\nnon-human beings", relational_f = "Reciprocal\nperson-place belief",
+           age_num = "Age", gender_bin = "Man (vs woman)")
+nodes <- data.frame(
+  key = names(lab10), label = unname(lab10),
+  x = 0, y = c(5.2, 4.2, 3.2, 1.8, 0.8, -0.6, -1.5),
+  latent = c(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE), stringsAsFactors = FALSE)
+nodes$label <- ifelse(nodes$latent,
+                      paste0(nodes$label, "  (", ni[nodes$key], ")"), nodes$label)
+nodes <- rbind(nodes, data.frame(key = "country", label = "Country\n(5 dummies)",
+                                 x = 0, y = -2.5, latent = FALSE))
+out <- data.frame(x = 4.2, y = 1.6, label = "Wants mastery\nas the ideal role")
+
+arr <- merge(nodes[nodes$key != "country", ], pp, by.x = "key", by.y = "predictor")
+arr$sig <- arr$p < .05
+arr <- rbind(arr, data.frame(key = "country", label = "", x = 0, y = -2.5,
+                             latent = FALSE, beta = NA, se = NA, p = NA, sig = FALSE))
+arr$xend <- out$x - 0.78; arr$yend <- out$y
+arr$lx <- arr$x + 0.62 * (arr$xend - arr$x)
+arr$ly <- arr$y + 0.62 * (arr$yend - arr$y) + 0.13
+arr$txt <- ifelse(is.na(arr$beta), "n.s.", sprintf("%+.2f", arr$beta))
+
+arr$yend <- out$y + seq(0.42, -0.42, length.out = nrow(arr))   # fan into the box edge
+tfrac <- 0.13   # label near the source end, where the arrows are still apart
+arr$lx <- (arr$x + 0.9) + tfrac * (arr$xend - (arr$x + 0.9))
+arr$ly <- arr$y + tfrac * (arr$yend - arr$y)
+arr$lx <- arr$x + 0.9 + 0.66 * (arr$xend - (arr$x + 0.9))
+
+fig10 <- function() {
+  ggplot() +
+    geom_segment(data = arr, aes(x = x + 0.9, y = y, xend = xend, yend = yend,
+                 colour = sig, linetype = sig), linewidth = .5,
+                 arrow = arrow(length = unit(.09, "in"), type = "closed")) +
+    geom_label(data = arr, aes(lx, ly + 0.17, label = txt, colour = sig), size = 3.1,
+               label.size = 0, fill = BG, label.padding = unit(.08, "lines")) +
+    geom_label(data = nodes, aes(x, y, label = label, fill = latent), size = 3.2,
+               colour = INK, label.r = unit(.28, "lines"), label.size = .3,
+               label.padding = unit(.42, "lines")) +
+    geom_label(data = out, aes(x, y, label = label), size = 3.4, colour = "white",
+               fill = ACCENT, label.r = unit(.1, "lines"), label.size = 0,
+               label.padding = unit(.55, "lines"), fontface = "bold") +
+    scale_fill_manual(values = c("TRUE" = "#EAF3F9", "FALSE" = "#F2F2F2"), guide = "none") +
+    scale_colour_manual(values = c("TRUE" = BLUE, "FALSE" = MUTE), guide = "none") +
+    scale_linetype_manual(values = c("TRUE" = 1, "FALSE" = 2), guide = "none") +
+    scale_x_continuous(limits = c(-1.15, 5.4)) +
+    scale_y_continuous(limits = c(-3.1, 5.9)) +
+    labs(x = NULL, y = NULL,
+         title = "When every measure competes, the motives carry the prediction",
+         subtitle = "Standardised paths to wanting mastery; latent variables are rounded, with their indicator counts",
+         caption = "WLSMV, n = 2,489. Dashed grey paths do not reach p < .05. Adding the agency and belief scales to the motives raises R-squared from\n.1006 to .1012; no country dummy survives. The absorbed scales correlate .59 (belief with restorative) and .50 (agency with dialogic).\nSource: 15_structural_model.R") +
+    hnr_theme() +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+          axis.text = element_blank(), axis.ticks = element_blank())
+}
+save_fig("fig10_path_diagram", fig10, 9.6, 6.4)
+
 cat("Figures written to the figures/ folder", fill = TRUE)
