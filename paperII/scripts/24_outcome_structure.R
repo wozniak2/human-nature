@@ -127,6 +127,22 @@ cat(" dominance dimension and the motives modulate how polarised a person is. Ca
 cat(" extremity odds ratio for place agency (below 1) is partly an artefact of unequal pole\n")
 cat(" sizes, since far more people want Master than Object.)\n")
 
-saveRDS(list(cuts_wanted = cut_or("typ_should"), cuts_seen = cut_or("typ_now"), orderings = res),
+cat("\n========== 5. What each block adds to the fit (ordered logit, McFadden pseudo-R2) ==========\n")
+mfad <- function(y, rhs) {
+  d0 <- dat; d0$yy <- factor(d0[[y]], ordered = TRUE)
+  m <- polr(as.formula(paste("yy ~", rhs)), d0, Hess = TRUE); n0 <- polr(yy ~ 1, d0, Hess = TRUE)
+  1 - as.numeric(logLik(m)) / as.numeric(logLik(n0))
+}
+blocks <- c("covariates only (age, gender, education, country)" = cov,
+            "+ place agency" = paste("plc_z +", cov),
+            "+ both motives" = paste("plc_z + restorative_z + dialogic_z +", cov),
+            "+ societal control" = paste("plc_z + restorative_z + dialogic_z + ctl_z +", cov),
+            "both motives WITHOUT place agency" = paste("restorative_z + dialogic_z +", cov))
+fit_add <- sapply(c(wanted = "typ_should", seen = "typ_now"), function(y) sapply(blocks, function(r) mfad(y, r)))
+print(round(fit_add, 3))
+cat("(Place agency accounts for nearly all of the fit that the predictors add; the two motives add\n")
+cat(" very little once it is in the model, although they do act through it.)\n")
+
+saveRDS(list(cuts_wanted = cut_or("typ_should"), cuts_seen = cut_or("typ_now"), orderings = res, fit_added = fit_add),
         "hnr_outcome_structure.rds")
 cat("\nSaved: hnr_outcome_structure.rds\n")

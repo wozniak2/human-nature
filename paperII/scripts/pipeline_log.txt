@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 14:59:29.649727 
-Time difference of 0.01814818 secs
-Computation Time: 0.01814818 
+Date of Analysis: 2026-09-29 15:49:41.511752 
+Time difference of 0.01783991 secs
+Computation Time: 0.01783991 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1017,7 +1017,7 @@ Saved: hnr_motives_roles.rds
 ############################################################
 ##  26_ordered_sem.R 
 ############################################################
-fitted in 23 seconds
+fitted in 24 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 5277.882  641.000    0.969    0.979    0.054    0.053 
@@ -1052,6 +1052,16 @@ position: positive = a role further from Master. extremity: positive = more like
  extremity  gender_bin  3.08 7.93e-02      no
  extremity edu_primary  0.23 6.35e-01      no
  extremity  edu_higher  4.62 3.16e-02     yes
+
+Across all 16 comparisons: nominal p < .05 in 12, and after a Holm correction for 16 tests in 6.
+Differences that survive the correction:
+   outcome   predictor  chi2        p   p_holm
+  position    dialogic 13.21 2.79e-04 3.35e-03
+  position       place 28.07 1.17e-07 1.87e-06
+  position     control 10.43 1.24e-03 1.36e-02
+ extremity restorative 14.12 1.71e-04 2.22e-03
+ extremity    dialogic 24.45 7.62e-07 1.14e-05
+ extremity       place 15.74 7.27e-05 1.02e-03
 
 ========== 4. Variance explained and residual associations ==========
 R2  position now 0.154 | position wanted 0.251 | extremity now 0.089 | extremity wanted 0.199
@@ -1099,7 +1109,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 8 seconds
+fitted in 7 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1317,6 +1327,16 @@ the theoretical ordering ranks 1 of 24 (BIC 7917.5, best 7917.5)
  dominance dimension and the motives modulate how polarised a person is. Caution: the
  extremity odds ratio for place agency (below 1) is partly an artefact of unequal pole
  sizes, since far more people want Master than Object.)
+
+========== 5. What each block adds to the fit (ordered logit, McFadden pseudo-R2) ==========
+                                                  wanted  seen
+covariates only (age, gender, education, country)  0.012 0.010
++ place agency                                     0.053 0.030
++ both motives                                     0.056 0.030
++ societal control                                 0.058 0.037
+both motives WITHOUT place agency                  0.016 0.012
+(Place agency accounts for nearly all of the fit that the predictors add; the two motives add
+ very little once it is in the model, although they do act through it.)
 
 Saved: hnr_outcome_structure.rds
 
@@ -1664,7 +1684,7 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  53 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
 dialogic     fitted in  48 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
 serviced     fitted in  47 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
@@ -1717,7 +1737,7 @@ serviced     fitted in  47 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 75 s | largest standardised path 1.42
+fitted in 79 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*

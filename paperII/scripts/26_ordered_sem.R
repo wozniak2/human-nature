@@ -79,6 +79,11 @@ wd <- function(a, b, label) do.call(rbind, lapply(shown, function(v) {
              differs = ifelse(r$p.value < .05, "yes", "no")) }))
 w <- rbind(wd("pn", "pw", "position"), wd("en", "ew", "extremity"))
 print(w, row.names = FALSE)
+w$p_holm <- signif(p.adjust(w$p, "holm"), 3)
+cat(sprintf("\nAcross all %d comparisons: nominal p < .05 in %d, and after a Holm correction for %d tests in %d.\n",
+            nrow(w), sum(w$p < .05), nrow(w), sum(w$p_holm < .05)))
+cat("Differences that survive the correction:\n")
+print(w[w$p_holm < .05, c("outcome", "predictor", "chi2", "p", "p_holm")], row.names = FALSE)
 
 cat("\n========== 4. Variance explained and residual associations ==========\n")
 r2 <- inspect(fit, "r2")
