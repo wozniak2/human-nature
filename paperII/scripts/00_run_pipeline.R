@@ -78,6 +78,7 @@ steps <- c(
   "08_mastery_paradox.R",        # CORE: perceived (now) vs ideal (should) human role
   "09_response_style_validity.R", # belief scale: construct validity + response-style controls
   "13_reasons_efa.R",          # reasons for staying: EFA in one half, CFA in the other
+  "14_motives_and_roles.R",    # motives: who holds them, and do they predict the role
   "12_agency_scale.R",         # agency of non-human beings: scale, invariance, latent change
   "11_square_table_models.R", # loglinear models for the 6x6 table (symmetry, quasi-symmetry)
   "10_figures.R"                 # figures for the manuscript (writes figures/)

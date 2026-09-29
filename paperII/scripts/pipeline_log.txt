@@ -320,9 +320,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 09:21:50.959651 
-Time difference of 0.019701 secs
-Computation Time: 0.019701 
+Date of Analysis: 2026-09-29 09:28:54.18759 
+Time difference of 0.01834083 secs
+Computation Time: 0.01834083 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -885,6 +885,111 @@ Saved: hnr_reasons_efa.rds
 
 
 ############################################################
+##  14_motives_and_roles.R 
+############################################################
+motive scores built from:
+  restorative  relax, beauty, watch_plants, own_thoughts, quiet, active
+  dialogic     meet_animals, communicates, teaches
+  serviced     struggles, comfort, photos
+
+========== 1. Who holds which motive? ==========
+-- restorative --
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+       3.99        4.13        4.00        3.78        4.00        3.83 
+   country p = 1e-12     partial eta2 = 0.025 | age b = +0.078 p = 1.47e-16 | man vs woman b = -0.167 p = 4.83e-09
+  man woman 
+ 3.88  4.03 
+-- dialogic --
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+       3.60        3.67        3.57        3.23        3.54        3.32 
+   country p = 3.52e-16  partial eta2 = 0.032 | age b = +0.019 p = 0.0933   | man vs woman b = -0.190 p = 6.6e-08
+  man woman 
+ 3.39  3.57 
+-- serviced --
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+       3.09        2.99        2.99        2.89        3.07        2.91 
+   country p = 0.00697   partial eta2 = 0.006 | age b = -0.074 p = 3.72e-09 | man vs woman b = +0.075 p = 0.0473
+  man woman 
+ 3.02  2.95 
+(gender_bin: 0 = woman, 1 = man, so a positive coefficient means men score higher.)
+
+========== 2. Do the motives predict the ideal role? (multinomial) ==========
+n = 2489 
+
+Does adding the three motives improve on country + age + gender?
+Likelihood ratio tests of Multinomial Models
+
+Response: role_ideal
+                                                               Model Resid. df
+1                                     country + age_num + gender_bin     12405
+2 restorative + dialogic + serviced + country + age_num + gender_bin     12390
+  Resid. Dev   Test    Df LR stat. Pr(Chi)
+1   8107.680                              
+2   7970.715 1 vs 2    15 136.9652       0
+McFadden pseudo-R2: 0.0169 -> 0.0335
+
+Relative risk ratios for the motives (reference role: Manager)
+-- restorative --
+ vs_Manager  RRR   lo   hi        p
+     Master 0.66 0.55 0.80 2.13e-05
+       User 1.18 0.98 1.41 7.50e-02
+   Guardian 1.22 0.98 1.53 7.64e-02
+    Partner 1.46 1.12 1.91 4.90e-03
+     Object 0.56 0.40 0.77 3.69e-04
+-- dialogic --
+ vs_Manager  RRR   lo   hi        p
+     Master 1.29 1.09 1.53 3.55e-03
+       User 0.96 0.83 1.11 5.72e-01
+   Guardian 1.10 0.91 1.31 3.21e-01
+    Partner 0.97 0.79 1.19 7.96e-01
+     Object 1.89 1.40 2.55 2.92e-05
+-- serviced --
+ vs_Manager  RRR   lo   hi        p
+     Master 1.06 0.92 1.21 4.20e-01
+       User 0.82 0.72 0.93 1.54e-03
+   Guardian 0.75 0.65 0.86 7.85e-05
+    Partner 0.62 0.53 0.74 5.42e-08
+     Object 0.82 0.67 1.01 6.80e-02
+(RRR above 1: a one-point rise in that motive raises the chance of choosing
+ that role rather than Manager.)
+
+========== 3. The same thing as a simple contrast: mastery as the ideal ==========
+Analysis of Deviance Table
+
+Model 1: master_should ~ country + age_num + gender_bin
+Model 2: master_should ~ restorative + dialogic + serviced + country + 
+    age_num + gender_bin
+  Resid. Df Resid. Dev Df Deviance  Pr(>Chi)    
+1      2481     2412.8                          
+2      2478     2358.9  3   53.916 1.169e-11 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+        term   OR   lo   hi        p
+ restorative 0.61 0.52 0.72 4.57e-09
+    dialogic 1.24 1.06 1.44 5.50e-03
+    serviced 1.25 1.11 1.41 1.73e-04
+
+========== 4. And among those who perceive mastery, who rejects it? ==========
+n = 773 
+Analysis of Deviance Table
+
+Model 1: rej ~ country + age_num + gender_bin
+Model 2: rej ~ restorative + dialogic + serviced + country + age_num + 
+    gender_bin
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
+1       765    1003.04                        
+2       762     988.84  3   14.198 0.002647 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+        term   OR   lo   hi       p
+ restorative 1.15 0.91 1.46 0.25500
+    dialogic 0.94 0.76 1.15 0.52800
+    serviced 0.76 0.65 0.90 0.00108
+
+Saved: hnr_motives_roles.rds
+
+
+############################################################
 ##  12_agency_scale.R 
 ############################################################
 ========== 1. Items and descriptives (now) ==========
@@ -1038,4 +1143,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_square_table_models.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_fielding_dates.rds, hnr_mastery_paradox.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motives_roles.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_square_table_models.rds, hnr_style_validity.rds 
