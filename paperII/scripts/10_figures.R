@@ -534,44 +534,66 @@ lab12[names(n_ind)] <- paste0(lab12[names(n_ind)], "  (", n_ind, ")")
 
 pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file, src, vars = show,
                          lab_now = NULL, lab_should = NULL, note = "") {
-  psn <- sem_paths(fit); pall <- lavaan::standardizedSolution(fit)
+  psn <- sem_paths(fit); pall <- lavaan::standardizedSolution(fit); ld <- sem_loads(fit)
   r2 <- lavaan::inspect(fit, "r2")
   rc <- pall[pall$op == "~~" & pall$lhs == out_now & pall$rhs == out_should, "est.std"]
   latent <- vars %in% names(n_ind)
+  ilab <- function(v) gsub("_", " ", sub("^(rs|mp|ctl)_", "", v))
+  lab_lat <- c(place = "Place agency", control = "Societal control", serviced = "Serviced",
+               dialogic = "Dialogic", restorative = "Restorative", age_num = "Age", gender_bin = "Man")
+
+  # vertical layout, shared by both panels: each latent sits at the mean height of its indicators
+  dy <- 0.235; gap <- 0.32; top <- 0
+  ys <- numeric(length(vars)); ind_y <- list()
+  for (i in seq_along(vars)) {
+    v <- vars[i]
+    if (latent[i]) {
+      its <- ld$rhs[ld$lhs == v]; yi <- top - dy * (seq_along(its) - 1)
+      ind_y[[v]] <- setNames(yi, its); ys[i] <- mean(yi); top <- min(yi) - gap
+    } else { ys[i] <- top - 0.15; top <- ys[i] - 0.38 }
+  }
+  shift <- -min(ys, unlist(ind_y)) + 0.55; ys <- ys + shift; ind_y <- lapply(ind_y, function(z) z + shift)
+  ymax <- max(ys, unlist(ind_y)); oy <- mean(range(ys))
+
+  X <- list(ind = 0.9, lat = 3.75, out = 7.85); PW <- 9.3
   nodes <- list(); edges <- list(); texts <- list(); bands <- list()
-  off_x <- c(0, 8.2)
   for (k in 1:2) {
-    outc <- c(out_now, out_should)[k]; sfx <- c("_L", "_R")[k]
-    ys <- seq(6.3, 0.85, length.out = length(vars)); xs <- 1.75 + off_x[k]
-    nodes[[length(nodes) + 1]] <- data.frame(id = paste0(vars, sfx), label = unname(lab12[vars]), x = xs, y = ys,
-      shape = ifelse(latent, "ellipse", "box"), w = ifelse(latent, 2.75, 1.5), h = ifelse(latent, 0.66, 0.46),
+    outc <- c(out_now, out_should)[k]; sfx <- c("_L", "_R")[k]; ox <- (k - 1) * PW
+    nodes[[length(nodes) + 1]] <- data.frame(id = paste0(vars, sfx), label = unname(lab_lat[vars]), x = X$lat + ox, y = ys,
+      shape = ifelse(latent, "ellipse", "box"), w = ifelse(latent, 2.2, 1.5), h = ifelse(latent, 0.62, 0.42),
       fill = ifelse(latent, "#E3EEF7", "#F4F4F4"), border = ifelse(latent, "#5B87A6", "#8A8A8A"), size = 3.3,
       lwd = NA_real_, face = "plain")
-    oy <- mean(range(ys))
+    for (v in names(ind_y)) {
+      its <- names(ind_y[[v]])
+      nodes[[length(nodes) + 1]] <- data.frame(id = paste0(its, sfx), label = ilab(its), x = X$ind + ox, y = unname(ind_y[[v]]),
+        shape = "box", w = 1.5, h = 0.2, fill = "white", border = "#A8A8A8", size = 2.4, lwd = NA_real_, face = "plain")
+      lo <- ld[ld$lhs == v, ]
+      edges[[length(edges) + 1]] <- data.frame(from = paste0(v, sfx), to = paste0(lo$rhs, sfx), label = fmt_b(lo$est.std),
+        kind = "load", beta = lo$est.std, sig = TRUE, t = 0.6, end_side = "right", end_off = 0)
+    }
     nodes[[length(nodes) + 1]] <- data.frame(id = paste0("out", sfx),
       label = if (k == 1) { if (is.null(lab_now)) paste0("Sees ", tolower(role), "\nnow") else lab_now }
               else { if (is.null(lab_should)) paste0("Wants\n", tolower(role)) else lab_should },
-      x = 6.55 + off_x[k], y = oy, shape = "box", w = 1.75, h = 1.45, fill = "white", border = "#1A1A1A",
+      x = X$out + ox, y = oy, shape = "box", w = 1.75, h = 1.5, fill = "white", border = "#1A1A1A",
       size = 3.7, lwd = 0.9, face = "bold")
-    offs <- seq(0.52, -0.52, length.out = length(vars))
     r <- psn[psn$lhs == outc, ]; b <- r$est.std[match(vars, r$rhs)]; pv <- r$pvalue[match(vars, r$rhs)]
     edges[[length(edges) + 1]] <- data.frame(from = paste0(vars, sfx), to = paste0("out", sfx),
       label = paste0(fmt_b(b), ifelse(differs[vars], "*", "")), kind = "path", beta = b, sig = pv < .05,
-      t = 0.5, end_side = "left", end_off = offs)
-    texts[[length(texts) + 1]] <- data.frame(x = 0.35 + off_x[k], y = 7.35,
+      t = 0.5, end_side = "left", end_off = seq(0.55, -0.55, length.out = length(vars)))
+    texts[[length(texts) + 1]] <- data.frame(x = 0.2 + ox, y = ymax + 0.75,
       label = sprintf("The role people %s   (R² = %.2f)", c("SEE", "WANT")[k], r2[[outc]]),
       size = 4.1, colour = sem_col$ink, hjust = 0, face = "bold")
-    bands[[length(bands) + 1]] <- data.frame(x = 3.7 + off_x[k], y = 3.6, w = 7.4, h = 6.1, fill = "#F6F7F9")
+    bands[[length(bands) + 1]] <- data.frame(x = 4.55 + ox, y = (ymax + 0.35 + 0.1) / 2, w = 8.8, h = ymax + 0.25, fill = "#F6F7F9")
   }
-  g <- sem_plot(do.call(rbind, nodes), do.call(rbind, edges), xlim = c(0, 15.9), ylim = c(0.1, 7.85),
-    texts = do.call(rbind, texts), bands = do.call(rbind, bands), legend_at = c(0.4, 0.2),
+  ylo <- -0.1; yhi <- ymax + 1.1
+  g <- sem_plot(do.call(rbind, nodes), do.call(rbind, edges), xlim = c(0, 2 * PW - 0.3), ylim = c(ylo - 0.45, yhi),
+    texts = do.call(rbind, texts), bands = do.call(rbind, bands), legend_at = c(0.3, ylo - 0.2),
     title = headline,
-    subtitle = "Standardised paths. Line width grows with the size of the path; * = the path differs between the two panels (Wald p < .05). Latent variables show their indicator counts.",
-    caption = paste0(sprintf("WLSMV, n = 2,489; education (three levels) and country dummies are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
+    subtitle = "Standardised estimates. Line width grows with the size of the path; grey lines are loadings; * = the path differs between the two panels (Wald p < .05).",
+    caption = paste0(sprintf("WLSMV, n = 2,489; education and country dummies are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
                      if (nzchar(note)) paste0("\n", note) else ""))
-  save_sem(g, file, 15.9, 8.4)
+  save_sem(g, file, 2 * PW - 0.3, (yhi - ylo + 0.45) + 1.7)
 }
-
 
 ns <- readRDS("hnr_now_vs_should_sem.rds")
 d_m <- setNames(ns$wald$differs == "yes", ns$wald$predictor)
