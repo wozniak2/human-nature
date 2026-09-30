@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-30 11:41:09.02321 
-Time difference of 0.01230097 secs
-Computation Time: 0.01230097 
+Date of Analysis: 2026-09-30 12:12:55.583627 
+Time difference of 0.01283097 secs
+Computation Time: 0.01283097 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1082,7 +1082,7 @@ Saved: hnr_ordered_sem.rds
 ############################################################
 ##  27_ordered_mediation.R 
 ############################################################
-restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
+restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
 dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.053 | largest standardised path 0.53
 
 ========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
@@ -1109,7 +1109,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 8 seconds
+fitted in 7 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1643,7 +1643,7 @@ latent correlation of the two facets: 0.80 [0.75, 0.86]
      full scale (reference) 2.08 [1.92, 2.26] 1.58 [1.46, 1.71]
 
 ========== 4. Mediation with the two facets as parallel mediators (latent SEM) ==========
-restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
+restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
 dialogic     fitted in  13 s | CFI 0.977 RMSEA 0.051 | largest standardised path 0.51
 
 -- motive -> facet (a) and facet -> wanted position (b), standardised; * = p < .05 --
@@ -1821,7 +1821,7 @@ n = 773 | six rivals 0.0613 | + place agency 0.1308 (adds 0.0695; LR chi2(1) = 7
         serviced motive 0.98 0.82 1.18 8.4e-01
 
 ========== 5. Latent model: all constructs as latent variables (WLSMV) ==========
-fitted in 58 seconds
+fitted in 61 seconds
   cfi   tli rmsea  srmr 
 0.986 0.990 0.066 0.066 
      latent   beta     lo     hi       p
@@ -2143,6 +2143,19 @@ Restorative motive 0.06   0.12
 Dialogic motive    0.04   0.02
 Societal control   0.16   0.11
 
+========== 3. For the supplement: the seen-by-wanted table as counts, and the two general scales ==========
+          wanted
+seen       Master Manager User Guardian Partner Object  Sum
+  Master      296     217  122       78      43     20  776
+  Manager      99     267  168       61      24     16  635
+  User         38     157  212      113      64     13  597
+  Guardian     17      33   46       48      18      9  171
+  Partner      23      25   37       23      54     20  182
+  Object       23      24   22       16      17     50  152
+  Sum         496     723  607      339     220    128 2513
+same answer twice: 927 of 2513 (36.9%) | leave Master: 480 | move to Master: 200
+Cronbach's alpha: relational belief (6 items) 0.864 | general agency, now (12 items) 0.960
+
 Saved: hnr_descriptives.rds
 
 
@@ -2226,9 +2239,9 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
-dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
-serviced     fitted in  46 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
+restorative  fitted in  61 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+dialogic     fitted in  51 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
+serviced     fitted in  49 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -2279,7 +2292,7 @@ serviced     fitted in  46 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 73 s | largest standardised path 1.42
+fitted in 83 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*

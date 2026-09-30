@@ -86,5 +86,16 @@ rrc <- t(sapply(scc, function(x) c(seen = cor(x, cen(dat$typ_now), method = "spe
                                    wanted = cor(x, cen(dat$typ_should), method = "spearman", use = "pairwise.complete.obs"))))
 print(round(rrc, 2))
 
-saveRDS(list(sample = smp, scales = desc, cor = R, cor_role = rr), "hnr_descriptives.rds")
+cat("\n========== 3. For the supplement: the seen-by-wanted table as counts, and the two general scales ==========\n")
+typ <- c("Master", "Manager", "User", "Guardian", "Partner", "Object")
+t6 <- table(seen = factor(dat$typ_now, 1:6, typ), wanted = factor(dat$typ_should, 1:6, typ))
+print(addmargins(t6))
+cat(sprintf("same answer twice: %d of %d (%.1f%%) | leave Master: %d | move to Master: %d\n",
+            sum(diag(t6)), sum(t6), 100 * sum(diag(t6)) / sum(t6), sum(t6[1, -1]), sum(t6[-1, 1])))
+q1 <- c("presence_influences_place", "place_influences_person", "person_shares_stories_w_place",
+        "place_tells_story_to_person", "person_changes_place", "place_leaves_traces_in_person")
+ag <- grep("^ag_now_", names(dat), value = TRUE)
+cat(sprintf("Cronbach's alpha: relational belief (6 items) %.3f | general agency, now (12 items) %.3f\n", al(q1), al(ag)))
+
+saveRDS(list(sample = smp, scales = desc, cor = R, cor_role = rr, counts = t6), "hnr_descriptives.rds")
 cat("\nSaved: hnr_descriptives.rds\n")
