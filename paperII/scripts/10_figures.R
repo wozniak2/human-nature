@@ -802,4 +802,77 @@ but have no significant path to the wanted role, and education has only a border
 Societal control is its mean score. Source: 28_story_model.R")
 save_sem(g20, "fig20_story_model", 13, 8.6)
 
+
+# --- Fig 21: who rejects the mastery they see, and who moves toward it ---------
+# From the analysis in 32_who_rejects_mastery.R, recomputed here for the curve.
+# Left: people who see Master, the chance of wanting another role. Right: people who
+# do not see Master, the chance of wanting it. Lines are average predicted
+# probabilities across place agency (all other predictors as observed), with a 95%
+# bootstrap band (300 resamples); dots are the observed shares in fifths of place agency.
+wr <- local({
+  d <- readRDS("hnr_data.rds"); re <- readRDS("hnr_reasons_efa.rds")
+  nm <- c(rs_relax = "restorative", rs_teaches = "dialogic", rs_comfort = "serviced")
+  gg <- re$groups
+  names(gg) <- vapply(gg, function(v) { L <- unclass(re$efa$loadings)[v, , drop = FALSE]
+    unname(nm[rownames(L)[which.max(apply(abs(L), 1, max))]]) }, character(1))
+  mp <- c("mp_emancipation", "mp_dialogue", "mp_agency", "mp_learning", "mp_time")
+  z <- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+  d$plc_z <- z(rowMeans(d[, mp])); d$rest_z <- z(rowMeans(d[, gg$restorative])); d$dia_z <- z(rowMeans(d[, gg$dialogic]))
+  d$ctl_z <- z(d$control_mean)
+  d <- d[complete.cases(d[, c("typ_now", "typ_should", "age_num", "gender_bin", "plc_z", "rest_z", "dia_z", "ctl_z")]), ]
+  cov <- "plc_z + rest_z + dia_z + ctl_z + age_num + gender_bin + edu_primary + edu_higher + edu_na + country"
+  grp <- list(
+    list(data = transform(d[d$typ_now == 1, ], y = as.integer(typ_should != 1)), f = paste("y ~", cov),
+         label = "People who see Master
+Chance of wanting another role"),
+    list(data = transform(d[d$typ_now != 1, ], y = as.integer(typ_should == 1)), f = paste("y ~ factor(typ_now) +", cov),
+         label = "People who do not see Master
+Chance of wanting Master"))
+  set.seed(20260930)
+  out <- lapply(grp, function(g_) {
+    dd <- g_$data; grid <- seq(quantile(dd$plc_z, .025), quantile(dd$plc_z, .975), length.out = 25)
+    q <- quantile(dd$plc_z, c(.1, .9))
+    avg <- function(fit, data, at) sapply(at, function(v) { nd <- data; nd$plc_z <- v; mean(predict(fit, nd, type = "response")) })
+    fit <- glm(as.formula(g_$f), binomial, dd)
+    est <- avg(fit, dd, grid)
+    bs <- replicate(300, { b <- dd[sample(nrow(dd), replace = TRUE), ]
+      avg(suppressWarnings(glm(as.formula(g_$f), binomial, b)), b, grid) })
+    lab <- sub("
+", sprintf(" (n = %s)
+", format(nrow(dd), big.mark = ",")), g_$label, fixed = TRUE)
+    fifth <- cut(dd$plc_z, quantile(dd$plc_z, seq(0, 1, .2)), include.lowest = TRUE)
+    list(curve = data.frame(panel = lab, x = grid, p = est, lo = apply(bs, 1, quantile, .025), hi = apply(bs, 1, quantile, .975)),
+         obs = data.frame(panel = lab, x = as.vector(tapply(dd$plc_z, fifth, mean)), p = as.vector(tapply(dd$y, fifth, mean))),
+         mark = data.frame(panel = lab, x = as.vector(q), p = avg(fit, dd, q), which = c("low place agency\n(10th percentile)", "high place agency\n(90th percentile)")))
+  })
+  list(curve = do.call(rbind, lapply(out, `[[`, "curve")), obs = do.call(rbind, lapply(out, `[[`, "obs")),
+       mark = do.call(rbind, lapply(out, `[[`, "mark")))
+})
+for (nm_ in names(wr)) wr[[nm_]]$panel <- factor(wr[[nm_]]$panel, levels = unique(wr$curve$panel))
+cols21 <- setNames(c(BLUE, ACCENT), levels(wr$curve$panel))
+wr$mark$txt <- sprintf("%.0f%%", 100 * wr$mark$p)
+wr$mark$vj  <- c(-1.1, -1.1, 2.0, -1.1)     # above the point, except where an observed dot sits above it
+wr$mark$hj  <- c(0.5, 0.5, 0.5, 0.5)
+wr$mark$hy  <- c(0.03, 0.03, 0.985, 0.985)   # percentile captions: bottom of the left panel, top of the right one
+wr$mark$hv  <- c(0, 0, 1, 1)
+
+fig21 <- function() {
+  ggplot(wr$curve, aes(x, p)) +
+    geom_ribbon(aes(ymin = lo, ymax = hi, fill = panel), alpha = .15) +
+    geom_line(aes(colour = panel), linewidth = 1) +
+    geom_point(data = wr$obs, aes(colour = panel), size = 2.6, shape = 21, fill = BG, stroke = 1) +
+    geom_point(data = wr$mark, aes(colour = panel), size = 3) +
+    geom_text(data = wr$mark, aes(label = txt, vjust = vj, hjust = hj), colour = INK, size = 3.6, fontface = "bold") +
+    geom_text(data = wr$mark, aes(y = hy, label = which, vjust = hv), colour = MUTE, size = 2.7, lineheight = .95) +
+    facet_wrap(~panel, nrow = 1) +
+    scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, .25), labels = function(v) paste0(round(100 * v), "%"), expand = c(0, 0)) +
+    scale_colour_manual(values = cols21, guide = "none") + scale_fill_manual(values = cols21, guide = "none") +
+    labs(x = "Place agency (standard deviations from the mean)", y = "Probability",
+         title = "Place agency separates the people who reject the mastery they see from those who keep it",
+         subtitle = "Average predicted probability across place agency, with the motives, societal control, age, gender, education and country as observed",
+         caption = "Line and band: model prediction with a 95% bootstrap interval. Open dots: observed shares in fifths of place agency.\nFilled dots: the 10th and 90th percentiles of place agency in each group. Source: 32_who_rejects_mastery.R") +
+    hnr_theme() + theme(panel.spacing = unit(1.6, "lines"))
+}
+save_fig("fig21_who_rejects", fig21, 11, 4.8)
+
 cat("Figures written to the figures/ folder", fill = TRUE)

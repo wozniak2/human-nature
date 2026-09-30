@@ -20,7 +20,7 @@ People in six countries see more human *mastery* over nature than they want. The
 | **The gap** | 31% see *Master* as the human role now, 20% think it should be. 480 people move away from Master when asked what *should* be; 200 move toward it. Net shift −11.2 percentage points; the direction holds in five of six countries. |
 | **Place agency** | The strongest link to the wanted role (Spearman ρ = +.35). The odds ratio is about 2 per standard deviation at every step of the six-role scale. Moving from low to high place agency (10th to 90th percentile) cuts the chance of wanting Master from 34% to 7.5%. |
 | **Two kinds of visit** | Restorative visits go with a role further from Master mainly *through* place agency, and this route holds even when no question wording is shared. Dialogic visits mainly go with choosing either end of the scale; their link through place agency runs only through items worded like the motive itself, so it is not claimed. |
-| **Who rejects mastery** | Of the people who see Master, 62% want another role. Place agency is what separates them from those who keep it (odds ratio 2.1 per standard deviation): the chance of rejecting Master rises from 40% to 84% between low and high place agency. It works in mirror for the reverse move toward Master. |
+| **Who rejects mastery** | Of the people who see Master, 62% want another role. Place agency is what separates them from those who keep it (odds ratio 2.1 per standard deviation): the chance of rejecting Master rises from 40% to 83% between low and high place agency. It works in mirror for the reverse move toward Master. |
 | **Seeing vs wanting** | What relates to the role people see differs from what relates to the role they want (explained variance .15 vs .25). Of 16 seen-versus-wanted comparisons, six survive a multiple-testing correction. |
 | **Robustness** | The place-agency result holds across countries, question wording, random halves, response style, careless respondents and education. The restorative effect is the sensitive one. |
 
@@ -29,10 +29,13 @@ People in six countries see more human *mastery* over nature than they want. The
   <img src="paperII/scripts/figures/fig19_cutpoints.png" width="48%" alt="Odds ratios at each cut point of the six-role scale">
 </p>
 <p align="center">
+  <img src="paperII/scripts/figures/fig21_who_rejects.png" width="96%" alt="Who rejects the mastery they see, and who moves toward it, across place agency">
+</p>
+<p align="center">
   <img src="paperII/scripts/figures/fig20_story_model.png" width="96%" alt="The whole story as one structural model">
 </p>
 
-*Above: how the role seen moves to the role wanted (left); place agency acts alike at every step of the scale while the two motives reverse between the ends (right); the whole story as one structural model (bottom).* All 20 figures are in [`paperII/scripts/figures/`](paperII/scripts/figures/) as PNG and PDF.
+*Above: how the role seen moves to the role wanted (left); place agency acts alike at every step of the scale while the two motives reverse between the ends (right); who rejects the mastery they see, and who moves toward it, across place agency (middle); the whole story as one structural model (bottom).* All 21 figures are in [`paperII/scripts/figures/`](paperII/scripts/figures/) as PNG and PDF.
 
 ## Data
 
@@ -68,7 +71,7 @@ human-nature/
         ├── 00_run_pipeline.R       master runner (writes the log)
         ├── 01 … 30_*.R             analysis steps (table in scripts/README.md)
         ├── sem_plot_helpers.R      small ggplot2 engine for the path diagrams
-        ├── figures/                fig1 … fig20, PNG and PDF
+        ├── figures/                fig1 … fig21, PNG and PDF
         ├── pipeline_log.txt        every printed result of the last full run
         └── sessionInfo.txt         R and package versions
 ```
