@@ -59,16 +59,18 @@ ms_name <- c(fig5_alluvial = "Fig1_seen_wanted_flow", fig19_cutpoints = "Fig2_cu
              fig16_sem_position = "Fig3_seen_vs_wanted_paths", fig21_who_rejects = "Fig4_who_rejects",
              fig20_story_model = "Fig5_story_model", fig17_sem_extremity = "FigS1_extremity_paths",
              fig18_mediation_ordered = "FigS2_mediation")
-save_ms <- function(name, p, w, h) {
+save_ms <- function(name, p, w, h, trim = NULL, suffix = "") {
   if (!name %in% names(ms_name)) return(invisible())
+  ms_file <- paste0(ms_name[[name]], suffix)
   out <- file.path("figures", "manuscript"); dir.create(out, showWarnings = FALSE, recursive = TRUE)
   lines <- function(s) if (is.null(s)) 0 else length(strsplit(s, "\n", fixed = TRUE)[[1]])
   lb <- p$labels
-  trim <- 0.27 * lines(lb$title) + 0.22 * lines(lb$subtitle) + 0.16 * lines(lb$caption) + 0.1 * (lines(lb$caption) > 0)
+  if (is.null(trim))
+    trim <- 0.27 * lines(lb$title) + 0.22 * lines(lb$subtitle) + 0.16 * lines(lb$caption) + 0.1 * (lines(lb$caption) > 0)
   q <- p + labs(title = NULL, subtitle = NULL, caption = NULL)
-  ggsave(file.path(out, paste0(ms_name[[name]], ".png")), q, width = w, height = h - trim, dpi = 300, bg = BG)
-  ggsave(file.path(out, paste0(ms_name[[name]], ".pdf")), q, width = w, height = h - trim, bg = BG)
-  cat("wrote figures/manuscript/", ms_name[[name]], ".png and .pdf (no title, subtitle or caption)\n", sep = "")
+  ggsave(file.path(out, paste0(ms_file, ".png")), q, width = w, height = h - trim, dpi = 300, bg = BG)
+  ggsave(file.path(out, paste0(ms_file, ".pdf")), q, width = w, height = h - trim, bg = BG)
+  cat("wrote figures/manuscript/", ms_file, ".png and .pdf (no title, subtitle or caption)\n", sep = "")
 }
 
 # PNG to look at, PDF (vector) for submission
@@ -85,12 +87,12 @@ save_fig <- function(name, build, w, h) {
 
 # --- path diagrams: a small ggplot2 engine (sem_plot_helpers.R) draws estimates read from the lavaan fits
 source("sem_plot_helpers.R")
-save_sem <- function(g, name, w, h) {
+save_sem <- function(g, name, w, h, ms = TRUE) {
   dir.create("figures", showWarnings = FALSE)
   ggsave(file.path("figures", paste0(name, ".png")), g, width = w, height = h, dpi = 300, bg = BG)
   ggsave(file.path("figures", paste0(name, ".pdf")), g, width = w, height = h, bg = BG)
   cat("wrote figures/", name, ".png and .pdf\n", sep = "")
-  save_ms(name, g, w, h)
+  if (ms) save_ms(name, g, w, h)
 }
 
 # --- Fig 1: now -> should slopes -----------------------------------------
@@ -554,7 +556,12 @@ lab12 <- c(place = "Place agency", control = "Societal control", serviced = "Ser
 lab12[names(n_ind)] <- paste0(lab12[names(n_ind)], "  (", n_ind, ")")
 
 pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file, src, vars = show,
-                         lab_now = NULL, lab_should = NULL, note = "") {
+                         lab_now = NULL, lab_should = NULL, note = "", ms_stack = FALSE, ms_side = FALSE, fs = 1,
+                         wald_p = NULL, legend = TRUE) {
+  # legend = FALSE leaves out the raises / lowers / not significant key (the caption then explains the colours)
+  # wald_p = named p-values of the seen-versus-wanted Wald tests. When given, every path is labelled with its
+  # estimate and exact p-value, no asterisks are drawn, and the Wald p-values go into the note under the figure.
+  # fs = font scale for all lettering (1 = the original sizes); the covariate boxes widen with it
   psn <- sem_paths(fit); pall <- lavaan::standardizedSolution(fit); ld <- sem_loads(fit)
   r2 <- lavaan::inspect(fit, "r2")
   rc <- pall[pall$op == "~~" & pall$lhs == out_now & pall$rhs == out_should, "est.std"]
@@ -578,11 +585,17 @@ pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file
   ymax <- max(ys, unlist(ind_y)); oy <- mean(range(ys))
 
   X <- list(ind = 0.9, lat = 3.75, out = 7.85); PW <- 9.3
+  PH <- ymax + 1.3                                  # height of one panel, used when the panels are stacked
+  # stack = FALSE: the two panels side by side; stack = TRUE: the role seen on top, the role wanted below
+  build <- function(stack) {
   nodes <- list(); edges <- list(); texts <- list(); bands <- list()
+  ys0 <- ys; ind0 <- ind_y; oy0 <- oy; ymax0 <- ymax
   for (k in 1:2) {
-    outc <- c(out_now, out_should)[k]; sfx <- c("_L", "_R")[k]; ox <- (k - 1) * PW
+    outc <- c(out_now, out_should)[k]; sfx <- c("_L", "_R")[k]
+    ox <- if (stack) 0 else (k - 1) * PW; up <- if (stack) (2 - k) * PH else 0
+    ys <- ys0 + up; ind_y <- lapply(ind0, function(z) z + up); oy <- oy0 + up; ymax <- ymax0 + up
     nodes[[length(nodes) + 1]] <- data.frame(id = paste0(vars, sfx), label = unname(lab_lat[vars]), x = X$lat + ox, y = ys,
-      shape = ifelse(latent, "ellipse", "box"), w = ifelse(latent, 2.2, 1.5), h = ifelse(latent, 0.62, 0.42),
+      shape = ifelse(latent, "ellipse", "box"), w = ifelse(latent, 2.2, if (fs > 1.1) 1.95 else 1.5), h = ifelse(latent, 0.62, 0.42),
       fill = ifelse(latent, "#E3EEF7", "#F4F4F4"), border = ifelse(latent, "#5B87A6", "#8A8A8A"), size = 3.3,
       lwd = NA_real_, face = "plain")
     for (v in names(ind_y)) {
@@ -600,21 +613,35 @@ pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file
       size = 3.7, lwd = 0.9, face = "bold")
     r <- psn[psn$lhs == outc, ]; b <- r$est.std[match(vars, r$rhs)]; pv <- r$pvalue[match(vars, r$rhs)]
     edges[[length(edges) + 1]] <- data.frame(from = paste0(vars, sfx), to = paste0("out", sfx),
-      label = paste0(fmt_b(b), ifelse(!is.na(differs[vars]) & differs[vars], "*", "")), kind = "path", beta = b, sig = pv < .05,
+      label = if (is.null(wald_p)) paste0(fmt_b(b), ifelse(!is.na(differs[vars]) & differs[vars], "*", ""))
+              else paste0(fmt_b(b), ", ", fmt_p(pv)),
+      kind = "path", beta = b, sig = pv < .05,
       t = 0.5, end_side = "left", end_off = seq(0.55, -0.55, length.out = length(vars)))
     texts[[length(texts) + 1]] <- data.frame(x = 0.2 + ox, y = ymax + 0.75,
       label = sprintf("The role people %s   (R² = %.2f)", c("SEE", "WANT")[k], r2[[outc]]),
       size = 4.1, colour = sem_col$ink, hjust = 0, face = "bold")
-    bands[[length(bands) + 1]] <- data.frame(x = 4.55 + ox, y = (ymax + 0.35 + 0.1) / 2, w = 8.8, h = ymax + 0.25, fill = "#F6F7F9")
+    bands[[length(bands) + 1]] <- data.frame(x = 4.55 + ox, y = up + (ymax - up + 0.35 + 0.1) / 2, w = 8.8, h = ymax - up + 0.25, fill = "#F6F7F9")
   }
-  ylo <- -0.1; yhi <- ymax + 1.1
-  g <- sem_plot(do.call(rbind, nodes), do.call(rbind, edges), xlim = c(0, 2 * PW - 0.3), ylim = c(ylo - 0.45, yhi),
-    texts = do.call(rbind, texts), bands = do.call(rbind, bands), legend_at = c(0.3, ylo - 0.2),
+  ylo <- -0.1; yhi <- ymax + 1.1 + (if (stack) PH else 0)
+  lg_h <- if (legend) 0.45 else 0                  # room below the panels for the key
+  wd_in <- (if (stack) PW else 2 * PW) - 0.3
+  g <- sem_plot(do.call(rbind, nodes), do.call(rbind, edges), xlim = c(0, wd_in), ylim = c(ylo - lg_h, yhi),
+    texts = do.call(rbind, texts), bands = do.call(rbind, bands), legend_at = if (legend) c(0.3, ylo - 0.2) else NULL, fs = fs,
     title = headline,
-    subtitle = "Standardised estimates. Line width grows with the size of the path; grey lines are loadings; * = the path differs between the two panels (Wald p < .05).",
+    subtitle = if (is.null(wald_p)) "Standardised estimates. Line width grows with the size of the path; grey lines are loadings; * = the path differs between the two panels (Wald p < .05)."
+               else "Standardised estimates with exact p-values. Line width grows with the size of the path; grey lines are loadings.",
     caption = paste0(sprintf("WLSMV, n = 2,489; country dummies and a not-stated education flag are in the model, not drawn. The two outcomes keep a residual correlation of %.2f. Source: %s", rc, src),
-                     if (nzchar(note)) paste0("\n", note) else ""))
-  save_sem(g, file, 2 * PW - 0.3, (yhi - ylo + 0.45) + 1.7)
+                     if (nzchar(note)) paste0("\n", note) else "",
+                     if (!is.null(wald_p)) paste0("\nSeen versus wanted, Wald test of each path: ",
+                       paste0(tolower(lab_lat[vars]), " ", fmt_p(wald_p[vars]), collapse = "; "), ".") else ""))
+  list(g = g, w = wd_in, h = (yhi - ylo + lg_h) + 1.7)
+  }
+  side <- build(FALSE)
+  save_sem(side$g, file, side$w, side$h, ms = !ms_stack)
+  # manuscript copy with the panels one above the other; the 1.7 in kept for the title block is cut to the plot margins
+  if (ms_stack) { st <- build(TRUE); save_ms(file, st$g, st$w, st$h, trim = 1.35) }
+  # optional second manuscript copy with the panels side by side
+  if (ms_side) save_ms(file, side$g, side$w, side$h, trim = 1.35, suffix = "_side_by_side")
 }
 
 ns <- readRDS("hnr_now_vs_should_sem.rds")
@@ -682,16 +709,24 @@ save_fig("fig15_mediation", fig15, 11, 4.6)
 so <- readRDS("hnr_ordered_sem.rds")
 show2 <- c("place", "control", "dialogic", "restorative", "age_num", "gender_bin", "edu_primary", "edu_higher")
 wd <- function(o) { w <- so$wald[so$wald$outcome == o, ]; setNames(w$differs == "yes", w$predictor) }
+wp <- function(o) { w <- so$wald[so$wald$outcome == o, ]; setNames(w$p, w$predictor) }   # exact Wald p-values
 pair_sem_fig(so$fit, "pos_now", "pos_should", wd("position"), "position",
   "The wanted role sits further from Master the more agency a person grants a place, and that link is stronger for wanting than for seeing",
   "fig16_sem_position", "26_ordered_sem.R", vars = show2,
   lab_now = "Position\nseen now", lab_should = "Position\nwanted",
-  note = "Position runs from Master (1) to Object (6): positive = a role further from Master.")
+  note = "Position runs from Master (1) to Object (6): positive = a role further from Master.",
+  ms_stack = TRUE,   # the manuscript copy (Fig3) has the two panels one above the other
+  ms_side = TRUE,    # and a second copy, Fig3_..._side_by_side, keeps them next to each other
+  fs = 1.25,         # larger lettering
+  wald_p = wp("position"),   # exact p-values on the paths instead of asterisks
+  legend = FALSE)
 pair_sem_fig(so$fit, "ext_now", "ext_should", wd("extremity"), "extremity",
   "The motives act on how polarised the wanted role is: restorative experience lowers it, dialogic experience raises it",
   "fig17_sem_extremity", "26_ordered_sem.R", vars = show2,
   lab_now = "Extremity\nseen now", lab_should = "Extremity\nwanted",
-  note = "Extremity = choosing either Master or Object. The place-agency and control paths are not interpretable (unequal pole sizes); read the motive paths.")
+  note = "Extremity = choosing either Master or Object. The place-agency and control paths are not interpretable (unequal pole sizes); read the motive paths.",
+  ms_stack = TRUE,   # the supplement copy (FigS1) is stacked in the same way
+  fs = 1.25, wald_p = wp("extremity"), legend = FALSE)
 
 om <- readRDS("hnr_ordered_mediation.rds")
 one_ord <- function(x) {
@@ -798,7 +833,7 @@ n20 <- rbind(
 n20$face <- ifelse(n20$id %in% c("pos_should", "ext_should"), "bold", "plain")
 pth <- function(from, to, off = NA, t = 0.5, side = NA) {
   r <- sp[sp$lhs == to & sp$rhs == from, ]
-  data.frame(from = from, to = to, label = fmt_b(r$est.std), kind = "path", beta = r$est.std, sig = r$pvalue < .05,
+  data.frame(from = from, to = to, label = paste0(fmt_b(r$est.std), ", ", fmt_p(r$pvalue)), kind = "path", beta = r$est.std, sig = r$pvalue < .05,
              t = t, end_side = if (is.na(side)) NA_character_ else side, end_off = off)
 }
 lod <- function(f, i, t) { r <- ld[ld$lhs == f & ld$rhs == i, ]
@@ -811,17 +846,17 @@ e20 <- rbind(
   pth("restorative", "ctl_mean", t = 0.78), pth("dialogic", "ctl_mean", t = 0.5),
   pth("place", "pos_should", 0.30, 0.5, "left"), pth("restorative", "pos_should", 0.10, 0.60, "left"),
   pth("dialogic", "pos_should", -0.10, 0.36, "left"), pth("ctl_mean", "pos_should", -0.30, 0.55, "left"),
-  pth("place", "ext_should", 0.30, 0.40, "left"), pth("restorative", "ext_should", 0.10, 0.72, "left"),
+  pth("place", "ext_should", 0.30, 0.25, "left"), pth("restorative", "ext_should", 0.10, 0.72, "left"),
   pth("dialogic", "ext_should", -0.10, 0.62, "left"), pth("ctl_mean", "ext_should", -0.30, 0.55, "left"))
 hd <- data.frame(x = c(2.4, 7.75, 11.75), y = 7.62, label = c("MOTIVES FOR VISITING A PLACE", "CONSTRUAL OF THE PLACE", "ROLE PEOPLE WANT"))
 bd <- data.frame(x = c(2.4, 7.75, 11.75), y = c(4.4, 4.4, 3.75), w = c(4.6, 5.9, 2.4), h = c(6.4, 6.4, 3.0), fill = "#F6F7F9")
-g20 <- sem_plot(n20, e20, xlim = c(0, 13), ylim = c(0.05, 7.95), headers = hd, bands = bd, legend_at = c(0.3, 0.32),
+g20 <- sem_plot(n20, e20, xlim = c(0, 13), ylim = c(0.70, 7.95), headers = hd, bands = bd, legend_at = NULL, fs = 1.25,   # no colour key: the caption explains the colours
   title = "How experience of a place reaches the role people want: through the agency they grant it",
   subtitle = "Standardised estimates, both motives entered together. Line width grows with the size of the path.",
   caption = "WLSMV, n = 2,489, ordinal indicators. Position runs from Master (1) to Object (6): positive = a role further from Master. Extremity = choosing either pole.\nAge, gender, education and country are in the model and not drawn: age and gender go with place agency (+.18, −.20)
 but have no significant path to the wanted role, and education has only a borderline path to extremity (higher −.06, primary +.05).
 Societal control is its mean score. Source: 28_story_model.R")
-save_sem(g20, "fig20_story_model", 13, 8.6)
+save_sem(g20, "fig20_story_model", 13, 7.95)
 
 
 # --- Fig 21: who rejects the mastery they see, and who moves toward it ---------

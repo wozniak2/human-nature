@@ -103,11 +103,13 @@ sem_curve <- function(e, nodes, xlim, ylim, n = 60) {
 
 sem_plot <- function(nodes, edges, xlim, ylim, title = NULL, subtitle = NULL, caption = NULL,
                      bands = NULL, headers = NULL, texts = NULL, legend_at = NULL,
-                     arrow_mm = 2.6, base_size = 11, curved = TRUE) {
+                     arrow_mm = 2.6, base_size = 11, curved = TRUE, fs = 1) {
+  # fs scales every piece of lettering (node labels, estimates, headers, legend); boxes keep their size
   nodes$shape <- ifelse(is.na(nodes$shape), "box", nodes$shape)
   nodes$fill   <- ifelse(is.na(nodes$fill), "#F4F4F4", nodes$fill)
   nodes$border <- ifelse(is.na(nodes$border), "#8A8A8A", nodes$border)
-  nodes$size   <- ifelse(is.na(nodes$size), 3.3, nodes$size)
+  nodes$size   <- ifelse(is.na(nodes$size), 3.3, nodes$size) * fs
+  if (!is.null(texts)) texts$size <- texts$size * fs
   nodes$lwd    <- ifelse(is.na(nodes$lwd), 0.5, nodes$lwd)
   nodes$face   <- ifelse(is.na(nodes$face), "plain", nodes$face)
   rownames(nodes) <- nodes$id
@@ -158,7 +160,7 @@ sem_plot <- function(nodes, edges, xlim, ylim, title = NULL, subtitle = NULL, ca
   E$lwd <- ifelse(E$kind == "load", 0.45, ifelse(!E$sig, 0.5, 0.55 + 2.6 * pmin(abs(E$beta), 0.7)))
   E$lcol <- ifelse(E$kind == "path" & !E$sig, "#8C8C8C", E$col)
   E$bold <- E$kind == "path" & E$sig
-  E$lsize <- ifelse(E$kind == "load", 2.6, 3.1)
+  E$lsize <- ifelse(E$kind == "load", 2.6, 3.1) * fs
 
   g <- ggplot() + coord_fixed(xlim = xlim, ylim = ylim, expand = FALSE) + theme_void(base_size = base_size)
   if (!is.null(bands))
@@ -167,7 +169,7 @@ sem_plot <- function(nodes, edges, xlim, ylim, title = NULL, subtitle = NULL, ca
                    fill = bands$fill[i]))),
              aes(x, y, group = id, fill = I(fill)), colour = NA)
   if (!is.null(headers))
-    g <- g + geom_text(data = headers, aes(x, y, label = label), size = 3.3, colour = sem_col$mute,
+    g <- g + geom_text(data = headers, aes(x, y, label = label), size = 3.3 * fs, colour = sem_col$mute,
                        fontface = "bold", hjust = 0.5)
   # edges: paths first, loadings beneath
   if (!is.null(curves)) { curves$col <- E$col[curves$g]; curves$lwd <- E$lwd[curves$g] }
@@ -205,7 +207,7 @@ sem_plot <- function(nodes, edges, xlim, ylim, title = NULL, subtitle = NULL, ca
                      lab = c("raises", "lowers", "not significant"))
     g <- g + geom_segment(data = lg, aes(x = x, y = y, xend = xe, yend = y, colour = I(col)),
                           linewidth = 1.1, arrow = arrow(length = unit(2.2, "mm"), type = "closed", angle = 22)) +
-      geom_text(data = lg, aes(x = xe + 0.08, y = y, label = lab), size = 2.9, hjust = 0, colour = sem_col$mute)
+      geom_text(data = lg, aes(x = xe + 0.08, y = y, label = lab), size = 2.9 * fs, hjust = 0, colour = sem_col$mute)
   }
   g + labs(title = title, subtitle = subtitle, caption = caption) +
     theme(plot.background = element_rect(fill = "white", colour = NA),
@@ -230,3 +232,5 @@ fmt_b <- function(b) {
   s <- sub("^(-?)0[.]", "\\1.", sprintf("%.2f", b))    # drop the leading zero
   ifelse(s == "-.00", ".00", s)
 }
+# exact p-value in APA form: "p = .013", or "p < .001" below that
+fmt_p <- function(p) ifelse(p < .001, "p < .001", paste0("p = ", sub("^0[.]", ".", sprintf("%.3f", p))))
