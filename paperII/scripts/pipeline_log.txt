@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-30 15:25:02.859002 
-Time difference of 0.01319814 secs
-Computation Time: 0.01319814 
+Date of Analysis: 2026-09-30 18:49:18.684633 
+Time difference of 0.0132401 secs
+Computation Time: 0.0132401 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1017,7 +1017,7 @@ Saved: hnr_motives_roles.rds
 ############################################################
 ##  26_ordered_sem.R 
 ############################################################
-fitted in 23 seconds
+fitted in 24 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 5277.882  641.000    0.969    0.979    0.054    0.053 
@@ -1821,7 +1821,7 @@ n = 773 | six rivals 0.0613 | + place agency 0.1308 (adds 0.0695; LR chi2(1) = 7
         serviced motive 0.98 0.82 1.18 8.4e-01
 
 ========== 5. Latent model: all constructs as latent variables (WLSMV) ==========
-fitted in 58 seconds
+fitted in 59 seconds
   cfi   tli rmsea  srmr 
 0.986 0.990 0.066 0.066 
      latent   beta     lo     hi       p
@@ -2240,8 +2240,8 @@ rural x country interaction on wanting mastery:
 ##  21_mediation_sem.R 
 ############################################################
 restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
-dialogic     fitted in  47 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
-serviced     fitted in  47 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
+dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
+serviced     fitted in  46 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -2292,7 +2292,7 @@ serviced     fitted in  47 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 74 s | largest standardised path 1.42
+fitted in 73 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*
@@ -2818,6 +2818,207 @@ see and the roles they want are not the same distribution.
  country where no shift was detected in 08.)
 
 Saved: hnr_square_table_models.rds
+
+
+############################################################
+##  37_exact_pvalues.R 
+############################################################
+========== 1. Cut points of the six-role scale (script 24, section 2) ==========
+(odds ratio per SD of being above the cut, with its exact p-value)
+-- role wanted --
+                cut          plc  restorative     dialogic          ctl
+   Master | Manager 2.13 (<.001) 1.27 (<.001) 0.70 (<.001) 1.33 (<.001)
+     Manager | User 2.02 (<.001)  1.15 (.008) 0.78 (<.001) 1.17 (<.001)
+    User | Guardian 1.81 (<.001)  1.07 (.245)  0.90 (.057)  1.05 (.287)
+ Guardian | Partner 1.79 (<.001)  1.00 (.988)  0.92 (.254)  1.03 (.621)
+   Partner | Object 1.97 (<.001) 0.58 (<.001)  1.47 (.004)  1.33 (.003)
+-- role seen --
+                cut          plc  restorative    dialogic          ctl
+   Master | Manager 1.43 (<.001)  1.00 (.956) 0.95 (.351) 1.40 (<.001)
+     Manager | User 1.65 (<.001)  1.17 (.002) 0.85 (.001) 1.27 (<.001)
+    User | Guardian 1.51 (<.001)  0.88 (.049) 1.09 (.181) 1.25 (<.001)
+ Guardian | Partner 1.59 (<.001)  0.89 (.112) 1.04 (.602) 1.28 (<.001)
+   Partner | Object 1.71 (<.001) 0.63 (<.001) 1.37 (.009) 1.42 (<.001)
+ordered logit, role wanted:  plc 2.08 (<.001) | restorative 1.13 (.005) | dialogic 0.81 (<.001) | ctl 1.17 (<.001) 
+
+========== 2. Alternative scorings of the motives (script 25, section 2) ==========
+                          scoring     position    extremity
+       restorative, all six items  1.13 (.006) 0.71 (<.001)
+           restorative, core four  1.13 (.005) 0.73 (<.001)
+       restorative, relax + quiet  1.13 (.003) 0.75 (<.001)
+      restorative, without active  1.13 (.005) 0.71 (<.001)
+        dialogic, all three items 0.81 (<.001) 1.49 (<.001)
+ dialogic, teaches + communicates 0.82 (<.001) 1.47 (<.001)
+item level (each item alone, with place agency): position and extremity
+         item     position    extremity
+        relax  1.07 (.079)  0.86 (.001)
+        quiet  1.03 (.389)  0.86 (.002)
+ own_thoughts  1.00 (.954)  0.89 (.018)
+       beauty  1.02 (.686)  0.93 (.112)
+ watch_plants  1.00 (.995)  0.90 (.034)
+       active  0.99 (.707)  0.96 (.351)
+      teaches 0.85 (<.001) 1.28 (<.001)
+ communicates 0.88 (<.001) 1.20 (<.001)
+ meet_animals  0.92 (.034)  1.10 (.056)
+
+========== 3. The joint model of seeing and wanting (script 26) ==========
+   predictor position_seen position_wanted  wald_position extremity_seen
+       place   .32 (<.001)     .47 (<.001) 28.1 (<.001) H   -.15 (<.001)
+     control   .13 (<.001)     .07 (<.001)  10.4 (.001) H   -.12 (<.001)
+    dialogic   -.06 (.079)    -.19 (<.001) 13.2 (<.001) H     .12 (.006)
+ restorative   -.03 (.349)      .06 (.054)     6.2 (.013)    -.07 (.085)
+     age_num    .05 (.029)     .11 (<.001)     7.4 (.006)    -.06 (.036)
+  gender_bin  -.08 (<.001)    -.14 (<.001)     6.0 (.014)     .05 (.067)
+ edu_primary    .04 (.023)     -.02 (.427)     7.5 (.006)     .04 (.113)
+  edu_higher   -.06 (.012)     -.01 (.813)     4.2 (.041)     .00 (.896)
+ extremity_wanted wald_extremity
+     -.31 (<.001) 15.7 (<.001) H
+      -.07 (.008)     2.3 (.129)
+      .36 (<.001) 24.4 (<.001) H
+     -.25 (<.001) 14.1 (<.001) H
+     -.11 (<.001)     2.2 (.139)
+      .10 (<.001)     3.1 (.079)
+       .06 (.031)     0.2 (.635)
+      -.07 (.020)     4.6 (.032)
+(standardised path (p); Wald chi2(1) (p) for seen versus wanted; H = remains after a Holm correction for the 16 tests)
+
+========== 4. Decomposition of each motive's association with the position (script 27) ==========
+      motive outcome       total       direct   via_place via_control
+ restorative  wanted .11 (<.001) -.08 (<.001) .18 (<.001)  .01 (.005)
+ restorative    seen  .05 (.013) -.09 (<.001) .13 (<.001)  .01 (.003)
+    dialogic  wanted  .02 (.494) -.21 (<.001) .21 (<.001) .01 (<.001)
+    dialogic    seen  .05 (.053) -.12 (<.001) .14 (<.001) .02 (<.001)
+
+========== 5. Guardian, Partner and Object (script 20) ==========
+-- Guardian --
+   predictor        seen       wanted
+ restorative -.04 (.481)   .07 (.200)
+    dialogic  .00 (.965)  -.12 (.139)
+    serviced  .11 (.129)   .02 (.756)
+       place  .17 (.013)  .27 (<.001)
+     control  .02 (.730)   .00 (.991)
+     age_num  .06 (.150)   .05 (.098)
+  gender_bin -.09 (.029) -.14 (<.001)
+ edu_primary  .02 (.583)  -.03 (.404)
+  edu_higher -.09 (.036)   .03 (.437)
+-- Partner --
+   predictor        seen       wanted
+ restorative  .06 (.386)   .18 (.006)
+    dialogic -.06 (.554)  -.16 (.069)
+    serviced -.08 (.298)  -.11 (.108)
+       place  .16 (.012)   .20 (.002)
+     control  .07 (.056)  -.06 (.118)
+     age_num -.03 (.484)   .07 (.060)
+  gender_bin -.02 (.572) -.12 (<.001)
+ edu_primary -.10 (.037)  -.07 (.116)
+  edu_higher -.05 (.169)   .01 (.800)
+-- Object --
+   predictor         seen       wanted
+ restorative -.22 (<.001) -.32 (<.001)
+    dialogic  -.01 (.947)   .15 (.121)
+    serviced   .24 (.004)   .07 (.392)
+       place  .41 (<.001)  .41 (<.001)
+     control   .10 (.014)   .11 (.009)
+     age_num   .01 (.862)   .05 (.272)
+  gender_bin  -.06 (.151)  -.04 (.364)
+ edu_primary  .13 (<.001)   .06 (.098)
+  edu_higher  -.10 (.023)  -.09 (.038)
+
+========== 6. Each indicator against the role (script 30) ==========
+                                  indicator         seen       wanted
+                 Q1 Relational entanglement   .00 (.950)  .10 (<.001)
+               Q2 Agency of non-humans, now  .07 (<.001)   .05 (.008)
+            Q3 Agency of non-humans, should   .06 (.001)  .07 (<.001)
+                        Q4 Societal control  .16 (<.001)  .11 (<.001)
+                         Q7-12 Place agency  .23 (<.001)  .35 (<.001)
+        Q11 Not a message (destroyed place)   .01 (.638)   .02 (.427)
+                 Q11 Technology prevents it   .02 (.352)   .00 (.900)
+                       Q11 Heed its signals   .00 (.810)   .06 (.002)
+                    Q11 Nature is a partner   .02 (.236)   .03 (.205)
+                     Q11 Humans always lose   .05 (.008)  .09 (<.001)
+                         Q13 Restful motive   .06 (.001)  .12 (<.001)
+                        Q13 Dialogic motive   .04 (.042)   .02 (.439)
+                        Q13 Serviced motive  -.04 (.066) -.15 (<.001)
+ Q14 Indigenous knowledge: should be shared -.07 (<.001)   .01 (.674)
+      Q14 Indigenous knowledge: mostly myth  .10 (<.001)   .05 (.008)
+                        Q15 Climate: denial   .02 (.401) -.10 (<.001)
+        Q15 Climate: technology can stop it  -.02 (.428) -.07 (<.001)
+             Q15 Climate: cannot be stopped  -.01 (.684)  -.01 (.640)
+             Q15 Climate: will end humanity  -.01 (.531)  -.03 (.098)
+          Q16 Tourism: favourable (3 items)   .04 (.050)   .01 (.569)
+            Q16 Tourism: critical (3 items)  -.02 (.274)  -.02 (.323)
+        shift      extreme
+  .08 (<.001)  -.02 (.437)
+  -.03 (.148)   .03 (.208)
+  -.01 (.667)   .00 (.915)
+  -.04 (.067) -.07 (<.001)
+  .10 (<.001) -.14 (<.001)
+   .00 (.846)  -.02 (.283)
+  -.04 (.027)  -.06 (.002)
+   .06 (.003)  -.03 (.120)
+   .00 (.804)   .02 (.410)
+   .03 (.133)  -.04 (.029)
+   .05 (.013)  -.05 (.010)
+  -.02 (.380)   .02 (.276)
+ -.10 (<.001)  .09 (<.001)
+   .03 (.116) -.07 (<.001)
+  -.02 (.352)  .21 (<.001)
+ -.08 (<.001)   .06 (.006)
+  -.04 (.033)  .08 (<.001)
+   .00 (.877)  -.01 (.631)
+  -.02 (.300)  .12 (<.001)
+  -.03 (.172)  -.01 (.495)
+  -.01 (.715)   .02 (.382)
+(Spearman rho (p), country differences removed)
+
+========== 7. Robustness variants (script 23) ==========
+(odds ratio per SD for wanting, or seeing, Master, with its exact p-value)
+-- wanting Master --
+                                variant    n        place  restorative
+                                 pooled 2489 0.47 (<.001) 0.79 (<.001)
+ second question announced (NL, SE, PL) 1254 0.44 (<.001)  0.80 (.011)
+             not announced (CA, ES, PA) 1235 0.50 (<.001)  0.77 (.007)
+                         without Canada 2081 0.47 (<.001)  0.81 (.003)
+                         without Panama 2081 0.46 (<.001)  0.82 (.005)
+                         without Poland 2068 0.47 (<.001)  0.84 (.012)
+                    without Netherlands 2064 0.48 (<.001) 0.75 (<.001)
+                          without Spain 2070 0.46 (<.001) 0.75 (<.001)
+                         without Sweden 2081 0.48 (<.001) 0.78 (<.001)
+                    with response style 2489 0.47 (<.001) 0.73 (<.001)
+ place agency: dialogue, learning, time 2489 0.52 (<.001) 0.74 (<.001)
+                                 half A 1241 0.40 (<.001)  0.87 (.140)
+                                 half B 1248 0.54 (<.001) 0.73 (<.001)
+                        without flagged 2120 0.49 (<.001) 0.76 (<.001)
+     dialogic      control
+ 1.42 (<.001) 0.75 (<.001)
+ 1.38 (<.001)  0.79 (.003)
+ 1.45 (<.001) 0.72 (<.001)
+ 1.39 (<.001) 0.75 (<.001)
+ 1.44 (<.001) 0.75 (<.001)
+ 1.37 (<.001) 0.74 (<.001)
+ 1.46 (<.001) 0.75 (<.001)
+ 1.42 (<.001) 0.78 (<.001)
+ 1.47 (<.001) 0.75 (<.001)
+ 1.38 (<.001) 0.75 (<.001)
+ 1.54 (<.001) 0.72 (<.001)
+  1.28 (.008)  0.81 (.006)
+ 1.55 (<.001) 0.70 (<.001)
+ 1.37 (<.001) 0.76 (<.001)
+-- seeing Master --
+                                variant    n        place restorative
+                                 pooled 2489 0.70 (<.001) 1.00 (.956)
+                    with response style 2489 0.70 (<.001) 0.94 (.315)
+ place agency: dialogue, learning, time 2489 0.71 (<.001) 0.97 (.580)
+                                 half A 1241 0.68 (<.001) 0.95 (.561)
+                                 half B 1248 0.72 (<.001) 1.04 (.630)
+                        without flagged 2120 0.76 (<.001) 0.97 (.651)
+    dialogic      control
+ 1.05 (.351) 0.72 (<.001)
+ 1.04 (.519) 0.71 (<.001)
+ 1.10 (.088) 0.70 (<.001)
+ 1.08 (.305) 0.73 (<.001)
+ 1.02 (.806) 0.70 (<.001)
+ 1.02 (.704) 0.73 (<.001)
 
 
 ############################################################
