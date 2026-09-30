@@ -59,7 +59,7 @@ Rscript 00_setup.R          # installs missing packages
 Rscript 00_run_pipeline.R   # runs every step, about ten minutes
 ```
 
-The master script clears earlier outputs, runs the 34 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
+The master script clears earlier outputs, runs the 35 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
 
 ## Repository map
 
@@ -70,9 +70,10 @@ human-nature/
     └── scripts/
         ├── 00_setup.R              install packages
         ├── 00_run_pipeline.R       master runner (writes the log)
-        ├── 01 … 30_*.R             analysis steps (table in scripts/README.md)
+        ├── 01 … 36_*.R             analysis steps (table in scripts/README.md)
         ├── sem_plot_helpers.R      small ggplot2 engine for the path diagrams
         ├── figures/                fig1 … fig21, PNG and PDF
+        │   └── manuscript/         the seven manuscript figures without built-in titles
         ├── pipeline_log.txt        every printed result of the last full run
         └── sessionInfo.txt         R and package versions
 ```
@@ -87,6 +88,7 @@ human-nature/
 | What relates to seeing and to wanting? | `19_now_vs_should_sem`, `20_opposing_roles_sem`, `26_ordered_sem`, `35_shared_vs_personal` |
 | Do the motives act through place agency? | `21_mediation_sem`, `27_ordered_mediation`, `28_story_model` |
 | Does it hold up? Countries, education, other indicators | `22_geography`, `23_robustness`, `29_education_check`, `30_indicator_connections` |
+| Who is in the samples? How do the scales behave? | `36_descriptives` |
 | Figures | `10_figures` (with `sem_plot_helpers.R`) |
 | Supporting belief-scale work | `02`, `04`–`07`, `09` |
 

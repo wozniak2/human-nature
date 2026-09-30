@@ -52,6 +52,25 @@ hnr_theme <- function() {
     )
 }
 
+# Manuscript copies: the figures used in the paper, saved again without the built-in title,
+# subtitle and caption (the journal sets those from the manuscript's own captions). The height
+# is cut by the space the three took, so the plot itself keeps its size.
+ms_name <- c(fig5_alluvial = "Fig1_seen_wanted_flow", fig19_cutpoints = "Fig2_cutpoints",
+             fig16_sem_position = "Fig3_seen_vs_wanted_paths", fig21_who_rejects = "Fig4_who_rejects",
+             fig20_story_model = "Fig5_story_model", fig17_sem_extremity = "FigS1_extremity_paths",
+             fig18_mediation_ordered = "FigS2_mediation")
+save_ms <- function(name, p, w, h) {
+  if (!name %in% names(ms_name)) return(invisible())
+  out <- file.path("figures", "manuscript"); dir.create(out, showWarnings = FALSE, recursive = TRUE)
+  lines <- function(s) if (is.null(s)) 0 else length(strsplit(s, "\n", fixed = TRUE)[[1]])
+  lb <- p$labels
+  trim <- 0.27 * lines(lb$title) + 0.22 * lines(lb$subtitle) + 0.16 * lines(lb$caption) + 0.1 * (lines(lb$caption) > 0)
+  q <- p + labs(title = NULL, subtitle = NULL, caption = NULL)
+  ggsave(file.path(out, paste0(ms_name[[name]], ".png")), q, width = w, height = h - trim, dpi = 300, bg = BG)
+  ggsave(file.path(out, paste0(ms_name[[name]], ".pdf")), q, width = w, height = h - trim, bg = BG)
+  cat("wrote figures/manuscript/", ms_name[[name]], ".png and .pdf (no title, subtitle or caption)\n", sep = "")
+}
+
 # PNG to look at, PDF (vector) for submission
 save_fig <- function(name, build, w, h) {
   dir.create("figures", showWarnings = FALSE)
@@ -61,6 +80,7 @@ save_fig <- function(name, build, w, h) {
   ggsave(file.path("figures", paste0(name, ".pdf")), p, width = w, height = h,
          bg = BG)
   cat("wrote figures/", name, ".png and .pdf\n", sep = "")
+  save_ms(name, p, w, h)
 }
 
 # --- path diagrams: a small ggplot2 engine (sem_plot_helpers.R) draws estimates read from the lavaan fits
@@ -70,6 +90,7 @@ save_sem <- function(g, name, w, h) {
   ggsave(file.path("figures", paste0(name, ".png")), g, width = w, height = h, dpi = 300, bg = BG)
   ggsave(file.path("figures", paste0(name, ".pdf")), g, width = w, height = h, bg = BG)
   cat("wrote figures/", name, ".png and .pdf\n", sep = "")
+  save_ms(name, g, w, h)
 }
 
 # --- Fig 1: now -> should slopes -----------------------------------------
