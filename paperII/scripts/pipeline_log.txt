@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-30 08:58:48.096857 
-Time difference of 0.01328111 secs
-Computation Time: 0.01328111 
+Date of Analysis: 2026-09-30 09:26:58.932959 
+Time difference of 0.01230311 secs
+Computation Time: 0.01230311 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1082,7 +1082,7 @@ Saved: hnr_ordered_sem.rds
 ############################################################
 ##  27_ordered_mediation.R 
 ############################################################
-restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
+restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
 dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.053 | largest standardised path 0.53
 
 ========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
@@ -1109,7 +1109,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 7 seconds
+fitted in 8 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1643,7 +1643,7 @@ latent correlation of the two facets: 0.80 [0.75, 0.86]
      full scale (reference) 2.08 [1.92, 2.26] 1.58 [1.46, 1.71]
 
 ========== 4. Mediation with the two facets as parallel mediators (latent SEM) ==========
-restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
+restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
 dialogic     fitted in  13 s | CFI 0.977 RMSEA 0.051 | largest standardised path 0.51
 
 -- motive -> facet (a) and facet -> wanted position (b), standardised; * = p < .05 --
@@ -1753,6 +1753,92 @@ Saved: hnr_who_rejects.rds
 
 
 ############################################################
+##  33_incremental_validity.R 
+############################################################
+respondents: 2489 
+
+========== 1. Is place agency a distinct construct? ==========
+correlation of place agency with each rival (Pearson), and the rivals among themselves:
+                       place relat agency control restful dialog servic
+place agency            1.00  0.20   0.27    0.12    0.28   0.25  -0.20
+relational belief (Q1)  0.20  1.00   0.19    0.03    0.51   0.31   0.02
+general agency (Q2)     0.27  0.19   1.00    0.09    0.16   0.43   0.12
+societal control (Q4)   0.12  0.03   0.09    1.00    0.02   0.05   0.11
+restful motive          0.28  0.51   0.16    0.02    1.00   0.51   0.02
+dialogic motive         0.25  0.31   0.43    0.05    0.51   1.00   0.27
+serviced motive        -0.20  0.02   0.12    0.11    0.02   0.27   1.00
+largest correlation of place agency with a rival: 0.28; share of its variance the six rivals explain together: 21.2%
+
+========== 2. What place agency adds after the rivals, and the rivals after place agency ==========
+
+-- role WANTED (ordered logit, McFadden pseudo-R2) --
+covariates only 0.0122 | + six rivals 0.0268 | + place agency on top 0.0592  (place agency adds 0.0324; LR chi2(1) = 267.1, p = 4.9e-60)
+covariates only 0.0122 | + place agency 0.0528 | + six rivals on top 0.0592  (rivals add 0.0064; LR chi2(6) = 53.2, p = 1.1e-09)
+              predictor   OR_all_together    t
+           place agency 2.04 [1.87, 2.23] 16.1
+ relational belief (Q1) 1.04 [0.96, 1.14]  1.0
+    general agency (Q2) 0.94 [0.87, 1.03] -1.3
+  societal control (Q4) 1.19 [1.11, 1.28]  4.6
+         restful motive 1.09 [0.99, 1.20]  1.7
+        dialogic motive 0.86 [0.78, 0.94] -3.1
+        serviced motive 0.89 [0.83, 0.97] -2.8
+
+-- role SEEN (ordered logit, McFadden pseudo-R2) --
+covariates only 0.0104 | + six rivals 0.0229 | + place agency on top 0.0375  (place agency adds 0.0146; LR chi2(1) = 115.9, p = 5e-27)
+covariates only 0.0104 | + place agency 0.0298 | + six rivals on top 0.0375  (rivals add 0.0077; LR chi2(6) = 60.7, p = 3.3e-11)
+              predictor   OR_all_together    t
+           place agency 1.59 [1.46, 1.73] 10.7
+ relational belief (Q1) 0.92 [0.84, 1.00] -2.0
+    general agency (Q2) 1.03 [0.95, 1.12]  0.7
+  societal control (Q4) 1.32 [1.23, 1.43]  7.2
+         restful motive 1.07 [0.97, 1.18]  1.4
+        dialogic motive 0.92 [0.84, 1.01] -1.7
+        serviced motive 1.03 [0.95, 1.11]  0.6
+
+place agency's added pseudo-R2 for the wanted role, 95% bootstrap interval: [0.0246, 0.0421]
+odds ratio of place agency for the wanted role: alone 2.06 | with all six rivals 2.04
+
+========== 3. Dominance analysis: the fit each predictor adds on average over all subsets of the others ==========
+              predictor wanted wanted_share   seen seen_share
+           place agency 0.0365          78% 0.0170        63%
+        serviced motive 0.0036           8% 0.0002         1%
+  societal control (Q4) 0.0035           8% 0.0081        30%
+         restful motive 0.0014           3% 0.0006         2%
+        dialogic motive 0.0009           2% 0.0003         1%
+ relational belief (Q1) 0.0007           1% 0.0003         1%
+    general agency (Q2) 0.0004           1% 0.0006         2%
+(general dominance weights; they sum to the pseudo-R2 the seven predictors add over the covariates: wanted 0.0470, seen 0.0271)
+
+========== 4. The same question for rejecting the mastery one sees ==========
+n = 773 | six rivals 0.0613 | + place agency 0.1308 (adds 0.0695; LR chi2(1) = 71.3, p = 3e-17) | place agency alone 0.1064
+              predictor   OR   lo   hi       p
+           place agency 2.18 1.80 2.65 4.1e-15
+ relational belief (Q1) 0.85 0.70 1.02 7.3e-02
+    general agency (Q2) 0.92 0.77 1.10 3.8e-01
+  societal control (Q4) 1.28 1.10 1.50 1.6e-03
+         restful motive 1.00 0.81 1.23 1.0e+00
+        dialogic motive 0.83 0.67 1.02 7.8e-02
+        serviced motive 0.98 0.82 1.18 8.4e-01
+
+========== 5. Latent model: all constructs as latent variables (WLSMV) ==========
+fitted in 59 seconds
+  cfi   tli rmsea  srmr 
+0.986 0.990 0.066 0.066 
+     latent   beta     lo     hi       p
+      place  0.475  0.426  0.525 0.0e+00
+ relational  0.020 -0.040  0.079 5.2e-01
+     agency -0.073 -0.126 -0.019 7.4e-03
+    control  0.073  0.035  0.111 1.7e-04
+    restful  0.052 -0.030  0.133 2.2e-01
+   dialogic -0.180 -0.260 -0.101 8.4e-06
+largest standardised path: 0.48  (inside +/-1)
+latent correlations of place agency with the rivals: relational 0.25 | agency 0.39 | control 0.16 | restful 0.35 | dialogic 0.39 
+(the serviced motive is left out of the latent model, as in scripts 26-28)
+
+Saved: hnr_incremental_validity.rds
+
+
+############################################################
 ##  22_geography.R 
 ############################################################
 ========== 1. Are the country differences in wanting mastery carried by the constructs? ==========
@@ -1832,7 +1918,7 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  52 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
 dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
 serviced     fitted in  46 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
@@ -2064,7 +2150,7 @@ mp_time               0.277    0.267   -0.093       0.229
 42.032  5.000  0.988  0.976  0.054  0.032 
 
 two-factor solution (blank = below .25), factor correlation 0.64 :
-                 ML2  ML1
+                 ML1  ML2
 mp_emancipation   NA 0.44
 mp_dialogue     0.47   NA
 mp_agency         NA 0.76
@@ -2442,4 +2528,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_education_check.rds, hnr_fielding_dates.rds, hnr_indicator_connections.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_agency_facets.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds, hnr_who_rejects.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_education_check.rds, hnr_fielding_dates.rds, hnr_incremental_validity.rds, hnr_indicator_connections.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_agency_facets.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds, hnr_who_rejects.rds 
