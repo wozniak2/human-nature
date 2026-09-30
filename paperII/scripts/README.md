@@ -48,10 +48,11 @@ Always run script files. On this Windows machine, `Rscript -e "..."` crashes whe
 | 29_education_check.R | Education (three harmonised levels, built in 04): its distribution, what it goes with, the central estimates with and without it, and a test of moderation of place agency | hnr_education_check.rds |
 | 30_indicator_connections.R | Country-adjusted links between the role seen, wanted, the shift and extremity and every other indicator (Q1-Q4, Q7-Q16), plus the indicators against each other | hnr_indicator_connections.rds |
 | 31_place_agency_facets.R | Facet check for place agency: independence (Q7, Q9) versus communication (Q8, Q10, Q12); item overlap with the motives, one factor versus two facets, which facet is linked to the role, mediation through each facet (latent and bootstrap), and a zero-overlap test | hnr_place_agency_facets.rds |
+| 32_who_rejects_mastery.R | The gap within each person: among the people who see Master, who keeps it and who rejects it (and where they go); the reverse move toward Master; the wanted role given the seen role; a clean-sample check | hnr_who_rejects.rds |
 | 11_square_table_models.R | Loglinear models for the 6x6 perceived-vs-ideal table: independence, quasi-independence, symmetry, quasi-symmetry; marginal homogeneity as the QS-vs-S contrast; fitted per country | hnr_square_table_models.rds |
 | 10_figures.R | Figures 1-20, PNG and PDF. The path diagrams (11, 12-14, 16, 17, 20) are drawn from the fitted lavaan models by the small ggplot2 engine in sem_plot_helpers.R | figures/, sem_plot_helpers.R |
 
-The pipeline runs 01, 02, 04-09, 13, 14, 26, 27, 28, 25, 24, 23, 29, 30, 31, 22, 21, 20, 19, 18, 17, 16, 15, 12, 11 and 10 in that order. The full run now takes roughly ten minutes, most of it script 21. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
+The pipeline runs 01, 02, 04-09, 13, 14, 26, 27, 28, 25, 24, 23, 29, 30, 31, 32, 22, 21, 20, 19, 18, 17, 16, 15, 12, 11 and 10 in that order. The full run now takes roughly ten minutes, most of it script 21. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
 
 ## Notes
 - Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).

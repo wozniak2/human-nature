@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-29 21:05:53.684717 
-Time difference of 0.01810694 secs
-Computation Time: 0.01810694 
+Date of Analysis: 2026-09-29 21:37:17.315736 
+Time difference of 0.01736999 secs
+Computation Time: 0.01736999 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1109,7 +1109,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 8 seconds
+fitted in 7 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1681,6 +1681,78 @@ Saved: hnr_place_agency_facets.rds
 
 
 ############################################################
+##  32_who_rejects_mastery.R 
+############################################################
+respondents: 2489 
+
+========== 1. The people who see Master ==========
+see Master: 773 | keep Master: 294 (38.0%) | want another role: 479 (62.0%)
+
+where they go (role wanted by people who see Master), with their mean place agency (z):
+ role_wanted   n share place_agency_mean
+      Master 294  38.0             -0.68
+     Manager 216  27.9             -0.26
+        User 122  15.8              0.13
+    Guardian  78  10.1              0.48
+     Partner  43   5.6              0.53
+      Object  20   2.6             -0.23
+
+share rejecting, by country:
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+       52.1        66.2        67.5        69.8        58.5        57.3 
+
+========== 2. Who rejects the mastery they see? (logistic regression, n = 773) ==========
+        predictor   OR   lo   hi       p
+     place agency 2.12 1.78 2.52 3.8e-17
+   restful motive 0.94 0.78 1.13 5.1e-01
+  dialogic motive 0.79 0.66 0.95 1.2e-02
+ societal control 1.28 1.10 1.49 1.5e-03
+
+fit (McFadden pseudo-R2): covariates only 0.029 | + place agency 0.106 | + motives and control 0.127
+likelihood-ratio test for place agency over the covariates: chi2(1) = 79.3, p = 5.4e-19
+probability of rejecting mastery at low vs high place agency (10th vs 90th percentile): 39.6% vs 83.5%
+same for the restful motive: 63.5% vs 60.4% | dialogic motive: 67.6% vs 55.3%
+
+========== 3. Which facet of place agency carries it? ==========
+           predictor   OR   lo   hi       p
+  independence facet 1.48 1.23 1.78 2.8e-05
+ communication facet 1.64 1.35 1.99 7.8e-07
+
+========== 4. The reverse move: who wants the mastery they do NOT see? ==========
+do not see Master: 1716 | want Master: 196 (11.4%)
+where they start (role seen by those who move to Master):
+
+ Manager     User Guardian  Partner   Object 
+      99       36       16       23       22 
+        predictor   OR   lo   hi       p
+     place agency 0.56 0.46 0.68 2.5e-09
+   restful motive 0.58 0.48 0.70 3.0e-08
+  dialogic motive 1.63 1.32 2.02 5.5e-06
+ societal control 0.87 0.73 1.04 1.2e-01
+probability of moving to Master at low vs high place agency (10th vs 90th percentile): 16.6% vs 5.5%
+(the seen role is controlled, because the chance of moving to Master depends on where one starts)
+
+========== 5. Everyone: the wanted role given the seen role (ordered logit) ==========
+        predictor OR_given_seen_role OR_without_seen_role
+     place agency  1.87 [1.72, 2.03]                 2.08
+   restful motive  1.12 [1.02, 1.22]                 1.13
+  dialogic motive  0.82 [0.75, 0.89]                 0.81
+ societal control  1.09 [1.01, 1.18]                 1.17
+(An odds ratio above 1 given the seen role means the predictor goes with wanting a role further from Master
+ than the one people see, i.e. with the shift itself, not only with where people stand.)
+
+========== 6. Without respondents flagged for speeding or straight-lining ==========
+n = 631 
+        predictor   OR   lo   hi       p
+     place agency 2.08 1.69 2.56 6.5e-12
+   restful motive 0.87 0.70 1.08 2.1e-01
+  dialogic motive 0.83 0.68 1.02 7.8e-02
+ societal control 1.22 1.01 1.48 4.0e-02
+
+Saved: hnr_who_rejects.rds
+
+
+############################################################
 ##  22_geography.R 
 ############################################################
 ========== 1. Are the country differences in wanting mastery carried by the constructs? ==========
@@ -1813,7 +1885,7 @@ serviced     fitted in  47 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 72 s | largest standardised path 1.42
+fitted in 74 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*
@@ -2369,4 +2441,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_education_check.rds, hnr_fielding_dates.rds, hnr_indicator_connections.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_agency_facets.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_education_check.rds, hnr_fielding_dates.rds, hnr_indicator_connections.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_agency_facets.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds, hnr_who_rejects.rds 
