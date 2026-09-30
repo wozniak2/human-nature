@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-09-30 09:26:58.932959 
-Time difference of 0.01230311 secs
-Computation Time: 0.01230311 
+Date of Analysis: 2026-09-30 09:57:06.503448 
+Time difference of 0.01222992 secs
+Computation Time: 0.01222992 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1643,7 +1643,7 @@ latent correlation of the two facets: 0.80 [0.75, 0.86]
      full scale (reference) 2.08 [1.92, 2.26] 1.58 [1.46, 1.71]
 
 ========== 4. Mediation with the two facets as parallel mediators (latent SEM) ==========
-restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
+restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
 dialogic     fitted in  13 s | CFI 0.977 RMSEA 0.051 | largest standardised path 0.51
 
 -- motive -> facet (a) and facet -> wanted position (b), standardised; * = p < .05 --
@@ -1821,7 +1821,7 @@ n = 773 | six rivals 0.0613 | + place agency 0.1308 (adds 0.0695; LR chi2(1) = 7
         serviced motive 0.98 0.82 1.18 8.4e-01
 
 ========== 5. Latent model: all constructs as latent variables (WLSMV) ==========
-fitted in 59 seconds
+fitted in 58 seconds
   cfi   tli rmsea  srmr 
 0.986 0.990 0.066 0.066 
      latent   beta     lo     hi       p
@@ -1836,6 +1836,123 @@ latent correlations of place agency with the rivals: relational 0.25 | agency 0.
 (the serviced motive is left out of the latent model, as in scripts 26-28)
 
 Saved: hnr_incremental_validity.rds
+
+
+############################################################
+##  34_direction_and_spread.R 
+############################################################
+respondents: 2489 
+
+========== 1. Check: with no spread part the model reproduces MASS::polr ==========
+largest difference from polr in a coefficient: 1.22e-04 | in the log-likelihood: 1.23e-06 | converged: TRUE
+
+========== 2. Direction and spread of the WANTED role ==========
+direction (odds ratio per SD for a role further from Master):
+        predictor             ratio       p
+     place agency 2.06 [1.90, 2.24] 1.5e-65
+   restful motive 1.15 [1.05, 1.26] 2.3e-03
+  dialogic motive 0.81 [0.75, 0.88] 3.0e-07
+ societal control 1.17 [1.09, 1.26] 1.9e-05
+spread (ratio per SD; above 1 = more choices at both ends, below 1 = more in the middle):
+        predictor             ratio       p
+     place agency 0.99 [0.95, 1.03] 6.5e-01
+   restful motive 0.89 [0.85, 0.94] 3.0e-06
+  dialogic motive 1.07 [1.02, 1.11] 5.8e-03
+ societal control 0.96 [0.93, 1.00] 6.0e-02
+adding the spread part to the ordered logit: chi2(4) = 27.4, p = 1.6e-05 
+ordered logit: AIC 7807.0, BIC 7917.5 | with spread: AIC 7787.5, BIC 7921.4 
+
+========== 3. With response style in both parts, and with country in the spread part ==========
+direction:
+           predictor             ratio       p
+        place agency 2.04 [1.87, 2.21] 3.4e-63
+      restful motive 1.19 [1.08, 1.31] 4.9e-04
+     dialogic motive 0.82 [0.76, 0.90] 7.7e-06
+    societal control 1.18 [1.10, 1.27] 7.2e-06
+        acquiescence 0.88 [0.77, 0.99] 3.6e-02
+ midpoint responding 0.98 [0.87, 1.12] 8.1e-01
+  extreme responding 1.04 [0.95, 1.13] 4.4e-01
+spread:
+           predictor             ratio       p
+        place agency 0.99 [0.95, 1.04] 7.2e-01
+      restful motive 0.87 [0.83, 0.91] 8.2e-08
+     dialogic motive 1.06 [1.01, 1.11] 2.3e-02
+    societal control 0.96 [0.92, 1.00] 3.3e-02
+        acquiescence 1.00 [0.94, 1.07] 9.5e-01
+ midpoint responding 0.98 [0.92, 1.05] 5.6e-01
+  extreme responding 1.08 [1.03, 1.14] 1.4e-03
+spread part, given response style: chi2(7) = 43.7, p = 2.5e-07 
+
+with country also allowed to change the spread:
+        predictor             ratio       p
+     place agency 0.99 [0.94, 1.04] 6.2e-01
+   restful motive 0.87 [0.83, 0.91] 7.3e-08
+  dialogic motive 1.06 [1.01, 1.11] 1.8e-02
+ societal control 0.95 [0.91, 0.99] 1.6e-02
+
+========== 4. What the spread effects mean in probabilities (model with response style) ==========
+-- dialogic motive: average predicted % choosing each --
+                Master Object either_pole middle_four
+low (10th pct)    15.5    5.6        21.1        78.9
+high (90th pct)   24.8    5.0        29.8        70.2
+-- restful motive: average predicted % choosing each --
+                Master Object either_pole middle_four
+low (10th pct)    26.0    6.6        32.6        67.4
+high (90th pct)   13.9    4.2        18.1        81.9
+-- place agency: average predicted % choosing each --
+                Master Object either_pole middle_four
+low (10th pct)    33.9    1.9        35.8        64.2
+high (90th pct)    8.1    9.7        17.8        82.2
+
+========== 5. Is the spread only the Master pole? ==========
+wanted role: middle 1871 | Master 490 | Object 128 
+relative risk ratios per SD (response style, age, gender, education, country in the model):
+        predictor  Master_vs_middle  Object_vs_middle
+     place agency 0.49 [0.43, 0.55] 1.72 [1.41, 2.10]
+   restful motive 0.71 [0.62, 0.81] 0.52 [0.40, 0.66]
+  dialogic motive 1.41 [1.23, 1.61] 1.51 [1.17, 1.97]
+ societal control 0.76 [0.68, 0.85] 1.28 [1.05, 1.55]
+(A predictor of spread raises, or lowers, BOTH columns; a predictor of direction moves them in opposite ways.)
+
+the same three-category model in probabilities (average predicted %):
+-- dialogic motive --
+                Master Object middle
+low (10th pct)    14.7    3.3   82.0
+high (90th pct)   26.2    7.5   66.3
+-- restful motive --
+                Master Object middle
+low (10th pct)    25.1   10.4   64.5
+high (90th pct)   14.5    2.8   82.7
+
+among the 618 extreme choosers, Object rather than Master (odds ratio per SD):
+        predictor                OR       p
+     place agency 2.51 [2.00, 3.16] 2.4e-15
+   restful motive 0.74 [0.56, 0.99] 4.2e-02
+  dialogic motive 1.09 [0.81, 1.48] 5.8e-01
+ societal control 1.53 [1.23, 1.90] 1.3e-04
+
+========== 6. The role SEEN, for comparison (with response style) ==========
+direction:
+        predictor             ratio       p
+     place agency 1.56 [1.44, 1.70] 1.3e-26
+   restful motive 1.10 [1.00, 1.21] 4.9e-02
+  dialogic motive 0.93 [0.85, 1.01] 7.6e-02
+ societal control 1.32 [1.22, 1.42] 3.6e-13
+spread:
+        predictor             ratio       p
+     place agency 1.06 [1.01, 1.12] 1.3e-02
+   restful motive 0.88 [0.84, 0.93] 1.1e-05
+  dialogic motive 1.03 [0.98, 1.08] 2.6e-01
+ societal control 0.98 [0.94, 1.02] 3.7e-01
+spread part: chi2(7) = 41.0, p = 8e-07 
+
+all models at a maximum (flat gradient, negative-definite curvature): TRUE | largest gradient 6.4e-07
+
+========== 7. Cross-check against ordinal::clm ==========
+wanted role                  largest difference: direction 2.1e-10 | spread 2.7e-11 | standard error of a spread term 1.1e-08 | log-likelihood 0.0e+00
+wanted role + response style largest difference: direction 9.6e-10 | spread 5.9e-11 | standard error of a spread term 1.4e-08 | log-likelihood 0.0e+00
+
+Saved: hnr_direction_spread.rds
 
 
 ############################################################
@@ -1920,7 +2037,7 @@ rural x country interaction on wanting mastery:
 ############################################################
 restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
 dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
-serviced     fitted in  46 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
+serviced     fitted in  45 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -2528,4 +2645,4 @@ Figures written to the figures/ folder
 
 
 ================ PIPELINE COMPLETE ================
-Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_education_check.rds, hnr_fielding_dates.rds, hnr_incremental_validity.rds, hnr_indicator_connections.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_agency_facets.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds, hnr_who_rejects.rds 
+Outputs: hnr_agency_scale.rds, hnr_alignment_fit.rds, hnr_cfa_fits.rds, hnr_data.rds, hnr_direction_spread.rds, hnr_education_check.rds, hnr_fielding_dates.rds, hnr_incremental_validity.rds, hnr_indicator_connections.rds, hnr_mastery_paradox.rds, hnr_mediation_sem.rds, hnr_mimic_fit.rds, hnr_mimic_interact_fit.rds, hnr_motive_invariance.rds, hnr_motive_measurement.rds, hnr_motives_roles.rds, hnr_now_vs_should_sem.rds, hnr_opposing_roles_sem.rds, hnr_ordered_mediation.rds, hnr_ordered_sem.rds, hnr_outcome_structure.rds, hnr_place_agency_facets.rds, hnr_place_relationship.rds, hnr_qc_robustness_fits.rds, hnr_reasons_efa.rds, hnr_robustness.rds, hnr_scenarios.rds, hnr_square_table_models.rds, hnr_story_model.rds, hnr_structural_model.rds, hnr_style_validity.rds, hnr_who_rejects.rds 

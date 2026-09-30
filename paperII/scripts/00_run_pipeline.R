@@ -90,6 +90,7 @@ steps <- c(
   "31_place_agency_facets.R",   # facet check: which part of place agency carries each route (dialogic item overlap)
   "32_who_rejects_mastery.R",   # who rejects the mastery they see (and who moves toward it)
   "33_incremental_validity.R",  # does place agency predict the wanted role beyond its rival constructs?
+  "34_direction_and_spread.R",  # one model for direction and spread of the wanted role, with response style
   "22_geography.R",            # can geography moderate, or account for, anything? (country, residence)
   "21_mediation_sem.R",        # do the motives act on the wanted role through place agency? (slow: about 4 minutes)
   "20_opposing_roles_sem.R",    # the same model for the roles that oppose Master

@@ -3,7 +3,7 @@
 Analysis pipeline for *Seeing Mastery, Wanting Less: Place Agency and the Role of Humans in Nature* (working title, Paper II). The repository front page is `../../README.md`.
 
 ## Requirements
-- R 4.4.1 (tested). Packages: readxl, lavaan, nnet, sirt, psych, GPArotation, ggplot2, ggalluvial (and MASS, which ships with R) — install with `source("00_setup.R")`.
+- R 4.4.1 (tested). Packages: readxl, lavaan, nnet, sirt, psych, GPArotation, ggplot2, ggalluvial, ordinal (and MASS, which ships with R) — install with `source("00_setup.R")`.
 - Raw survey exports (SurveyMonkey xlsx, one per country) in `../data/`:
   Canada, Panama, Poland, Netherlands, Spain, Sweden (file names are set in `01_load_and_prepare.R`).
 
@@ -50,10 +50,11 @@ Always run script files. On this Windows machine, `Rscript -e "..."` crashes whe
 | 31_place_agency_facets.R | Facet check for place agency: independence (Q7, Q9) versus communication (Q8, Q10, Q12); item overlap with the motives, one factor versus two facets, which facet is linked to the role, mediation through each facet (latent and bootstrap), and a zero-overlap test | hnr_place_agency_facets.rds |
 | 32_who_rejects_mastery.R | The gap within each person: among the people who see Master, who keeps it and who rejects it (and where they go); the reverse move toward Master; the wanted role given the seen role; a clean-sample check | hnr_who_rejects.rds |
 | 33_incremental_validity.R | Incremental validity of place agency: its correlations with the rival constructs (relational belief, general agency, societal control, the three motives), what it adds after them and they after it, a dominance analysis for the role wanted and seen, the same test for rejecting mastery, and a latent model | hnr_incremental_validity.rds |
+| 34_direction_and_spread.R | One location-scale ordered logit for the wanted role: direction (which way a predictor moves the role) and spread (whether it widens or narrows the choices), with response style added, in probabilities, a three-category check of both poles, the role seen for comparison, and a cross-check against ordinal::clm | hnr_direction_spread.rds |
 | 11_square_table_models.R | Loglinear models for the 6x6 perceived-vs-ideal table: independence, quasi-independence, symmetry, quasi-symmetry; marginal homogeneity as the QS-vs-S contrast; fitted per country | hnr_square_table_models.rds |
 | 10_figures.R | Figures 1-21, PNG and PDF. The path diagrams (11, 12-14, 16, 17, 20) are drawn from the fitted lavaan models by the small ggplot2 engine in sem_plot_helpers.R | figures/, sem_plot_helpers.R |
 
-The pipeline runs 01, 02, 04-09, 13, 14, 26, 27, 28, 25, 24, 23, 29, 30, 31, 32, 33, 22, 21, 20, 19, 18, 17, 16, 15, 12, 11 and 10 in that order. The full run now takes roughly ten minutes, most of it script 21. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
+The pipeline runs 01, 02, 04-09, 13, 14, 26, 27, 28, 25, 24, 23, 29, 30, 31, 32, 33, 34, 22, 21, 20, 19, 18, 17, 16, 15, 12, 11 and 10 in that order. The full run now takes roughly ten minutes, most of it script 21. `03_typology_dif.R` is superseded (it treated Q4 as personal endorsement) and is not run.
 
 ## Notes
 - Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).

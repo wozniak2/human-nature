@@ -20,7 +20,7 @@ People in six countries see more human *mastery* over nature than they want. The
 | **The gap** | 31% see *Master* as the human role now, 20% think it should be. 480 people move away from Master when asked what *should* be; 200 move toward it. Net shift −11.2 percentage points; the direction holds in five of six countries. |
 | **Place agency** | The strongest link to the wanted role (Spearman ρ = +.35). The odds ratio is about 2 per standard deviation at every step of the six-role scale. Moving from low to high place agency (10th to 90th percentile) cuts the chance of wanting Master from 34% to 7.5%. |
 | **A distinct construct** | Place agency correlates at most .28 with the general scales (relational belief, agency of non-human beings, societal control) and the motives. Added after all of them it more than doubles the fit for the wanted role, and it accounts for 78% of what the predictors explain; the general scales add almost nothing once it is in. |
-| **Two kinds of visit** | Restorative visits go with a role further from Master mainly *through* place agency, and this route holds even when no question wording is shared. Dialogic visits mainly go with choosing either end of the scale; their link through place agency runs only through items worded like the motive itself, so it is not claimed. |
+| **Two kinds of visit** | In one model for direction and spread, place agency moves the wanted role (direction) and does not change how spread out the choices are. Restorative visits go with a role further from Master, mainly *through* place agency, and with clearly fewer choices at either end (spread ratio 0.87 per standard deviation). Dialogic visits go with somewhat more choices at both ends (1.06); their link through place agency runs only through items worded like the motive itself, so it is not claimed. Response style does not explain these patterns. |
 | **Who rejects mastery** | Of the people who see Master, 62% want another role. Place agency is what separates them from those who keep it (odds ratio 2.1 per standard deviation): the chance of rejecting Master rises from 40% to 83% between low and high place agency. It works in mirror for the reverse move toward Master. |
 | **Seeing vs wanting** | What relates to the role people see differs from what relates to the role they want (explained variance .15 vs .25). Of 16 seen-versus-wanted comparisons, six survive a multiple-testing correction. |
 | **Robustness** | The place-agency result holds across countries, question wording, random halves, response style, careless respondents and education. The restorative effect is the sensitive one. |
@@ -51,7 +51,7 @@ Online-panel surveys in six countries, March to October 2025. The questionnaire 
 
 ## Run it
 
-Requirements: **R 4.4.1** (tested); packages `readxl`, `lavaan`, `nnet`, `MASS`, `sirt`, `psych`, `GPArotation`, `ggplot2`, `ggalluvial`.
+Requirements: **R 4.4.1** (tested); packages `readxl`, `lavaan`, `nnet`, `MASS`, `sirt`, `psych`, `GPArotation`, `ggplot2`, `ggalluvial`, `ordinal`.
 
 ```bash
 cd paperII/scripts
@@ -59,7 +59,7 @@ Rscript 00_setup.R          # installs missing packages
 Rscript 00_run_pipeline.R   # runs every step, about ten minutes
 ```
 
-The master script clears earlier outputs, runs the 32 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
+The master script clears earlier outputs, runs the 33 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
 
 ## Repository map
 
@@ -83,7 +83,7 @@ human-nature/
 |---|---|
 | Is there a gap between the role seen and wanted? Who moves? | `08_mastery_paradox`, `11_square_table_models`, `32_who_rejects_mastery` |
 | How solid are the measures? | `12_agency_scale`, `13_reasons_efa`, `16_motive_invariance`, `18_place_relationship`, `25_motive_measurement`, `31_place_agency_facets`, `33_incremental_validity` |
-| Is the wanted role one scale? What is left over? | `24_outcome_structure` |
+| Is the wanted role one scale? What is left over? | `24_outcome_structure`, `34_direction_and_spread` |
 | What relates to seeing and to wanting? | `19_now_vs_should_sem`, `20_opposing_roles_sem`, `26_ordered_sem` |
 | Do the motives act through place agency? | `21_mediation_sem`, `27_ordered_mediation`, `28_story_model` |
 | Does it hold up? Countries, education, other indicators | `22_geography`, `23_robustness`, `29_education_check`, `30_indicator_connections` |
