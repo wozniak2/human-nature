@@ -22,7 +22,7 @@ People in six countries see more human *mastery* over nature than they want. The
 | **A distinct construct** | Place agency correlates at most .28 with the general scales (relational belief, agency of non-human beings, societal control) and the motives. Added after all of them it more than doubles the fit for the wanted role, and it accounts for 78% of what the predictors explain; the general scales add almost nothing once it is in. |
 | **Two kinds of visit** | In one model for direction and spread, place agency moves the wanted role (direction) and does not change how spread out the choices are. Restorative visits go with a role further from Master, mainly *through* place agency, and with clearly fewer choices at either end (spread ratio 0.87 per standard deviation). Dialogic visits go with somewhat more choices at both ends (1.06); their link through place agency runs only through items worded like the motive itself, so it is not claimed. Response style does not explain these patterns. |
 | **Who rejects mastery** | Of the people who see Master, 62% want another role. Place agency is what separates them from those who keep it (odds ratio 2.1 per standard deviation): the chance of rejecting Master rises from 40% to 83% between low and high place agency. It works in mirror for the reverse move toward Master. |
-| **Seeing vs wanting** | What relates to the role people see differs from what relates to the role they want (explained variance .15 vs .25). Of 16 seen-versus-wanted comparisons, six survive a multiple-testing correction. |
+| **Seeing vs wanting** | The role people see is more shared, the role they want more personal. People in the same country agree more on what they see (in all six countries); personal predictors explain the wanted role about twice as well (pseudo-R² .051 vs .023); beliefs about societal control weigh more on the role seen, place agency more on the role wanted; and countries differ more in how much mastery people see than in how much they want. Of 16 seen-versus-wanted path comparisons, six survive a multiple-testing correction. |
 | **Robustness** | The place-agency result holds across countries, question wording, random halves, response style, careless respondents and education. The restorative effect is the sensitive one. |
 
 <p align="center">
@@ -59,7 +59,7 @@ Rscript 00_setup.R          # installs missing packages
 Rscript 00_run_pipeline.R   # runs every step, about ten minutes
 ```
 
-The master script clears earlier outputs, runs the 33 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
+The master script clears earlier outputs, runs the 34 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
 
 ## Repository map
 
@@ -84,7 +84,7 @@ human-nature/
 | Is there a gap between the role seen and wanted? Who moves? | `08_mastery_paradox`, `11_square_table_models`, `32_who_rejects_mastery` |
 | How solid are the measures? | `12_agency_scale`, `13_reasons_efa`, `16_motive_invariance`, `18_place_relationship`, `25_motive_measurement`, `31_place_agency_facets`, `33_incremental_validity` |
 | Is the wanted role one scale? What is left over? | `24_outcome_structure`, `34_direction_and_spread` |
-| What relates to seeing and to wanting? | `19_now_vs_should_sem`, `20_opposing_roles_sem`, `26_ordered_sem` |
+| What relates to seeing and to wanting? | `19_now_vs_should_sem`, `20_opposing_roles_sem`, `26_ordered_sem`, `35_shared_vs_personal` |
 | Do the motives act through place agency? | `21_mediation_sem`, `27_ordered_mediation`, `28_story_model` |
 | Does it hold up? Countries, education, other indicators | `22_geography`, `23_robustness`, `29_education_check`, `30_indicator_connections` |
 | Figures | `10_figures` (with `sem_plot_helpers.R`) |
