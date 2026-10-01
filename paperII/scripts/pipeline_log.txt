@@ -122,7 +122,7 @@ Saved: hnr_data.rds (updated with q1_factor column), hnr_cfa_fits.rds
 ############################################################
 ##  04_mimic_model.R 
 ############################################################
-Education (1 primary, 2 high school, 3 higher; NA = prefer not to answer), by country:
+Education (1 primary or less, 2 secondary, 3 tertiary; NA = prefer not to answer), by country:
              
                 1   2   3 <NA>
   Canada       24 247 137    3
@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-10-01 12:20:54.616519 
-Time difference of 0.01235294 secs
-Computation Time: 0.01235294 
+Date of Analysis: 2026-10-01 14:11:03.509147 
+Time difference of 0.01252103 secs
+Computation Time: 0.01252103 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1109,7 +1109,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 8 seconds
+fitted in 7 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1448,34 +1448,34 @@ respondents in the models: 2489
 
 ========== 1. Education by country (harmonised) ==========
              lv
-              primary high school higher <NA>
-  Canada           24         247    137    3
-  Panama            2         123    286    5
-  Poland           12         236    176    0
-  Netherlands      24         188    208    5
-  Spain            17         167    240    1
-  Sweden           49         194    155   14
+              primary or less secondary tertiary <NA>
+  Canada                   24       247      137    3
+  Panama                    2       123      286    5
+  Poland                   12       236      176    0
+  Netherlands              24       188      208    5
+  Spain                    17       167      240    1
+  Sweden                   49       194      155   14
              lv
-              primary high school higher
-  Canada            6          61     34
-  Panama            0          30     70
-  Poland            3          56     42
-  Netherlands       6          45     50
-  Spain             4          39     57
-  Sweden           12          49     39
+              primary or less secondary tertiary
+  Canada                    6        61       34
+  Panama                    0        30       70
+  Poland                    3        56       42
+  Netherlands               6        45       50
+  Spain                     4        39       57
+  Sweden                   12        49       39
 not stated: 28 respondents
 
 ========== 2. What education goes with (adjusted for country, age, gender) ==========
-(SD of the construct; reference = high school)
-  outcome primary p_primary higher p_higher
-1     plc  -0.094     0.314  0.030    0.468
-2    rest  -0.418     0.000  0.059    0.152
-3     dia  -0.190     0.042 -0.004    0.920
-4     ctl   0.041     0.667  0.066    0.116
+(SD of the construct; reference = secondary)
+  outcome primary p_primary tertiary p_tertiary
+1     plc  -0.094     0.314    0.030      0.468
+2    rest  -0.418     0.000    0.059      0.152
+3     dia  -0.190     0.042   -0.004      0.920
+4     ctl   0.041     0.667    0.066      0.116
 
 -- the wanted role and its extremity, education terms --
-position (ordered logit): primary -0.13 (p = 0.467), higher -0.03 (p = 0.665)
-extremity (logit): primary +0.36 (p = 0.095), higher -0.20 (p = 0.047)
+position (ordered logit): primary -0.13 (p = 0.467), tertiary -0.03 (p = 0.665)
+extremity (logit): primary +0.36 (p = 0.095), tertiary -0.20 (p = 0.047)
 
 ========== 3. The central estimates with and without education ==========
 -- wanted role, ordered logit (log-odds per SD) --
@@ -1644,7 +1644,7 @@ latent correlation of the two facets: 0.80 [0.75, 0.86]
 
 ========== 4. Mediation with the two facets as parallel mediators (latent SEM) ==========
 restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
-dialogic     fitted in  14 s | CFI 0.977 RMSEA 0.051 | largest standardised path 0.51
+dialogic     fitted in  13 s | CFI 0.977 RMSEA 0.051 | largest standardised path 0.51
 
 -- motive -> facet (a) and facet -> wanted position (b), standardised; * = p < .05 --
 restorative  a: independence +0.296*, communication +0.385* | b (wanted): independence +0.398*, communication +0.094  | b (seen): independence +0.216*, communication +0.145 
@@ -2239,9 +2239,9 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  53 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
-dialogic     fitted in  45 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
-serviced     fitted in  45 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
+restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
+serviced     fitted in  46 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -2292,7 +2292,7 @@ serviced     fitted in  45 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 72 s | largest standardised path 1.42
+fitted in 73 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*

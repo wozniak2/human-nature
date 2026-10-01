@@ -62,5 +62,5 @@ The pipeline runs 01, 02, 04-09, 13, 14, 26, 27, 28, 25, 24, 23, 29, 30, 31, 32,
 
 ## Notes
 - Items are identified by column position, verified to be identical across the six files; demographics are the last 4 columns (5 in Canada and Panama, which add an Indigenous-identity item).
-- Education answer options differ by questionnaire (9, 8 and 7 codes). `04_mimic_model.R` harmonises them to three levels (primary, high school, higher) plus a not-stated flag, and every model of the role uses them as covariates (`29_education_check.R` shows what they change).
+- Education answer options differ by questionnaire (9, 8 and 7 codes). `04_mimic_model.R` harmonises them to three ISCED 2011 levels (primary or less, secondary, tertiary) plus a not-stated flag, and every model of the role uses them as covariates (`29_education_check.R` shows what they change).
 - Every number in the working outline comes from `pipeline_log.txt`; the outline itself is kept outside the repository.

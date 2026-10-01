@@ -50,8 +50,9 @@ dat$age_num <- ifelse(dat$age_raw %in% 1:6, dat$age_raw, NA)
 #     5 bachelor's, 6 master's, 7 doctoral, 8 prefer not to answer
 #   Spain, Panama (Spanish, 7 codes): 1 none, 2 primary, 3 secondary/pre-media,
 #     4 media (bachillerato), 5-6 higher, 7 prefer not to answer
-# Harmonised: 1 = primary or none, 2 = high school (lower/upper secondary, vocational,
-# post-secondary non-tertiary), 3 = higher (tertiary). "Prefer not to answer" (28
+# Harmonised to three ISCED 2011 levels: 1 = primary or less (ISCED 0-1), 2 = secondary
+# (lower/upper secondary, vocational, post-secondary non-tertiary; ISCED 2-4),
+# 3 = tertiary (ISCED 5-8). "Prefer not to answer" (28
 # respondents) gets its own flag, edu_na, so that nobody drops out of the models.
 # Code-to-label order is inferred from the questionnaire's option order and confirmed
 # by the counts (the largest group is upper secondary everywhere).
@@ -66,8 +67,8 @@ edu_level <- function(country, raw) {
 dat$edu_level   <- edu_level(dat$country, dat$education_raw)
 dat$edu_primary <- as.integer(!is.na(dat$edu_level) & dat$edu_level == 1)
 dat$edu_higher  <- as.integer(!is.na(dat$edu_level) & dat$edu_level == 3)
-dat$edu_na      <- as.integer(is.na(dat$edu_level))          # reference category: high school
-cat("Education (1 primary, 2 high school, 3 higher; NA = prefer not to answer), by country:\n")
+dat$edu_na      <- as.integer(is.na(dat$edu_level))          # reference category: secondary
+cat("Education (1 primary or less, 2 secondary, 3 tertiary; NA = prefer not to answer), by country:\n")
 print(table(dat$country, dat$edu_level, useNA = "ifany"))
 
 n_before <- nrow(dat)

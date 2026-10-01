@@ -569,7 +569,7 @@ pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file
   ilab <- function(v) gsub("_", " ", sub("^(rs|mp|ctl)_", "", v))
   lab_lat <- c(place = "Place agency", control = "Societal control", serviced = "Serviced",
                dialogic = "Dialogic", restorative = "Restorative", age_num = "Age", gender_bin = "Man",
-               edu_primary = "Primary education", edu_higher = "Higher education")
+               edu_primary = "Primary education or less", edu_higher = "Tertiary education")
 
   # vertical layout, shared by both panels: each latent sits at the mean height of its indicators
   dy <- 0.235; gap <- 0.32; top <- 0
@@ -595,7 +595,7 @@ pair_sem_fig <- function(fit, out_now, out_should, differs, role, headline, file
     ox <- if (stack) 0 else (k - 1) * PW; up <- if (stack) (2 - k) * PH else 0
     ys <- ys0 + up; ind_y <- lapply(ind0, function(z) z + up); oy <- oy0 + up; ymax <- ymax0 + up
     nodes[[length(nodes) + 1]] <- data.frame(id = paste0(vars, sfx), label = unname(lab_lat[vars]), x = X$lat + ox, y = ys,
-      shape = ifelse(latent, "ellipse", "box"), w = ifelse(latent, 2.2, if (fs > 1.1) 1.95 else 1.5), h = ifelse(latent, 0.62, 0.42),
+      shape = ifelse(latent, "ellipse", "box"), w = ifelse(latent, 2.2, if (fs > 1.1) 2.3 else 1.8), h = ifelse(latent, 0.62, 0.42),
       fill = ifelse(latent, "#E3EEF7", "#F4F4F4"), border = ifelse(latent, "#5B87A6", "#8A8A8A"), size = 3.3,
       lwd = NA_real_, face = "plain")
     for (v in names(ind_y)) {

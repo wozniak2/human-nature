@@ -45,7 +45,7 @@ Online-panel surveys in six countries, March to October 2025. The questionnaire 
 - the human role, **seen** now and **wanted** (six narratives: Master, Manager, User, Guardian, Partner, Object);
 - **place agency** (five items on the respondent's own favourite natural place);
 - **reasons for visiting** a place (14 items, two motives carry the paper: restorative and dialogic);
-- societal control, agency of non-human beings, stances on a destroyed place, climate change, Indigenous knowledge and tourism, and demographics (education is harmonised to three levels).
+- societal control, agency of non-human beings, stances on a destroyed place, climate change, Indigenous knowledge and tourism, and demographics (education is harmonised to three ISCED 2011 levels: primary or less, secondary, tertiary).
 
 **The raw data are not in this repository.** They contain IP addresses and exact timestamps, so `paperII/data/`, `*.xlsx` and `*.rds` outputs are git-ignored. A de-identified release is planned. To run the pipeline you need the six survey exports in `paperII/data/` (file names are set at the top of `01_load_and_prepare.R`).
 
