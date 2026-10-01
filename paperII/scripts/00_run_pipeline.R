@@ -104,6 +104,7 @@ steps <- c(
   "12_agency_scale.R",         # agency of non-human beings: scale, invariance, latent change
   "11_square_table_models.R", # loglinear models for the 6x6 table (symmetry, quasi-symmetry)
   "37_exact_pvalues.R",       # exact p-values for the supplementary tables (reads the fits saved above)
+  "38_graphical_abstract.R",  # graphical abstract: the six countries shaded by the seen-wanted gap
   "10_figures.R"                 # figures for the manuscript (writes figures/)
 )
 # 03_typology_dif.R is superseded (see its header) and is not run.

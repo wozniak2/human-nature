@@ -59,7 +59,7 @@ Rscript 00_setup.R          # installs missing packages
 Rscript 00_run_pipeline.R   # runs every step, about ten minutes
 ```
 
-The master script clears earlier outputs, runs the 36 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
+The master script clears earlier outputs, runs the 37 steps in order and writes `pipeline_log.txt` (all printed results) and `sessionInfo.txt`. Always run the script files; inline `Rscript -e` calls can crash when reading xlsx on Windows. A full re-run reproduces the committed log line for line (apart from timings).
 
 ## Repository map
 
@@ -70,10 +70,10 @@ human-nature/
     └── scripts/
         ├── 00_setup.R              install packages
         ├── 00_run_pipeline.R       master runner (writes the log)
-        ├── 01 … 37_*.R             analysis steps (table in scripts/README.md)
+        ├── 01 … 38_*.R             analysis steps (table in scripts/README.md)
         ├── sem_plot_helpers.R      small ggplot2 engine for the path diagrams
         ├── figures/                fig1 … fig21, PNG and PDF
-        │   └── manuscript/         the seven manuscript figures without built-in titles
+        │   └── manuscript/         the manuscript figures without built-in titles, and the graphical abstract
         ├── pipeline_log.txt        every printed result of the last full run
         └── sessionInfo.txt         R and package versions
 ```
@@ -90,7 +90,7 @@ human-nature/
 | Does it hold up? Countries, education, other indicators | `22_geography`, `23_robustness`, `29_education_check`, `30_indicator_connections` |
 | Who is in the samples? How do the scales behave? | `36_descriptives` |
 | Exact p-values for every estimate in the supplementary tables | `37_exact_pvalues` |
-| Figures | `10_figures` (with `sem_plot_helpers.R`) |
+| Figures | `10_figures` (with `sem_plot_helpers.R`), `38_graphical_abstract` |
 | Supporting belief-scale work | `02`, `04`–`07`, `09` |
 
 A one-line description of every script and its output is in [`paperII/scripts/README.md`](paperII/scripts/README.md). `03_typology_dif.R` is superseded and not run.
