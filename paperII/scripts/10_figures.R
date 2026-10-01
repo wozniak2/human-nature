@@ -58,7 +58,7 @@ hnr_theme <- function() {
 ms_name <- c(fig5_alluvial = "Fig1_seen_wanted_flow", fig19_cutpoints = "Fig2_cutpoints",
              fig16_sem_position = "Fig3_seen_vs_wanted_paths", fig21_who_rejects = "Fig4_who_rejects",
              fig20_story_model = "Fig5_story_model", fig17_sem_extremity = "FigS1_extremity_paths",
-             fig18_mediation_ordered = "FigS2_mediation")
+             fig18_mediation_ordered = "FigS2_mediation", fig22_role_scale = "Fig_role_scale")
 save_ms <- function(name, p, w, h, trim = NULL, suffix = "") {
   if (!name %in% names(ms_name)) return(invisible())
   ms_file <- paste0(ms_name[[name]], suffix)
@@ -930,5 +930,57 @@ fig21 <- function() {
     hnr_theme() + theme(panel.spacing = unit(1.6, "lines"))
 }
 save_fig("fig21_who_rejects", fig21, 11, 4.8)
+
+# --- Fig 22: the six-role scale, with the share who see and who want each role ---------
+# For the Measures section: the roles in order from most to least human control over nature,
+# a short gloss of each description, the shares seen and wanted (all respondents), the two ends
+# against the four middle roles, and the direction of the scale.
+sc22 <- data.frame(role = factor(typ, levels = typ), x = 1:6,
+                   seen = as.vector(100 * prop.table(table(factor(dat$typ_now, 1:6)))),
+                   wanted = as.vector(100 * prop.table(table(factor(dat$typ_should, 1:6)))))
+gloss22 <- c("humans use nature\nfreely; it exists\nfor them", "humans manage\nnature rationally,\nwith care",
+             "humans use nature\nas a resource to\nkeep for the future", "humans, the stronger,\ntake care of nature",
+             "humans should not\nintervene; nature\ndecides for itself", "humans are subject\nto the forces\nof nature")
+bars22 <- rbind(data.frame(x = sc22$x - 0.17, pct = sc22$seen, which = "seen now"),
+                data.frame(x = sc22$x + 0.17, pct = sc22$wanted, which = "wanted"))
+bars22$part <- ifelse(round(bars22$x) %in% c(1, 6), "End role", "Middle role")
+bars22$key <- factor(paste0(bars22$part, ", ", bars22$which),
+                     levels = c("End role, seen now", "End role, wanted", "Middle role, seen now", "Middle role, wanted"))
+k22 <- 2.4 / 100                                    # vertical units per percentage point
+# ends in vermillion, middle in blue; light = seen now, dark = wanted (checked for colour-blind separation)
+cols22 <- c("End role, seen now" = "#E8A06A", "End role, wanted" = ACCENT,
+            "Middle role, seen now" = "#56A8DC", "Middle role, wanted" = BLUE)
+fig22 <- function() {
+  ggplot() +
+    # bars and their values
+    geom_rect(data = bars22, aes(xmin = x - 0.15, xmax = x + 0.15, ymin = 0, ymax = pct * k22, fill = key)) +
+    geom_text(data = bars22, aes(x = x, y = pct * k22 + 0.035, label = sprintf("%.0f%%", pct)), size = 3.0, colour = INK, vjust = 0) +
+    # role names and glosses
+    annotate("text", x = sc22$x, y = 1.36, label = typ, fontface = "bold", size = 4.0, colour = INK) +
+    annotate("text", x = sc22$x, y = 1.255, label = gloss22, size = 2.75, colour = MUTE, lineheight = 0.9, vjust = 1) +
+    # the ends against the middle
+    annotate("segment", x = c(0.72, 1.72, 5.72), xend = c(1.28, 5.28, 6.28), y = -0.10, yend = -0.10,
+             colour = c(ACCENT, BLUE, ACCENT), linewidth = 0.6) +
+    annotate("segment", x = c(0.72, 1.28, 1.72, 5.28, 5.72, 6.28), xend = c(0.72, 1.28, 1.72, 5.28, 5.72, 6.28),
+             y = -0.10, yend = -0.06, colour = c(ACCENT, ACCENT, BLUE, BLUE, ACCENT, ACCENT), linewidth = 0.6) +
+    annotate("text", x = c(1, 3.5, 6), y = -0.17, label = c("end", "middle", "end"), size = 3.2, colour = INK, fontface = "bold") +
+    # the direction of the scale
+    annotate("segment", x = 0.75, xend = 6.25, y = -0.32, yend = -0.32, colour = MUTE, linewidth = 0.6,
+             arrow = arrow(length = unit(2.4, "mm"), type = "closed", ends = "last")) +
+    annotate("text", x = 3.5, y = -0.40, size = 3.0, colour = MUTE,
+             label = "position on the scale: from most to least human control over nature (coded 1 to 6)") +
+    scale_fill_manual(values = cols22, name = NULL, guide = guide_legend(nrow = 1)) +
+    scale_x_continuous(limits = c(0.45, 6.55), expand = c(0, 0)) +
+    scale_y_continuous(limits = c(-0.46, 1.43), expand = c(0, 0)) +
+    labs(title = "The six roles as one scale of human dominance",
+         subtitle = "Share of respondents choosing each role for now and for how it should be, all six countries",
+         caption = sprintf("N = 2,513. Extreme choice = Master or Object. Source: 10_figures.R")) +
+    theme_void(base_size = 11) +
+    theme(legend.position = "top", legend.justification = "left", legend.text = element_text(size = 9, colour = INK),
+          legend.key.size = unit(3.5, "mm"), plot.background = element_rect(fill = BG, colour = NA),
+          plot.title = element_text(colour = INK, size = 13), plot.subtitle = element_text(colour = MUTE, size = 10),
+          plot.caption = element_text(colour = MUTE, size = 9, hjust = 0), plot.margin = margin(8, 10, 6, 10))
+}
+save_fig("fig22_role_scale", fig22, 10, 5.0)
 
 cat("Figures written to the figures/ folder", fill = TRUE)

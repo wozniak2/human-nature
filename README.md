@@ -36,7 +36,7 @@ People in six countries see more human *mastery* over nature than they want. The
   <img src="paperII/scripts/figures/fig20_story_model.png" width="96%" alt="The whole story as one structural model">
 </p>
 
-*Above: how the role seen moves to the role wanted (left); place agency acts alike at every step of the scale while the two motives reverse between the ends (right); who rejects the mastery they see, and who moves toward it, across place agency (middle); the whole story as one structural model (bottom).* All 21 figures are in [`paperII/scripts/figures/`](paperII/scripts/figures/) as PNG and PDF.
+*Above: how the role seen moves to the role wanted (left); place agency acts alike at every step of the scale while the two motives reverse between the ends (right); who rejects the mastery they see, and who moves toward it, across place agency (middle); the whole story as one structural model (bottom).* All 22 figures are in [`paperII/scripts/figures/`](paperII/scripts/figures/) as PNG and PDF.
 
 ## Data
 
@@ -72,7 +72,7 @@ human-nature/
         ├── 00_run_pipeline.R       master runner (writes the log)
         ├── 01 … 38_*.R             analysis steps (table in scripts/README.md)
         ├── sem_plot_helpers.R      small ggplot2 engine for the path diagrams
-        ├── figures/                fig1 … fig21, PNG and PDF
+        ├── figures/                fig1 … fig22, PNG and PDF
         │   └── manuscript/         the manuscript figures without built-in titles, and the graphical abstract
         ├── pipeline_log.txt        every printed result of the last full run
         └── sessionInfo.txt         R and package versions
