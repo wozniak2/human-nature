@@ -22,6 +22,9 @@
 #   5. is the spread only the Master pole? a three-category model (Master, the
 #      four middle roles, Object) and the direction among extreme choosers
 #   6. the role seen, for comparison
+#   7. cross-check against ordinal::clm
+#   8. the dialogic results without the wording that place agency and the dialogic
+#      motive share (place agency as its independence facet; dialogic as one item)
 #
 # The model is fitted by maximum likelihood here (no extra package); if the
 # `ordinal` package is installed, its clm() is fitted too and compared.
@@ -39,11 +42,14 @@ mp <- c("mp_emancipation", "mp_dialogue", "mp_agency", "mp_learning", "mp_time")
 zs <- function(v) (v - mean(v, na.rm = TRUE)) / sd(v, na.rm = TRUE)
 dat$place <- zs(rowMeans(dat[, mp])); dat$restful <- zs(rowMeans(dat[, g$restorative]))
 dat$dialogic <- zs(rowMeans(dat[, g$dialogic])); dat$control <- zs(dat$control_mean)
+# for section 8: versions without the wording shared by place agency and the dialogic motive
+dat$place_indep <- zs(rowMeans(dat[, c("mp_emancipation", "mp_agency")])); dat$dia_animals <- zs(dat$rs_meet_animals)
 for (v in c("ARS", "MRS", "ERS")) dat[[paste0(v, "_z")]] <- zs(dat[[v]])
 main  <- c("place", "restful", "dialogic", "control")
 style <- c("ARS_z", "MRS_z", "ERS_z")
 lab <- c(place = "place agency", restful = "restful motive", dialogic = "dialogic motive", control = "societal control",
-         ARS_z = "acquiescence", MRS_z = "midpoint responding", ERS_z = "extreme responding")
+         ARS_z = "acquiescence", MRS_z = "midpoint responding", ERS_z = "extreme responding",
+         place_indep = "place agency (independence facet)", dia_animals = "dialogic ('animals to meet' only)")
 cov_txt <- "age_num + gender_bin + edu_primary + edu_higher + edu_na + country"
 d <- dat[complete.cases(dat[, c("typ_now", "typ_should", "age_num", "gender_bin", main, style)]), ]
 cat("respondents:", nrow(d), "\n")
@@ -169,6 +175,25 @@ if (requireNamespace("ordinal", quietly = TRUE)) {
   }
   chk(B, loc1, sc1, "wanted role"); chk(C, loc2, sc2, "wanted role + response style")
 } else cat("(ordinal is not installed; the check against MASS::polr in section 1 stands in for it.)\n")
+
+cat("\n========== 8. Without the wording shared by place agency and the dialogic motive ==========\n")
+cat("Two place-agency items (dialogue, learning/teaching) resemble two dialogic items ('communicates', 'teaches').\n",
+    "(a) place agency as its independence facet alone (emancipation, agency), which shares no wording with any motive item;\n",
+    "(b) in addition, the dialogic motive as its one item without shared wording ('animals to meet').\n", sep = "")
+overlap_free <- function(pl, dia, tag) {
+  mm <- c(pl, "restful", dia, "control")
+  loc <- paste(c(mm, style, cov_txt), collapse = " + "); sc <- paste(c(mm, style), collapse = " + ")
+  f <- ls_fit(yw, loc, sc)
+  m3 <- multinom(as.formula(paste("three ~", loc)), d, trace = FALSE); c3 <- coef(m3); s3 <- summary(m3)$standard.errors
+  rr <- function(k) sprintf("%.2f [%.2f, %.2f]", exp(c3[k, dia]), exp(c3[k, dia] - 1.96 * s3[k, dia]), exp(c3[k, dia] + 1.96 * s3[k, dia]))
+  cat(sprintf("\n-- %s (converged: %s) --\n", tag, f$conv))
+  x <- eff(f$beta, f$se_beta, mm)
+  print(data.frame(predictor = x$predictor, direction = x$ratio, spread = eff(f$gamma, f$se_gamma, mm)$ratio), row.names = FALSE)
+  cat(sprintf("dialogic, relative risk ratio against the four middle roles: Master %s | Object %s\n", rr("Master"), rr("Object")))
+}
+overlap_free("place_indep", "dialogic", "(a) place agency = independence facet, full dialogic motive")
+overlap_free("place_indep", "dia_animals", "(b) place agency = independence facet, dialogic = 'animals to meet' only")
+cat("(columns: direction = odds ratio for a role further from Master; spread = ratio, above 1 = more choices at both ends)\n")
 
 saveRDS(list(wanted = list(direction = eff(B$beta, B$se_beta, main), spread = eff(B$gamma, B$se_gamma, main)),
              wanted_style = list(direction = eff(C$beta, C$se_beta, c(main, style)), spread = eff(C$gamma, C$se_gamma, c(main, style))),

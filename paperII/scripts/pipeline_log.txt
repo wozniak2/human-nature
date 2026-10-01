@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-10-01 14:11:03.509147 
-Time difference of 0.01252103 secs
-Computation Time: 0.01252103 
+Date of Analysis: 2026-10-01 15:10:37.587881 
+Time difference of 0.01272416 secs
+Computation Time: 0.01272416 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1017,7 +1017,7 @@ Saved: hnr_motives_roles.rds
 ############################################################
 ##  26_ordered_sem.R 
 ############################################################
-fitted in 24 seconds
+fitted in 23 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 5277.882  641.000    0.969    0.979    0.054    0.053 
@@ -1082,7 +1082,7 @@ Saved: hnr_ordered_sem.rds
 ############################################################
 ##  27_ordered_mediation.R 
 ############################################################
-restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
+restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
 dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.053 | largest standardised path 0.53
 
 ========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
@@ -1109,7 +1109,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 7 seconds
+fitted in 8 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1952,6 +1952,28 @@ all models at a maximum (flat gradient, negative-definite curvature): TRUE | lar
 wanted role                  largest difference: direction 2.1e-10 | spread 2.7e-11 | standard error of a spread term 1.1e-08 | log-likelihood 0.0e+00
 wanted role + response style largest difference: direction 9.6e-10 | spread 5.9e-11 | standard error of a spread term 1.4e-08 | log-likelihood 0.0e+00
 
+========== 8. Without the wording shared by place agency and the dialogic motive ==========
+Two place-agency items (dialogue, learning/teaching) resemble two dialogic items ('communicates', 'teaches').
+(a) place agency as its independence facet alone (emancipation, agency), which shares no wording with any motive item;
+(b) in addition, the dialogic motive as its one item without shared wording ('animals to meet').
+
+-- (a) place agency = independence facet, full dialogic motive (converged: TRUE) --
+                         predictor         direction            spread
+ place agency (independence facet) 1.75 [1.61, 1.89] 1.01 [0.97, 1.05]
+                    restful motive 1.21 [1.09, 1.33] 0.86 [0.82, 0.91]
+                   dialogic motive 0.96 [0.88, 1.04] 1.07 [1.02, 1.12]
+                  societal control 1.17 [1.09, 1.26] 0.95 [0.92, 0.99]
+dialogic, relative risk ratio against the four middle roles: Master 1.25 [1.09, 1.43] | Object 1.70 [1.32, 2.20]
+
+-- (b) place agency = independence facet, dialogic = 'animals to meet' only (converged: TRUE) --
+                         predictor         direction            spread
+ place agency (independence facet) 1.76 [1.62, 1.90] 1.01 [0.97, 1.05]
+                    restful motive 1.20 [1.09, 1.32] 0.88 [0.83, 0.92]
+ dialogic ('animals to meet' only) 0.97 [0.90, 1.05] 1.04 [0.99, 1.08]
+                  societal control 1.18 [1.09, 1.27] 0.95 [0.92, 0.99]
+dialogic, relative risk ratio against the four middle roles: Master 1.11 [0.98, 1.26] | Object 1.21 [0.97, 1.50]
+(columns: direction = odds ratio for a role further from Master; spread = ratio, above 1 = more choices at both ends)
+
 Saved: hnr_direction_spread.rds
 
 
@@ -2239,9 +2261,9 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+restorative  fitted in  57 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
 dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
-serviced     fitted in  46 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
+serviced     fitted in  45 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -2292,7 +2314,7 @@ serviced     fitted in  46 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 73 s | largest standardised path 1.42
+fitted in 72 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*
