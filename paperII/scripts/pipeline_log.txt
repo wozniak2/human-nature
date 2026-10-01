@@ -329,9 +329,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-10-01 15:10:37.587881 
-Time difference of 0.01272416 secs
-Computation Time: 0.01272416 
+Date of Analysis: 2026-10-01 15:54:09.886464 
+Time difference of 0.01311111 secs
+Computation Time: 0.01311111 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -1109,7 +1109,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 8 seconds
+fitted in 7 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1643,7 +1643,7 @@ latent correlation of the two facets: 0.80 [0.75, 0.86]
      full scale (reference) 2.08 [1.92, 2.26] 1.58 [1.46, 1.71]
 
 ========== 4. Mediation with the two facets as parallel mediators (latent SEM) ==========
-restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
+restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
 dialogic     fitted in  13 s | CFI 0.977 RMSEA 0.051 | largest standardised path 0.51
 
 -- motive -> facet (a) and facet -> wanted position (b), standardised; * = p < .05 --
@@ -1676,6 +1676,21 @@ item), and the independence facet alone as mediator (no shared wording with any 
  dialogic (animals item only)           direct +0.011 [-0.059, +0.081]
                   restorative via independence +0.103 [+0.077, +0.133]
                   restorative           direct +0.097 [+0.020, +0.187]
+
+========== 7. Answers given after the role questions: do they simply follow the role just chosen? ==========
+Place agency and the motives were both asked after the two role questions. If respondents aligned later
+answers with the role they had just chosen, items with the same content should follow the wanted role alike.
+Pairs with near-identical content: place 'teaches' (mp_learning) vs motive 'the place teaches me' (rs_teaches);
+'dialogue is possible' (mp_dialogue) vs 'the place communicates with me' (rs_communicates).
+(Spearman correlations with the position of the role, n = 2513; difference with a 1000-resample bootstrap interval)
+                                                  pair place_item_wanted
+                communication facet vs dialogic motive              0.27
+               place teaches vs 'the place teaches me'              0.22
+ dialogue possible vs 'the place communicates with me'              0.17
+ motive_item_wanted           difference place_item_seen motive_item_seen
+               0.00 +0.27 [+0.22, +0.31]            0.19             0.03
+              -0.01 +0.23 [+0.17, +0.28]            0.15             0.02
+               0.01 +0.16 [+0.12, +0.21]            0.13             0.03
 
 Saved: hnr_place_agency_facets.rds
 
@@ -2261,9 +2276,9 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  57 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
 dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
-serviced     fitted in  45 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
+serviced     fitted in  48 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -2314,7 +2329,7 @@ serviced     fitted in  45 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 72 s | largest standardised path 1.42
+fitted in 73 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*

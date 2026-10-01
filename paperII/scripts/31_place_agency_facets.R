@@ -23,6 +23,8 @@
 #   5. bootstrap cross-check on observed facet scores (ordered logit)
 #   6. a zero-overlap test: the dialogic motive rebuilt from "animals to meet"
 #      alone, through the independence facet alone
+#   7. an order check: place-agency and motive items with near-identical content,
+#      all asked after the role questions, against the role wanted and seen
 #
 # Position runs 1 Master ... 6 Object; positive = a role further from Master.
 # Cross-sectional: the decomposition is consistent with mediation, not proof.
@@ -162,6 +164,29 @@ z6 <- rbind(boot_tab("animals_z", "indep_z", "dialogic (animals item only)"),
             boot_tab("restorative_s_z", "indep_z", "restorative"))
 z6$effect <- sub("via_indep_z", "via independence", z6$effect)
 print(z6, row.names = FALSE)
+
+cat("\n========== 7. Answers given after the role questions: do they simply follow the role just chosen? ==========\n")
+cat("Place agency and the motives were both asked after the two role questions. If respondents aligned later\n",
+    "answers with the role they had just chosen, items with the same content should follow the wanted role alike.\n",
+    "Pairs with near-identical content: place 'teaches' (mp_learning) vs motive 'the place teaches me' (rs_teaches);\n",
+    "'dialogue is possible' (mp_dialogue) vs 'the place communicates with me' (rs_communicates).\n", sep = "")
+rho <- function(a, b, data) cor(data[[a]], data[[b]], use = "complete.obs", method = "spearman")
+d7 <- dat[complete.cases(dat[, c("pos_now", "pos_should", mp, g$dialogic)]), ]
+pairs7 <- list(c("comm_s", "dialogic_s", "communication facet vs dialogic motive"),
+               c("mp_learning", "rs_teaches", "place teaches vs 'the place teaches me'"),
+               c("mp_dialogue", "rs_communicates", "dialogue possible vs 'the place communicates with me'"))
+set.seed(20261001)
+B <- 1000; idx <- replicate(B, sample.int(nrow(d7), replace = TRUE))
+t7 <- do.call(rbind, lapply(pairs7, function(p) {
+  bd <- apply(idx, 2, function(i) { x <- d7[i, ]; rho(p[1], "pos_should", x) - rho(p[2], "pos_should", x) })
+  data.frame(pair = p[3],
+             place_item_wanted = round(rho(p[1], "pos_should", d7), 2), motive_item_wanted = round(rho(p[2], "pos_should", d7), 2),
+             difference = sprintf("%+.2f [%+.2f, %+.2f]", rho(p[1], "pos_should", d7) - rho(p[2], "pos_should", d7),
+                                  quantile(bd, .025), quantile(bd, .975)),
+             place_item_seen = round(rho(p[1], "pos_now", d7), 2), motive_item_seen = round(rho(p[2], "pos_now", d7), 2))
+}))
+cat(sprintf("(Spearman correlations with the position of the role, n = %d; difference with a %d-resample bootstrap interval)\n", nrow(d7), B))
+print(t7, row.names = FALSE)
 
 saveRDS(list(item_overlap = M, facet_fit = rbind(one_factor = fm(f1), two_facets = fm(f2)), facet_role = tab3,
              sem = lapply(runs, function(z) z[c("ps", "max_std")]), sem_decomposition = dec, bootstrap = bt, zero_overlap = z6),
