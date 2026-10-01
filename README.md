@@ -1,30 +1,32 @@
 # human-nature
 
-**Seeing mastery, wanting less: place agency and the role of humans in nature**
-*(working title, Paper II)*
+**Seeing Mastery, Wanting Less: Place Agency and the Role of Humans in Nature**
 
-Analysis code for a six-country survey (Canada, Panama, Poland, the Netherlands, Spain, Sweden; n = 2,513) on how people see the human role in nature, how they want it to be, and what that wish is tied to.
+Analysis code for a six-country survey (Canada, Panama, Poland, the Netherlands, Spain, Sweden; N = 2,513) on the role people see for humans in nature, the role they want, and what the wanted role follows.
 
-> **Status:** work in progress. The analysis is exploratory, cross-sectional and was not preregistered. Every number in the working outline comes from `paperII/scripts/pipeline_log.txt`.
+> **Reproducibility.** Every number in the manuscript and its supplement comes from one run of this pipeline and is printed in [`paperII/scripts/pipeline_log.txt`](paperII/scripts/pipeline_log.txt). As stated in the manuscript, the study is exploratory and was not preregistered.
 
 ---
 
 ## The idea in one paragraph
 
-People in six countries see more human *mastery* over nature than they want. The gap has a clear direction and its size differs by country. What people want is mainly one thing, how much power humans should have, and it is tied to how much independence, voice and influence a person gives to a natural place they know (**place agency**), more than to general beliefs about nature or nationality. A second dimension, how *extreme* the wanted role is, is where two kinds of visit differ: calm, restorative visits go with giving the place more independence and, through that, with a gentler role and moderate views; visits where the place feels like something to talk to (dialogic) go mainly with more extreme choices at either end.
+People in six countries see more human *mastery* over nature than they want. The role people see is more shared within a country; the role they want is more personal. Its closest correlate is **place agency**, the independence, voice and influence a person grants a natural place they know: it bears more on the role people want than on the role they see, and more than general beliefs about nature or the country people live in. The six roles form one scale of human dominance, with a second dimension, how far choices spread toward its two ends. Restorative visits go with moderate choices; dialogic visits pull two ways, toward less mastery through the agency they grant a place and, beyond it, toward Master and both ends of the scale.
 
 ## Main results
 
 | | |
 |---|---|
-| **The gap** | 31% see *Master* as the human role now, 20% think it should be. 480 people move away from Master when asked what *should* be; 200 move toward it. Net shift −11.2 percentage points; the direction holds in five of six countries. |
-| **Place agency** | The strongest link to the wanted role (Spearman ρ = +.35). The odds ratio is about 2 per standard deviation at every step of the six-role scale. Moving from low to high place agency (10th to 90th percentile) cuts the chance of wanting Master from 34% to 7.5%. |
-| **A distinct construct** | Place agency correlates at most .28 with the general scales (relational belief, agency of non-human beings, societal control) and the motives. Added after all of them it more than doubles the fit for the wanted role, and it accounts for 78% of what the predictors explain; the general scales add almost nothing once it is in. |
-| **Two kinds of visit** | In one model for direction and spread, place agency moves the wanted role (direction) and does not change how spread out the choices are. Restorative visits go with a role further from Master, mainly *through* place agency, and with clearly fewer choices at either end (spread ratio 0.87 per standard deviation). Dialogic visits go with somewhat more choices at both ends (1.06); their link through place agency runs only through items worded like the motive itself, so it is not claimed. Response style does not explain these patterns. |
-| **Who rejects mastery** | Of the people who see Master, 62% want another role. Place agency is what separates them from those who keep it (odds ratio 2.1 per standard deviation): the chance of rejecting Master rises from 40% to 83% between low and high place agency. It works in mirror for the reverse move toward Master. |
-| **Seeing vs wanting** | The role people see is more shared, the role they want more personal. People in the same country agree more on what they see (in all six countries); personal predictors explain the wanted role about twice as well (pseudo-R² .051 vs .023); beliefs about societal control weigh more on the role seen, place agency more on the role wanted; and countries differ more in how much mastery people see than in how much they want. Of 16 seen-versus-wanted path comparisons, six survive a multiple-testing correction. |
-| **Robustness** | The place-agency result holds across countries, question wording, random halves, response style, careless respondents and education. The restorative effect is the sensitive one. |
+| **The gap** | 31% see *Master* as the human role now, 20% think it should be. Of the people who changed their answer, 480 moved away from Master and 200 toward it, a net shift of 11.2 percentage points; the direction holds in five of six countries. |
+| **Seeing vs wanting** | The role people see is more shared, the role they want more personal. People in the same country agree more on what they see (in all six countries); personal predictors explain the wanted role about twice as well (pseudo-R² .051 vs .023); beliefs about societal control weigh more on the role seen, place agency more on the role wanted; and countries differ more in how much mastery people see than in how much they want. |
+| **Who rejects mastery** | Of the people who see Master, 62% want another role. Place agency separates them from those who keep it (odds ratio 2.1 per standard deviation): the chance of rejecting Master rises from 40% to 83% between low and high place agency. The reverse move toward Master mirrors this. |
+| **Place agency** | Each standard deviation doubles the odds of wanting a role further from Master (odds ratio 2.08), at every step of the six-role scale, and more strongly than for the role seen (1.58). From low to high place agency the chance of wanting Master falls from 34% to 8%. With country differences removed it correlates .35 with the wanted role; no other indicator in the questionnaire exceeds .15. |
+| **Beyond general beliefs** | Place agency correlates at most .28 with the general scales (relational belief, agency of non-human beings, societal control) and the motives. Added after all of them it more than doubles the explained variation in the wanted role and accounts for 78% of what the predictors explain together. |
+| **Two kinds of visit** | The wanted role has a direction (how far from Master) and a spread (how many choices fall at the two ends). Place agency moves the direction and leaves the spread unchanged. Restorative visits go with a role further from Master, mainly through place agency, and with clearly fewer choices at either end (spread ratio 0.87 per standard deviation). Dialogic visits pull two ways: dialogic visitors grant their place more agency, which goes with a role further from Master (indirect effect .21, standardised), while the rest of the motive goes with a role nearer Master (direct effect −.21), so the two cancel; beyond place agency, dialogic visits also go with more choices at both ends (spread ratio 1.06). Response style does not explain these patterns. |
+| **Robustness** | The place-agency result holds across countries, question wording, random halves, response style, careless respondents and education. |
 
+<p align="center">
+  <img src="paperII/scripts/figures/manuscript/Fig_role_scale.png" width="96%" alt="The six roles as one scale, with the share who see and who want each role">
+</p>
 <p align="center">
   <img src="paperII/scripts/figures/fig5_alluvial.png" width="48%" alt="Movement between the role people see and the role they want">
   <img src="paperII/scripts/figures/fig19_cutpoints.png" width="48%" alt="Odds ratios at each cut point of the six-role scale">
@@ -36,18 +38,18 @@ People in six countries see more human *mastery* over nature than they want. The
   <img src="paperII/scripts/figures/fig20_story_model.png" width="96%" alt="The whole story as one structural model">
 </p>
 
-*Above: how the role seen moves to the role wanted (left); place agency acts alike at every step of the scale while the two motives reverse between the ends (right); who rejects the mastery they see, and who moves toward it, across place agency (middle); the whole story as one structural model (bottom).* All 22 figures are in [`paperII/scripts/figures/`](paperII/scripts/figures/) as PNG and PDF.
+*Above, from the top: the six roles as one scale, with the share who see and who want each role; how the role seen moves to the role wanted (left) and place agency acting alike at every step of the scale while the two motives reverse between the ends (right); who rejects the mastery they see, and who moves toward it, across place agency; the whole story as one structural model.* All 22 figures are in [`paperII/scripts/figures/`](paperII/scripts/figures/) as PNG and PDF.
 
 ## Data
 
 Online-panel surveys in six countries, March to October 2025. The questionnaire was written in Polish, translated into English, and from English into Spanish. Measures used in the paper:
 
-- the human role, **seen** now and **wanted** (six narratives: Master, Manager, User, Guardian, Partner, Object);
+- the human role, **seen** now and **wanted** (six descriptions: Master, Manager, User, Guardian, Partner, Object);
 - **place agency** (five items on the respondent's own favourite natural place);
 - **reasons for visiting** a place (14 items, two motives carry the paper: restorative and dialogic);
 - societal control, agency of non-human beings, stances on a destroyed place, climate change, Indigenous knowledge and tourism, and demographics (education is harmonised to three ISCED 2011 levels: primary or less, secondary, tertiary).
 
-**The raw data are not in this repository.** They contain IP addresses and exact timestamps, so `paperII/data/`, `*.xlsx` and `*.rds` outputs are git-ignored. A de-identified release is planned. To run the pipeline you need the six survey exports in `paperII/data/` (file names are set at the top of `01_load_and_prepare.R`).
+**The raw data are not in this repository.** They contain IP addresses and exact timestamps, so `paperII/data/`, `*.xlsx` and `*.rds` outputs are git-ignored. A de-identified data set will be released with the paper. To run the pipeline you need the six survey exports in `paperII/data/` (file names are set at the top of `01_load_and_prepare.R`).
 
 ## Run it
 
@@ -97,13 +99,13 @@ A one-line description of every script and its output is in [`paperII/scripts/RE
 
 ## Notes
 
-- **Estimation.** Structural models use lavaan with WLSMV and ordinal indicators; the ordered outcome is analysed as position on the six-role scale plus extremity (choosing either pole).
-- **Covariates.** Every model of the role adjusts for age, gender, education and country. Education answer options differ by questionnaire (9, 8 and 7 codes) and are mapped to primary, high school and higher in `04_mimic_model.R`.
+- **Estimation.** Structural models use lavaan with WLSMV and ordinal indicators; the ordered outcome is analysed as position on the six-role scale plus extremity (choosing either end).
+- **Covariates.** Every model of the role adjusts for age, gender, education and country. Education answer options differ by questionnaire (9, 8 and 7 codes) and are mapped to three ISCED 2011 levels (primary or less, secondary, tertiary) in `04_mimic_model.R`.
 - **Figures.** The path diagrams read standardised estimates straight from the fitted lavaan models and are drawn by `sem_plot_helpers.R`; nothing is typed in by hand.
-- **Interpretation.** The data are cross-sectional, so "through place agency" means statistical mediation, and a reversed model fits equally well.
+- **Interpretation.** The data are cross-sectional, so "through place agency" means statistical mediation.
 
 ## Citing and licence
 
-Please cite as: Wozniak, M. and co-authors. *Seeing mastery, wanting less: place agency and the role of humans in nature* (working title, in preparation).
+Please cite as: Wozniak, M., Glibowska, J., & Kotus, J. *Seeing Mastery, Wanting Less: Place Agency and the Role of Humans in Nature*. Manuscript.
 
 No licence has been chosen yet; until one is added, all rights are reserved. Questions and comments: open an issue.
