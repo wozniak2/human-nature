@@ -69,8 +69,8 @@ mod <- paste("plc =~", paste(mp, collapse = " + "))
 fs <- list(configural = cfa(mod, d, group = "country", estimator = "MLR"),
            metric = cfa(mod, d, group = "country", estimator = "MLR", group.equal = "loadings"),
            scalar = cfa(mod, d, group = "country", estimator = "MLR", group.equal = c("loadings", "intercepts")))
-t <- t(sapply(fs, function(f) fitmeasures(f, c("cfi", "rmsea", "srmr"))))
-print(cbind(round(t, 3), dCFI = round(c(NA, diff(t[, "cfi"])), 4)))
+t <- t(sapply(fs, function(f) fitmeasures(f, c("cfi.scaled", "rmsea.scaled", "srmr"))))   # scaled, as reported in the paper
+print(cbind(round(t, 3), dCFI = round(c(NA, diff(t[, "cfi.scaled"])), 4)))
 cat("(Loadings are equivalent, so slopes can be compared across countries; intercepts are not,\n")
 cat(" so country MEANS on place agency cannot be.)\n")
 

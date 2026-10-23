@@ -37,8 +37,8 @@ fits <- list(
                    group.equal = c("loadings", "intercepts")))
 
 cat("========== 1. Invariance across the six countries ==========\n")
-tab <- t(sapply(fits, function(f) fitmeasures(f, c("chisq","df","cfi","rmsea","srmr"))))
-print(cbind(round(tab, 3), dCFI = round(c(NA, diff(tab[, "cfi"])), 4)))
+tab <- t(sapply(fits, function(f) fitmeasures(f, c("chisq.scaled","df","cfi.scaled","rmsea.scaled","srmr"))))   # scaled, as reported in the paper
+print(cbind(round(tab, 3), dCFI = round(c(NA, diff(tab[, "cfi.scaled"])), 4)))
 cat("(Chen 2007: a CFI drop beyond .010 counts against invariance. Metric is\n")
 cat(" borderline and scalar fails, so the means below are diagnostic only.)\n")
 

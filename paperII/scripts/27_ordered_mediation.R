@@ -69,9 +69,9 @@ star <- function(ps, l) { r <- ps[match(l, ps$label), ]; sprintf("%+.3f%s", r$es
 runs <- list()
 for (x in c("restorative", "dialogic")) {
   t0 <- Sys.time(); runs[[x]] <- med_model(x)
-  fm <- fitmeasures(runs[[x]]$fit, c("cfi", "rmsea"))
-  cat(sprintf("%-12s fitted in %3.0f s | CFI %.3f RMSEA %.3f | largest standardised path %.2f%s\n", x,
-      as.numeric(difftime(Sys.time(), t0, units = "secs")), fm[["cfi"]], fm[["rmsea"]], runs[[x]]$max_std,
+  fm <- fitmeasures(runs[[x]]$fit, c("cfi.scaled", "rmsea.scaled"))   # scaled, as reported in the paper
+  cat(sprintf("%-12s fitted in %3.0f s | CFI %.3f RMSEA %.3f (scaled) | largest standardised path %.2f%s\n", x,
+      as.numeric(difftime(Sys.time(), t0, units = "secs")), fm[["cfi.scaled"]], fm[["rmsea.scaled"]], runs[[x]]$max_std,
       ifelse(runs[[x]]$max_std > 1, "   <- UNSTABLE, do not interpret", "")))
 }
 

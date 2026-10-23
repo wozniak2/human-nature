@@ -50,6 +50,13 @@ show <- function(label, d, y = "mw", ...) data.frame(variant = label, n = nrow(d
 cat("========== 0. Reference: the pooled model ==========\n")
 ref <- rbind(show("wants mastery", dat, "mw"), show("sees mastery", dat, "mn"))
 print(ref, row.names = FALSE)
+ci_or <- function(y) {   # the same reference model, with Wald 95% intervals
+  rhs <- c(core, "age_num", "gender_bin", "edu_primary", "edu_higher", "edu_na", "country")
+  s <- summary(glm(as.formula(paste(y, "~", paste(rhs, collapse = " + "))), binomial, dat))$coefficients[core, ]
+  sprintf("%.2f [%.2f, %.2f]", exp(s[, 1]), exp(s[, 1] - 1.96 * s[, 2]), exp(s[, 1] + 1.96 * s[, 2]))
+}
+cat("95% confidence intervals:\n")
+print(data.frame(predictor = sub("_z", "", core), wants_mastery = ci_or("mw"), sees_mastery = ci_or("mn")), row.names = FALSE)
 cat("(Odds ratios per standard deviation. Place agency lowers wanting mastery more than seeing it;\n")
 cat(" restorative matters for wanting and not for seeing.)\n")
 

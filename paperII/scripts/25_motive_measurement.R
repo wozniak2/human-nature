@@ -126,16 +126,16 @@ two <- paste0("rest_f =~ ", paste(g$restorative, collapse = " + "),
 fits <- list(configural = cfa(two, dat, group = "country", estimator = "MLR"),
              metric = cfa(two, dat, group = "country", estimator = "MLR", group.equal = "loadings"),
              scalar = cfa(two, dat, group = "country", estimator = "MLR", group.equal = c("loadings", "intercepts")))
-t <- t(sapply(fits, function(f) fitmeasures(f, c("cfi", "rmsea", "srmr"))))
+t <- t(sapply(fits, function(f) fitmeasures(f, c("cfi.scaled", "rmsea.scaled", "srmr"))))   # scaled, as reported in the paper
 cat("restorative + dialogic only (serviced left out):\n")
-print(cbind(round(t, 3), dCFI = round(c(NA, diff(t[, "cfi"])), 4)))
+print(cbind(round(t, 3), dCFI = round(c(NA, diff(t[, "cfi.scaled"])), 4)))
 three <- paste0(two, "\nserv_f =~ ", paste(g$serviced, collapse = " + "))
 f3 <- list(metric = cfa(three, dat, group = "country", estimator = "MLR", group.equal = "loadings"),
            scalar = cfa(three, dat, group = "country", estimator = "MLR", group.equal = c("loadings", "intercepts")),
            configural = cfa(three, dat, group = "country", estimator = "MLR"))
-t3 <- t(sapply(f3[c("configural", "metric", "scalar")], function(f) fitmeasures(f, c("cfi", "rmsea", "srmr"))))
+t3 <- t(sapply(f3[c("configural", "metric", "scalar")], function(f) fitmeasures(f, c("cfi.scaled", "rmsea.scaled", "srmr"))))
 cat("\nall three motives, for comparison:\n")
-print(cbind(round(t3, 3), dCFI = round(c(NA, diff(t3[, "cfi"])), 4)))
+print(cbind(round(t3, 3), dCFI = round(c(NA, diff(t3[, "cfi.scaled"])), 4)))
 cat("(Chen 2007: a CFI drop beyond .010 counts against invariance. Without the serviced factor\n")
 cat(" the loadings are equivalent across countries (metric holds), so the RELATIONS of the\n")
 cat(" restorative and dialogic motives to other variables can be compared. Scalar invariance\n")

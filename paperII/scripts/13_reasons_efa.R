@@ -71,7 +71,7 @@ mod <- paste(sapply(names(groups), function(g)
   paste0(g, " =~ ", paste(groups[[g]], collapse = " + "))), collapse = "\n")
 cat("\nmodel tested on the held-out half:\n"); cat(mod, "\n")
 fit <- cfa(mod, data = confirm, estimator = "MLR")
-print(round(fitmeasures(fit, c("chisq","df","cfi","tli","rmsea","srmr")), 3))
+print(round(fitmeasures(fit, c("chisq.scaled","df","cfi.scaled","tli.scaled","rmsea.scaled","srmr")), 3))   # scaled, as reported in the paper
 
 cat("\n========== 5. Reliability and naming ==========\n")
 for (g in names(groups)) {

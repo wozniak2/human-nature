@@ -18,6 +18,9 @@
 #      the role seen
 #   4. the same question for rejecting the mastery one sees (script 32)
 #   5. a latent model (WLSMV), where unreliability cannot favour any scale
+#   6. sensitivity to an unmeasured confounder (Cinelli & Hazlett 2020): how
+#      strong a variable left out of the survey would have to be to remove the
+#      association, benchmarked against the six rivals
 #
 # Age, gender, education and country are in every model. Odds ratios per SD.
 #
@@ -141,6 +144,37 @@ lc <- ps[ps$op == "~~" & ps$lhs == "place_f" & ps$rhs %in% lat[-1], ]
 cat("latent correlations of place agency with the rivals:", paste(sprintf("%s %.2f", sub("_f$", "", lc$rhs), lc$est.std), collapse = " | "), "\n")
 cat("(the serviced motive is left out of the latent model, as in scripts 26-28)\n")
 
+cat("\n========== 6. Sensitivity to an unmeasured confounder (Cinelli & Hazlett 2020) ==========\n")
+# Closed-form omitted-variable-bias bounds, as in the sensemakr package. The method is defined for linear
+# models, so the wanted role enters as its position (1-6) and wanting Master as a linear probability model,
+# with the same predictors as above. Benchmarks: each rival taken as one, two and three times as strong.
+sens <- function(y) {
+  m  <- lm(as.formula(paste(y, "~", paste(c(preds, cov_txt), collapse = " + "))), d)
+  cf <- coef(summary(m)); df <- m$df.residual; est <- cf["place", 1]; se <- cf["place", 2]
+  rv <- function(f) 0.5 * (sqrt(f^4 + 4 * f^2) - f^2)
+  f  <- abs(cf["place", 3]) / sqrt(df); fa <- max(0, f - qt(.975, df - 1) / sqrt(df - 1))
+  md <- lm(as.formula(paste("place ~", paste(c(rivals, cov_txt), collapse = " + "))), d); cd <- coef(summary(md))
+  bench <- do.call(rbind, lapply(rivals, function(j) do.call(rbind, lapply(1:3, function(k) {
+    r2d  <- cd[j, 3]^2 / (cd[j, 3]^2 + md$df.residual); r2y <- cf[j, 3]^2 / (cf[j, 3]^2 + df)
+    r2dz <- k * r2d / (1 - r2d); r2zx <- k * r2d^2 / ((1 - k * r2d) * (1 - r2d))
+    r2yz <- min(1, ((sqrt(k) + sqrt(r2zx)) / sqrt(1 - r2zx))^2 * r2y / (1 - r2y))
+    adj  <- sign(est) * (abs(est) - sqrt(r2yz * r2dz / (1 - r2dz)) * se * sqrt(df))
+    adj_se <- sqrt((1 - r2yz) / (1 - r2dz)) * se * sqrt(df / (df - 1))
+    data.frame(benchmark = lab[j], times = k, r2_with_place = round(r2dz, 3), r2_with_outcome = round(r2yz, 3),
+               share_left = round(adj / est, 3), t = round(adj / adj_se, 1), row.names = NULL) }))))
+  cat(sprintf("\n-- %s: place agency %.3f (t = %.1f), partial R2 with the outcome %.3f --\n",
+              y, est, cf["place", 3], cf["place", 3]^2 / (cf["place", 3]^2 + df)))
+  cat(sprintf("robustness value: %.1f%% of the residual variance of both place agency and the outcome removes the association; %.1f%% makes it non-significant\n",
+              100 * rv(f), 100 * rv(fa)))
+  print(bench, row.names = FALSE)
+  cat(sprintf("three times as strong as any rival: at least %.0f%% of the estimate is left (smallest |t| = %.1f)\n",
+              100 * min(bench$share_left[bench$times == 3]), min(abs(bench$t[bench$times == 3]))))
+  list(rv = rv(f), rv_sig = rv(fa), bench = bench)
+}
+d$position <- d$typ_should; d$want_master <- as.integer(d$typ_should == 1)
+sens_pos <- sens("position"); sens_master <- sens("want_master")
+
 saveRDS(list(correlations = R, dominance_wanted = dw, dominance_seen = ds, table = tab3,
-             latent = ps[ps$op == "~" & ps$lhs == "pos_should", ]), "hnr_incremental_validity.rds")
+             latent = ps[ps$op == "~" & ps$lhs == "pos_should", ],
+             sensitivity = list(position = sens_pos, want_master = sens_master)), "hnr_incremental_validity.rds")
 cat("\nSaved: hnr_incremental_validity.rds\n")

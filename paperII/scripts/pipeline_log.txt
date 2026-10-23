@@ -40,36 +40,41 @@ Saved: hnr_data.rds, hnr_fielding_dates.rds
 ##  02_cfa_invariance.R 
 ############################################################
 ========== Configural invariance (no cross-group constraints) ==========
-  chisq      df     cfi     tli   rmsea    srmr 
-261.998  54.000   0.966   0.943   0.096   0.031 
+chisq.scaled           df   cfi.scaled   tli.scaled rmsea.scaled         srmr 
+     170.042       54.000        0.968        0.946        0.072        0.031 
 
 ========== Metric invariance (+ equal loadings) ==========
-  chisq      df     cfi     tli   rmsea    srmr 
-285.381  79.000   0.966   0.961   0.079   0.040 
+chisq.scaled           df   cfi.scaled   tli.scaled rmsea.scaled         srmr 
+     205.220       79.000        0.965        0.960        0.062        0.040 
 
 ========== Scalar invariance (+ equal intercepts) ==========
-  chisq      df     cfi     tli   rmsea    srmr 
-407.007 104.000   0.950   0.957   0.083   0.050 
+chisq.scaled           df   cfi.scaled   tli.scaled rmsea.scaled         srmr 
+     314.023      104.000        0.941        0.949        0.069        0.050 
 
 --- Model comparison ---
-              chisq  df    cfi    tli  rmsea   srmr
-configural 261.9978  54 0.9657 0.9429 0.0959 0.0308
-metric     285.3808  79 0.9660 0.9612 0.0790 0.0398
-scalar     407.0073 104 0.9501 0.9568 0.0834 0.0504
-Delta CFI (metric-configural): 3e-04 
-Delta CFI (scalar-metric):     -0.0159 
+           chisq.scaled  df cfi.scaled tli.scaled rmsea.scaled   srmr
+configural     170.0422  54     0.9676     0.9460       0.0716 0.0308
+metric         205.2197  79     0.9648     0.9599       0.0618 0.0398
+scalar         314.0234 104     0.9414     0.9493       0.0694 0.0504
+Delta CFI (metric-configural): -0.0028 
+Delta CFI (scalar-metric):     -0.0234 
 (Chen 2007 rule of thumb: Delta CFI <= -.010, backed by Delta RMSEA >= .015,
  flags meaningful non-invariance -- more trustworthy than the chi-square
  difference test alone once n is in the thousands.)
 
 --- Chi-square difference tests ---
 
-Chi-Squared Difference Test
+Scaled Chi-Squared Difference Test (method = "satorra.bentler.2001")
+
+lavaan->lavTestLRT():  
+   lavaan NOTE: The "Chisq" column contains standard test statistics, not the 
+   robust test that should be reported per model. A robust difference test is 
+   a function of two standard (not robust) statistics.
 
             Df   AIC   BIC  Chisq Chisq diff    RMSEA Df diff Pr(>Chisq)    
 fit_config  54 37096 37725 262.00                                           
-fit_metric  79 37069 37553 285.38     23.383 0.000000      25     0.5552    
-fit_scalar 104 37141 37479 407.01    121.626 0.096063      25  1.143e-14 ***
+fit_metric  79 37069 37553 285.38      21.93 0.000000      25     0.6398    
+fit_scalar 104 37141 37479 407.01     121.94 0.096095      25  1.008e-14 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -77,17 +82,17 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 univariate score tests:
 
-     lhs op    rhs     X2 df p.value
-47 .p18. ==  .p58. 29.749  1   0.000
-46 .p18. ==  .p38. 28.888  1   0.000
-53 .p19. ==  .p79. 12.316  1   0.000
-38 .p16. ==  .p76. 11.173  1   0.001
-28 .p14. ==  .p74.  9.999  1   0.002
-39 .p16. ==  .p96.  8.957  1   0.003
-35 .p15. == .p115.  7.784  1   0.005
-51 .p19. ==  .p39.  7.085  1   0.008
-33 .p15. ==  .p75.  6.534  1   0.011
-50 .p18. == .p118.  6.062  1   0.014
+     lhs op    rhs     X2 df p.value X2.scaled p.value.scaled
+47 .p18. ==  .p58. 29.749  1   0.000    29.280          0.000
+46 .p18. ==  .p38. 28.888  1   0.000    28.442          0.000
+53 .p19. ==  .p79. 12.316  1   0.000    11.945          0.001
+38 .p16. ==  .p76. 11.173  1   0.001    10.956          0.001
+28 .p14. ==  .p74.  9.999  1   0.002    10.037          0.002
+39 .p16. ==  .p96.  8.957  1   0.003     8.775          0.003
+35 .p15. == .p115.  7.784  1   0.005     7.910          0.005
+51 .p19. ==  .p39.  7.085  1   0.008     7.048          0.008
+33 .p15. ==  .p75.  6.534  1   0.011     6.698          0.010
+50 .p18. == .p118.  6.062  1   0.014     5.974          0.015
 
 This pipeline was validated (2026-08) with 2 of 6 intercepts non-invariant:
   person_changes_place, place_influences_person
@@ -95,26 +100,31 @@ If your data changes (more responses, more countries), re-derive which items
 to free from the score test above rather than assuming these same 2 still apply.
 
 ========== Partial scalar invariance (free the non-invariant intercepts) ==========
-  chisq      df     cfi     tli   rmsea    srmr 
-327.028  94.000   0.962   0.963   0.077   0.044 
-Delta CFI (partial-metric): -0.0044 -- should be > -.010 for partial invariance to be judged acceptable
+chisq.scaled           df   cfi.scaled   tli.scaled rmsea.scaled         srmr 
+     246.001       94.000        0.958        0.959        0.062        0.044 
+Delta CFI (partial-metric): -0.0072 -- should be > -.010 for partial invariance to be judged acceptable
 
-Chi-Squared Difference Test
+Scaled Chi-Squared Difference Test (method = "satorra.bentler.2001")
 
-            Df   AIC   BIC  Chisq Chisq diff    RMSEA Df diff Pr(>Chisq)    
-fit_metric  79 37069 37553 285.38                                           
-fit_partial 94 37081 37477 327.03     41.647 0.065126      15  0.0002547 ***
+lavaan->lavTestLRT():  
+   lavaan NOTE: The "Chisq" column contains standard test statistics, not the 
+   robust test that should be reported per model. A robust difference test is 
+   a function of two standard (not robust) statistics.
+
+            Df   AIC   BIC  Chisq Chisq diff RMSEA Df diff Pr(>Chisq)    
+fit_metric  79 37069 37553 285.38                                        
+fit_partial 94 37081 37477 327.03     41.362 0.065      15  0.0002815 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ========== Latent means by country (Canada fixed at 0, reference) ==========
         country    est    se      z pvalue
 20       Canada  0.000 0.000     NA     NA
-40       Panama -0.095 0.057 -1.680  0.093
-60       Poland -0.078 0.052 -1.505  0.132
-80  Netherlands -0.364 0.052 -6.939  0.000
-100       Spain -0.024 0.048 -0.495  0.620
-120      Sweden -0.364 0.052 -6.939  0.000
+40       Panama -0.095 0.057 -1.664  0.096
+60       Poland -0.078 0.052 -1.498  0.134
+80  Netherlands -0.364 0.052 -6.993  0.000
+100       Spain -0.024 0.049 -0.489  0.625
+120      Sweden -0.364 0.052 -6.967  0.000
 
 Saved: hnr_data.rds (updated with q1_factor column), hnr_cfa_fits.rds
 
@@ -329,9 +339,9 @@ R version 4.4.1 (2024-06-14 ucrt) x86_64, mingw32
 Call:
 sirt::invariance.alignment(lambda = lambda, nu = nu)
 
-Date of Analysis: 2026-10-01 15:54:09.886464 
-Time difference of 0.01311111 secs
-Computation Time: 0.01311111 
+Date of Analysis: 2026-10-23 10:48:52.49989 
+Time difference of 0.01795006 secs
+Computation Time: 0.01795006 
 
 -----------------------------------------------------------------
 Optimization Function Value = 2.734 
@@ -889,8 +899,8 @@ model tested on the held-out half:
 F1 =~ rs_relax + rs_beauty + rs_watch_plants + rs_own_thoughts + rs_quiet + rs_active
 F2 =~ rs_meet_animals + rs_communicates + rs_teaches
 F3 =~ rs_struggles + rs_comfort + rs_photos 
-  chisq      df     cfi     tli   rmsea    srmr 
-413.039  51.000   0.927   0.906   0.075   0.071 
+chisq.scaled           df   cfi.scaled   tli.scaled rmsea.scaled         srmr 
+     306.416       51.000        0.924        0.902        0.063        0.071 
 
 ========== 5. Reliability and naming ==========
 F1   k=6  alpha 0.84  items: relax, beauty, watch_plants, own_thoughts, quiet, active
@@ -1082,8 +1092,8 @@ Saved: hnr_ordered_sem.rds
 ############################################################
 ##  27_ordered_mediation.R 
 ############################################################
-restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.48
-dialogic     fitted in  13 s | CFI 0.975 RMSEA 0.053 | largest standardised path 0.53
+restorative  fitted in  17 s | CFI 0.947 RMSEA 0.049 (scaled) | largest standardised path 0.48
+dialogic     fitted in  15 s | CFI 0.948 RMSEA 0.050 (scaled) | largest standardised path 0.53
 
 ========== 1. Motive -> mediator (a) and mediator -> outcome (b) paths ==========
 -- restorative --  a: place +0.372*, control +0.071* | b (wanted): place +0.476*, control +0.127* | b (seen): place +0.349*, control +0.182*
@@ -1109,7 +1119,7 @@ Saved: hnr_ordered_mediation.rds
 ############################################################
 ##  28_story_model.R 
 ############################################################
-fitted in 7 seconds
+fitted in 8 seconds
 ========== 1. Fit ==========
    chisq       df      cfi      tli    rmsea     srmr 
 2082.257  238.000    0.964    0.979    0.056    0.052 
@@ -1216,16 +1226,16 @@ alpha: all three 0.66 | comfort + photos 0.56
 
 ========== 5. Which motives can be compared across countries? ==========
 restorative + dialogic only (serviced left out):
-             cfi rmsea  srmr    dCFI
-configural 0.948 0.082 0.056      NA
-metric     0.943 0.077 0.064 -0.0046
-scalar     0.921 0.083 0.073 -0.0218
+           cfi.scaled rmsea.scaled  srmr    dCFI
+configural      0.952        0.060 0.056      NA
+metric          0.947        0.057 0.064 -0.0058
+scalar          0.917        0.066 0.073 -0.0293
 
 all three motives, for comparison:
-             cfi rmsea  srmr    dCFI
-configural 0.915 0.083 0.076      NA
-metric     0.904 0.082 0.081 -0.0108
-scalar     0.882 0.086 0.087 -0.0225
+           cfi.scaled rmsea.scaled  srmr    dCFI
+configural      0.917        0.067 0.076      NA
+metric          0.905        0.067 0.081 -0.0111
+scalar          0.877        0.072 0.087 -0.0286
 (Chen 2007: a CFI drop beyond .010 counts against invariance. Without the serviced factor
  the loadings are equivalent across countries (metric holds), so the RELATIONS of the
  restorative and dialogic motives to other variables can be compared. Scalar invariance
@@ -1351,6 +1361,12 @@ Saved: hnr_outcome_structure.rds
   ctl   p_ctl
  0.75 5.1e-07
  0.72 9.1e-13
+95% confidence intervals:
+   predictor     wants_mastery      sees_mastery
+ restorative 0.79 [0.70, 0.90] 1.00 [0.90, 1.11]
+    dialogic 1.42 [1.25, 1.62] 1.05 [0.95, 1.17]
+         plc 0.47 [0.41, 0.53] 0.70 [0.63, 0.77]
+         ctl 0.75 [0.68, 0.84] 0.72 [0.65, 0.78]
 (Odds ratios per standard deviation. Place agency lowers wanting mastery more than seeing it;
  restorative matters for wanting and not for seeing.)
 
@@ -1643,8 +1659,8 @@ latent correlation of the two facets: 0.80 [0.75, 0.86]
      full scale (reference) 2.08 [1.92, 2.26] 1.58 [1.46, 1.71]
 
 ========== 4. Mediation with the two facets as parallel mediators (latent SEM) ==========
-restorative  fitted in  16 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
-dialogic     fitted in  13 s | CFI 0.977 RMSEA 0.051 | largest standardised path 0.51
+restorative  fitted in  17 s | CFI 0.973 RMSEA 0.054 | largest standardised path 0.40
+dialogic     fitted in  14 s | CFI 0.977 RMSEA 0.051 | largest standardised path 0.51
 
 -- motive -> facet (a) and facet -> wanted position (b), standardised; * = p < .05 --
 restorative  a: independence +0.296*, communication +0.385* | b (wanted): independence +0.398*, communication +0.094  | b (seen): independence +0.216*, communication +0.145 
@@ -1836,7 +1852,7 @@ n = 773 | six rivals 0.0613 | + place agency 0.1308 (adds 0.0695; LR chi2(1) = 7
         serviced motive 0.98 0.82 1.18 8.4e-01
 
 ========== 5. Latent model: all constructs as latent variables (WLSMV) ==========
-fitted in 59 seconds
+fitted in 68 seconds
   cfi   tli rmsea  srmr 
 0.986 0.990 0.066 0.066 
      latent   beta     lo     hi       p
@@ -1849,6 +1865,54 @@ fitted in 59 seconds
 largest standardised path: 0.48  (inside +/-1)
 latent correlations of place agency with the rivals: relational 0.25 | agency 0.39 | control 0.16 | restful 0.35 | dialogic 0.39 
 (the serviced motive is left out of the latent model, as in scripts 26-28)
+
+========== 6. Sensitivity to an unmeasured confounder (Cinelli & Hazlett 2020) ==========
+
+-- position: place agency 0.450 (t = 15.1), partial R2 with the outcome 0.085 --
+robustness value: 26.2% of the residual variance of both place agency and the outcome removes the association; 23.2% makes it non-significant
+              benchmark times r2_with_place r2_with_outcome share_left    t
+ relational belief (Q1)     1         0.001           0.000      0.998 15.1
+ relational belief (Q1)     2         0.002           0.001      0.996 15.1
+ relational belief (Q1)     3         0.003           0.001      0.994 15.0
+    general agency (Q2)     1         0.040           0.000      0.988 14.7
+    general agency (Q2)     2         0.079           0.001      0.976 14.2
+    general agency (Q2)     3         0.119           0.001      0.963 13.7
+  societal control (Q4)     1         0.020           0.007      0.961 14.5
+  societal control (Q4)     2         0.040           0.014      0.922 13.8
+  societal control (Q4)     3         0.060           0.021      0.881 13.1
+         restful motive     1         0.015           0.000      0.993 14.9
+         restful motive     2         0.031           0.001      0.986 14.7
+         restful motive     3         0.046           0.001      0.978 14.5
+        dialogic motive     1         0.013           0.002      0.982 14.8
+        dialogic motive     2         0.027           0.004      0.964 14.4
+        dialogic motive     3         0.040           0.006      0.946 14.1
+        serviced motive     1         0.083           0.003      0.943 13.7
+        serviced motive     2         0.166           0.007      0.880 12.2
+        serviced motive     3         0.249           0.010      0.808 10.7
+three times as strong as any rival: at least 81% of the estimate is left (smallest |t| = 10.7)
+
+-- want_master: place agency -0.110 (t = -12.8), partial R2 with the outcome 0.062 --
+robustness value: 22.6% of the residual variance of both place agency and the outcome removes the association; 19.6% makes it non-significant
+              benchmark times r2_with_place r2_with_outcome share_left     t
+ relational belief (Q1)     1         0.001           0.000      0.999 -12.8
+ relational belief (Q1)     2         0.002           0.000      0.998 -12.8
+ relational belief (Q1)     3         0.003           0.000      0.997 -12.7
+    general agency (Q2)     1         0.040           0.003      0.961 -12.1
+    general agency (Q2)     2         0.079           0.005      0.919 -11.3
+    general agency (Q2)     3         0.119           0.008      0.876 -10.6
+  societal control (Q4)     1         0.020           0.012      0.939 -12.0
+  societal control (Q4)     2         0.040           0.024      0.877 -11.1
+  societal control (Q4)     3         0.060           0.037      0.813 -10.3
+         restful motive     1         0.015           0.005      0.965 -12.3
+         restful motive     2         0.031           0.010      0.930 -11.8
+         restful motive     3         0.046           0.015      0.894 -11.3
+        dialogic motive     1         0.013           0.008      0.960 -12.2
+        dialogic motive     2         0.027           0.016      0.919 -11.7
+        dialogic motive     3         0.040           0.024      0.878 -11.1
+        serviced motive     1         0.083           0.000      0.986 -12.1
+        serviced motive     2         0.166           0.000      0.971 -11.4
+        serviced motive     3         0.249           0.000      0.954 -10.6
+three times as strong as any rival: at least 81% of the estimate is left (smallest |t| = 10.3)
 
 Saved: hnr_incremental_validity.rds
 
@@ -2193,6 +2257,13 @@ seen       Master Manager User Guardian Partner Object  Sum
 same answer twice: 927 of 2513 (36.9%) | leave Master: 480 | move to Master: 200
 Cronbach's alpha: relational belief (6 items) 0.864 | general agency, now (12 items) 0.960
 
+========== Completion time and the response-quality screen ==========
+median completion time 10.7 min (IQR 6.2 to 16.4), n = 2513
+     Canada      Panama      Poland Netherlands       Spain      Sweden 
+        9.9        17.1         9.6         9.0        10.5         8.8 
+flagged: 373 (14.8%), of whom 21 completed in under 120 seconds; the rest gave the same answer throughout the
+12 control items or the 14 reasons for visiting. Flagged respondents stay in the main models (dropped in 23).
+
 Saved: hnr_descriptives.rds
 
 
@@ -2240,10 +2311,10 @@ countrySweden        -0.571    0.002
 (None reaches p < .05. The mechanism looks the same in every sample.)
 
 Can slopes be compared? Place-agency invariance across countries (MLR):
-             cfi rmsea  srmr    dCFI
-configural 0.971 0.059 0.028      NA
-metric     0.969 0.047 0.038 -0.0021
-scalar     0.932 0.059 0.051 -0.0368
+           cfi.scaled rmsea.scaled  srmr    dCFI
+configural      0.972        0.052 0.028      NA
+metric          0.969        0.043 0.038 -0.0037
+scalar          0.926        0.056 0.051 -0.0422
 (Loadings are equivalent, so slopes can be compared across countries; intercepts are not,
  so country MEANS on place agency cannot be.)
 
@@ -2276,9 +2347,9 @@ rural x country interaction on wanting mastery:
 ############################################################
 ##  21_mediation_sem.R 
 ############################################################
-restorative  fitted in  54 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
-dialogic     fitted in  46 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
-serviced     fitted in  48 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
+restorative  fitted in  57 s | CFI 0.986 RMSEA 0.070 | largest standardised path 0.64
+dialogic     fitted in  47 s | CFI 0.991 RMSEA 0.058 | largest standardised path 0.78
+serviced     fitted in  54 s | CFI 0.988 RMSEA 0.068 | largest standardised path 1.64
 
 (Every standardised path should sit inside +/-1. Values beyond that mark an
  unstable model; the single-motive runs are the ones to read.)
@@ -2329,7 +2400,7 @@ serviced     fitted in  48 s | CFI 0.988 RMSEA 0.068 | largest standardised path
  but is impractical under WLSMV at this size.)
 
 ========== 5. Sensitivity: the three motives entered together ==========
-fitted in 73 s | largest standardised path 1.42
+fitted in 86 s | largest standardised path 1.42
       motive  direct via_place total_indirect   total
  restorative -0.748*   +0.429*        +0.494* -0.254*
     dialogic +1.416*   -1.121*        -1.236* +0.180*
@@ -2629,10 +2700,10 @@ Saved: hnr_scenarios.rds
 ##  16_motive_invariance.R 
 ############################################################
 ========== 1. Invariance across the six countries ==========
-              chisq  df   cfi rmsea  srmr    dCFI
-configural 1176.680 306 0.915 0.082 0.075      NA
-metric     1328.703 351 0.905 0.082 0.081 -0.0104
-scalar     1599.950 396 0.883 0.085 0.086 -0.0221
+           chisq.scaled  df cfi.scaled rmsea.scaled  srmr    dCFI
+configural      883.931 306      0.917        0.067 0.075      NA
+metric         1005.486 351      0.906        0.067 0.081 -0.0110
+scalar         1246.042 396      0.878        0.072 0.086 -0.0281
 (Chen 2007: a CFI drop beyond .010 counts against invariance. Metric is
  borderline and scalar fails, so the means below are diagnostic only.)
 
@@ -2744,18 +2815,18 @@ Discriminant anchor -- dialogue with another human: mean 4.24 | correlation with
  willingness to say yes rather than beliefs about non-human agency.)
 
 ========== 2. Dimensionality: are living and non-living targets distinct? ==========
-              chisq df   cfi   tli rmsea  srmr
-one_factor 1565.520 54 0.953 0.942 0.106 0.046
-two_factor 1263.645 53 0.962 0.953 0.095 0.039
+           chisq.scaled df cfi.scaled tli.scaled rmsea.scaled  srmr
+one_factor      778.558 54      0.951      0.940        0.073 0.046
+two_factor      625.973 53      0.961      0.952        0.066 0.039
 correlation between the two factors: 0.858 
 (A correlation near 1 means the split is not worth keeping; report the
  two-factor model as a sensitivity check and treat the scale as one.)
 
 ========== 3. Measurement invariance across the six countries ==========
-              chisq  df   cfi rmsea  srmr    dCFI
-configural 2275.213 324 0.940 0.120 0.047      NA
-metric     2365.999 379 0.939 0.112 0.061 -0.0011
-scalar     2655.700 434 0.931 0.111 0.065 -0.0073
+           chisq.scaled  df cfi.scaled rmsea.scaled  srmr    dCFI
+configural     1171.257 324      0.945        0.079 0.047      NA
+metric         1334.788 379      0.938        0.078 0.061 -0.0071
+scalar         1586.980 434      0.925        0.080 0.065 -0.0128
 (Chen 2007: a drop in CFI larger than .010 counts against invariance.)
 
 Latent means by country, scalar model (Canada = 0):

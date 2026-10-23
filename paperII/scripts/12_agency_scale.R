@@ -54,8 +54,8 @@ m1 <- 'agency =~ ag_now_wild_animals + ag_now_pets + ag_now_plants + ag_now_forc
 m2 <- paste0('living =~ ', paste(animate, collapse = " + "), '
              landscape =~ ', paste(inanimate, collapse = " + "))
 f1 <- sem(m1, dat, estimator = "MLR"); f2 <- sem(m2, dat, estimator = "MLR")
-print(round(rbind(one_factor = fitmeasures(f1, c("chisq","df","cfi","tli","rmsea","srmr")),
-                  two_factor = fitmeasures(f2, c("chisq","df","cfi","tli","rmsea","srmr"))), 3))
+sc <- c("chisq.scaled","df","cfi.scaled","tli.scaled","rmsea.scaled","srmr")   # scaled, as reported in the paper
+print(round(rbind(one_factor = fitmeasures(f1, sc), two_factor = fitmeasures(f2, sc)), 3))
 r12 <- lavInspect(f2, "cor.lv")[1, 2]
 cat("correlation between the two factors:", round(r12, 3), "\n")
 cat("(A correlation near 1 means the split is not worth keeping; report the\n")
@@ -67,8 +67,8 @@ inv <- list(
   metric     = cfa(m1, dat, group = "country", estimator = "MLR", group.equal = "loadings"),
   scalar     = cfa(m1, dat, group = "country", estimator = "MLR",
                    group.equal = c("loadings", "intercepts")))
-tab <- t(sapply(inv, function(f) fitmeasures(f, c("chisq","df","cfi","rmsea","srmr"))))
-tab <- cbind(round(tab, 3), dCFI = round(c(NA, diff(tab[, "cfi"])), 4))
+tab <- t(sapply(inv, function(f) fitmeasures(f, c("chisq.scaled","df","cfi.scaled","rmsea.scaled","srmr"))))   # scaled
+tab <- cbind(round(tab, 3), dCFI = round(c(NA, diff(tab[, "cfi.scaled"])), 4))
 print(tab)
 cat("(Chen 2007: a drop in CFI larger than .010 counts against invariance.)\n")
 cat("\nLatent means by country, scalar model (Canada = 0):\n")

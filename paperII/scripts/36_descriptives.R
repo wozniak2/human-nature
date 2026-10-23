@@ -97,5 +97,14 @@ q1 <- c("presence_influences_place", "place_influences_person", "person_shares_s
 ag <- grep("^ag_now_", names(dat), value = TRUE)
 cat(sprintf("Cronbach's alpha: relational belief (6 items) %.3f | general agency, now (12 items) %.3f\n", al(q1), al(ag)))
 
+cat("\n========== Completion time and the response-quality screen ==========\n")
+mins <- dat$duration_sec / 60
+cat(sprintf("median completion time %.1f min (IQR %.1f to %.1f), n = %d\n", median(mins, na.rm = TRUE),
+            quantile(mins, .25, na.rm = TRUE), quantile(mins, .75, na.rm = TRUE), sum(!is.na(mins))))
+print(round(tapply(mins, dat$country, median, na.rm = TRUE), 1))
+cat(sprintf("flagged: %d (%.1f%%), of whom %d completed in under 120 seconds; the rest gave the same answer throughout the\n",
+            sum(dat$flag_lowqual, na.rm = TRUE), 100 * mean(dat$flag_lowqual, na.rm = TRUE), sum(dat$duration_sec < 120, na.rm = TRUE)))
+cat("12 control items or the 14 reasons for visiting. Flagged respondents stay in the main models (dropped in 23).\n")
+
 saveRDS(list(sample = smp, scales = desc, cor = R, cor_role = rr, counts = t6), "hnr_descriptives.rds")
 cat("\nSaved: hnr_descriptives.rds\n")
